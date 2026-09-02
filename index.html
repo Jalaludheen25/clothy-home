@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#14110D" />
+    <title>Clothy Home — Heirloom Indian Fashion &amp; Fine Adornment</title>
+    <meta
+      name="description"
+      content="Clothy Home is a modern Indian fashion house — handwoven sarees, churidar and dress fabrics, and fine jewellery, made slowly and worn for a lifetime."
+    />
+    <meta property="og:title" content="Clothy Home — Heirloom Indian Fashion" />
+    <meta property="og:description" content="Handwoven sarees, dress fabrics and fine adornment from a modern Indian atelier." />
+    <meta property="og:type" content="website" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://images.pexels.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..800&family=Inter+Tight:ital,wght@0,300..700;1,300..600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="/mark.svg" type="image/svg+xml" />
+    <style>
+      /* Critical: painted before the bundle arrives so there is no white flash. */
+      html { background: #14110d; }
+      #boot-veil {
+        position: fixed; inset: 0; z-index: 999;
+        display: grid; place-items: center;
+        background: #14110d;
+        transition: opacity .5s ease, visibility .5s;
+      }
+      #boot-veil.is-gone { opacity: 0; visibility: hidden; }
+      .boot-mark {
+        font-family: 'Fraunces', Georgia, serif; font-size: 34px; color: #c9a55c;
+        letter-spacing: .06em; opacity: .0; animation: bootIn 1.1s .15s ease forwards;
+      }
+      .boot-mark em { font-style: italic; opacity: .62; }
+      @keyframes bootIn { to { opacity: 1 } }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Boot veil: painted before React mounts so the first frame is never a white flash. -->
+    <div id="boot-veil" aria-hidden="true">
+      <div class="boot-mark">
+        <span>C</span>
+        <em>H</em>
+      </div>
+    </div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
