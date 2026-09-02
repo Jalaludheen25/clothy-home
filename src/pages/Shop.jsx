@@ -65,7 +65,7 @@ export default function Shop() {
 
           {page.length > 0 ? (
             <>
-              <ProductGrid products={page} cols={3} />
+              <ProductGrid products={page} cols={3} label="All pieces" />
               {shown < results.length ? (
                 <div className="listing__more">
                   <MagneticButton variant="line" size="lg" onClick={() => setShown((s) => s + PAGE)}>

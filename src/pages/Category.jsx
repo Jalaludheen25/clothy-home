@@ -64,7 +64,7 @@ export default function Category() {
               sizes="100vw"
               alt=""
               loading="eager"
-              fetchPriority="high"
+              fetchpriority="high"
               decoding="async"
             />
           </div>
@@ -117,7 +117,7 @@ export default function Category() {
 
           {page.length > 0 ? (
             <>
-              <ProductGrid products={page} cols={3} />
+              <ProductGrid products={page} cols={3} label={`${category.name} — ${results.length} pieces`} />
               {shown < results.length ? (
                 <div className="listing__more">
                   <MagneticButton variant="line" size="lg" onClick={() => setShown((s) => s + PAGE)}>

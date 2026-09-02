@@ -37,35 +37,44 @@ const HERO_SLIDES = [
 ];
 
 function Hero() {
-  const [index, setIndex] = useState(0);
+  /* The outgoing frame is held at full opacity underneath while the incoming
+     one fades in above it. Cross-fading both at once double-exposes the two
+     photographs and turns the middle of the transition to mud. */
+  const [slide, setSlide] = useState({ index: 0, prev: 0 });
   const [progressRef, progress] = useScrollProgress({ mode: 'exit' });
   const timer = useRef(0);
 
   useEffect(() => {
-    timer.current = window.setInterval(() => setIndex((i) => (i + 1) % HERO_SLIDES.length), 6200);
+    timer.current = window.setInterval(() => {
+      setSlide((s) => ({ prev: s.index, index: (s.index + 1) % HERO_SLIDES.length }));
+    }, 6200);
     return () => window.clearInterval(timer.current);
   }, []);
+
+  const index = slide.index;
 
   return (
     <section className="hero" ref={progressRef} aria-label="Clothy Home">
       <div className="hero__media">
-        {HERO_SLIDES.map((slide, i) => (
+        {HERO_SLIDES.map((item, i) => (
           <div
-            className={`hero__slide ${i === index ? 'is-on' : ''}`}
-            key={slide.kicker}
+            className={`hero__slide ${i === index ? 'is-on' : ''} ${
+              i === slide.prev && i !== index ? 'is-out' : ''
+            }`}
+            key={item.kicker}
             style={{
-              '--tone': slide.tone,
+              '--tone': item.tone,
               // The image drifts up and dims as the page scrolls past it.
               transform: `translate3d(0, ${progress * 16}%, 0) scale(${1 + progress * 0.14})`,
             }}
           >
             <img
-              src={src(slide.image, 1800, 1.28)}
-              srcSet={srcSet(slide.image, 1.28, [900, 1280, 1800, 2400])}
+              src={src(item.image, 1800, 1.28)}
+              srcSet={srcSet(item.image, 1.28, [900, 1280, 1800, 2400])}
               sizes="100vw"
               alt=""
               loading={i === 0 ? 'eager' : 'lazy'}
-              fetchPriority={i === 0 ? 'high' : 'low'}
+              fetchpriority={i === 0 ? 'high' : 'low'}
               decoding="async"
             />
           </div>
@@ -109,12 +118,12 @@ function Hero() {
       </div>
 
       <div className="hero__rail" aria-hidden="true">
-        {HERO_SLIDES.map((slide, i) => (
+        {HERO_SLIDES.map((item, i) => (
           <button
             type="button"
-            key={slide.kicker}
+            key={item.kicker}
             className={`hero__tick ${i === index ? 'is-on' : ''}`}
-            onClick={() => setIndex(i)}
+            onClick={() => setSlide((s) => ({ prev: s.index, index: i }))}
             tabIndex={-1}
           >
             <i />

@@ -136,21 +136,23 @@
 }
 
 .btn--solid {
-  background: var(--ink);
-  color: var(--bone);
+  background: var(--ink-base);
+  color: var(--bone-base);
   --btn-fill: var(--brass);
 }
 .btn--solid:hover {
-  color: var(--ink);
+  color: var(--ink-base);
 }
 
+/* Outline button inverts against whichever ground it sits on: the fill takes
+   the current text colour, and the label takes the surface colour. */
 .btn--line {
   border-color: var(--ink-14);
   color: var(--ink);
   --btn-fill: var(--ink);
 }
 .btn--line:hover {
-  color: var(--bone);
+  color: var(--surface);
   border-color: var(--ink);
 }
 
@@ -164,8 +166,8 @@
 }
 
 .btn--bone {
-  background: var(--bone);
-  color: var(--ink);
+  background: var(--bone-base);
+  color: var(--ink-base);
   --btn-fill: var(--brass-lit);
 }
 
@@ -363,7 +365,7 @@
   display: inline-block;
   padding: 0.3rem 0.6rem;
   background: rgba(247, 243, 236, 0.93);
-  color: var(--ink);
+  color: var(--ink-base);
   font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -433,8 +435,8 @@
   transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
 }
 .card__quick-btn:hover {
-  background: var(--ink);
-  color: var(--bone);
+  background: var(--ink-base);
+  color: var(--bone-base);
 }
 .card__quick-btn:disabled {
   opacity: 0.55;

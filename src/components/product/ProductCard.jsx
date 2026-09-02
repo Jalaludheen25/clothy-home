@@ -117,9 +117,15 @@ function ProductCardBase({ product, index = 0, priority = false, size = 'md' }) 
           </h3>
           <p className="card__price num">
             {product.compareAt ? (
-              <span className="card__was">{formatINR(product.compareAt)}</span>
+              <span className="card__was">
+                <span className="sr-only">Was </span>
+                {formatINR(product.compareAt)}
+              </span>
             ) : null}
-            {formatINR(product.price)}
+            <span className="card__now">
+              {product.compareAt ? <span className="sr-only">now </span> : null}
+              {formatINR(product.price)}
+            </span>
           </p>
         </div>
         <p className="card__sub muted">
@@ -136,14 +142,24 @@ function ProductCardBase({ product, index = 0, priority = false, size = 'md' }) 
 
 export const ProductCard = memo(ProductCardBase);
 
-/** Responsive product grid. `cols` sets the desktop column count. */
-export function ProductGrid({ products, cols = 4, size = 'md', className = '' }) {
+/**
+ * Responsive product grid. `cols` sets the desktop column count.
+ *
+ * `label` renders a visually-hidden h2 above the cards. Listing pages need it
+ * because their cards (h3) would otherwise sit straight under the page h1 with
+ * no level in between; pages where the grid already follows a SectionHead
+ * leave it off.
+ */
+export function ProductGrid({ products, cols = 4, size = 'md', className = '', label }) {
   return (
-    <div className={`grid grid--${cols} ${className}`}>
-      {products.map((p, i) => (
-        <ProductCard key={p.slug} product={p} index={i} size={size} priority={i < 4} />
-      ))}
-    </div>
+    <>
+      {label ? <h2 className="sr-only">{label}</h2> : null}
+      <div className={`grid grid--${cols} ${className}`}>
+        {products.map((p, i) => (
+          <ProductCard key={p.slug} product={p} index={i} size={size} priority={i < 4} />
+        ))}
+      </div>
+    </>
   );
 }
 

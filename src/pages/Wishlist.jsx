@@ -60,7 +60,7 @@ export default function Wishlist() {
 
       <div className="shell">
         {wishlistItems.length > 0 ? (
-          <ProductGrid products={wishlistItems} cols={4} className="wish__grid" />
+          <ProductGrid products={wishlistItems} cols={4} className="wish__grid" label="Saved pieces" />
         ) : (
           <EmptyState
             title="Nothing saved yet"

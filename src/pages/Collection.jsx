@@ -48,7 +48,7 @@ export default function Collection() {
             sizes="100vw"
             alt=""
             loading="eager"
-            fetchPriority="high"
+            fetchpriority="high"
             decoding="async"
           />
         </div>
@@ -87,7 +87,7 @@ export default function Collection() {
         <div className="listing__main">
           <ActiveChips filters={filters} setFilters={setFilters} />
           {results.length > 0 ? (
-            <ProductGrid products={results} cols={3} />
+            <ProductGrid products={results} cols={3} label={collection.name} />
           ) : (
             <EmptyState
               title="Nothing in this edit matches"

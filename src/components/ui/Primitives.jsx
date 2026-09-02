@@ -91,7 +91,7 @@ export function Figure({
           alt={alt}
           loading={eager ? 'eager' : 'lazy'}
           decoding="async"
-          fetchPriority={eager ? 'high' : 'auto'}
+          fetchpriority={eager ? 'high' : 'auto'}
           onLoad={() => setLoaded(true)}
           onError={() => setLoaded(true)}
         />
@@ -101,42 +101,51 @@ export function Figure({
   );
 }
 
-/** Button-shaped link or button with a magnetic pull and a wipe fill. */
+/**
+ * Button-shaped link or button with a magnetic pull and a wipe fill.
+ *
+ * The magnetic transform needs its own wrapper element, so `className` is
+ * applied to that wrapper rather than to the control: callers are almost
+ * always positioning the button in a layout (`flex: 1`, `width: 100%`), and a
+ * class on the inner element cannot do that. Reach the control itself with a
+ * descendant selector — `.my-class .btn`.
+ */
 export const MagneticButton = forwardRef(function MagneticButton(
   { children, to, href, variant = 'solid', size = 'md', className = '', magnetic = true, ...rest },
   forwarded,
 ) {
   const [wrapRef, innerRef] = useMagnetic({ strength: magnetic ? 0.3 : 0 });
-  const cls = `btn btn--${variant} btn--${size} ${className}`;
+  const cls = `btn btn--${variant} btn--${size}`;
   const body = (
     <span className="btn__inner" ref={innerRef}>
       <span className="btn__label">{children}</span>
     </span>
   );
 
+  let control;
   if (to) {
-    return (
-      <span className="btn-wrap" ref={wrapRef}>
-        <Link to={to} className={cls} ref={forwarded} {...rest}>
-          {body}
-        </Link>
-      </span>
+    control = (
+      <Link to={to} className={cls} ref={forwarded} {...rest}>
+        {body}
+      </Link>
     );
-  }
-  if (href) {
-    return (
-      <span className="btn-wrap" ref={wrapRef}>
-        <a href={href} className={cls} ref={forwarded} {...rest}>
-          {body}
-        </a>
-      </span>
+  } else if (href) {
+    control = (
+      <a href={href} className={cls} ref={forwarded} {...rest}>
+        {body}
+      </a>
     );
-  }
-  return (
-    <span className="btn-wrap" ref={wrapRef}>
+  } else {
+    control = (
       <button type="button" className={cls} ref={forwarded} {...rest}>
         {body}
       </button>
+    );
+  }
+
+  return (
+    <span className={`btn-wrap ${className}`} ref={wrapRef}>
+      {control}
     </span>
   );
 });
@@ -311,7 +320,7 @@ export function EmptyState({ title, blurb, action }) {
           <circle cx="24.5" cy="16" r="1.2" fill="currentColor" />
         </svg>
       </span>
-      <h3 className="display d3">{title}</h3>
+      <h2 className="display d3">{title}</h2>
       {blurb ? <p className="lead">{blurb}</p> : null}
       {action}
     </div>

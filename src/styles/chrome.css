@@ -482,8 +482,9 @@ body.has-cursor button {
 .mega__card-meta {
   position: absolute;
   left: 1.1rem;
-  bottom: 1.1rem;
+  bottom: 1.25rem;
   right: 1.1rem;
+  font-size: 0.88em;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
@@ -1043,8 +1044,8 @@ body.has-cursor button {
   gap: 0.7rem;
   max-width: min(360px, 84vw);
   padding: 0.82rem 1.15rem;
-  background: var(--ink);
-  color: var(--bone);
+  background: var(--ink-base);
+  color: var(--bone-base);
   font-size: var(--fs-sm);
   letter-spacing: -0.005em;
   box-shadow: 0 20px 46px rgba(20, 17, 13, 0.22);
@@ -1075,7 +1076,7 @@ body.has-cursor button {
 /* Pages that open on a full-bleed hero set body[data-header-tone="light"] via
    useDarkHeader(), so the bar reads in bone until the page scrolls under it. */
 
-body[data-header-tone='light'] .header:not(.is-scrolled)::before {
+body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open)::before {
   content: '';
   position: absolute;
   inset: 0 0 -120px;
@@ -1087,25 +1088,25 @@ body[data-header-tone='light'] .header:not(.is-scrolled)::before {
   );
   pointer-events: none;
 }
-body[data-header-tone='light'] .header:not(.is-scrolled) .header__bar {
+body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .header__bar {
   position: relative;
 }
-body[data-header-tone='light'] .header:not(.is-scrolled) .header__link,
-body[data-header-tone='light'] .header:not(.is-scrolled) .header__icon {
+body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .header__link,
+body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .header__icon {
   color: rgba(247, 243, 236, 0.8);
 }
-body[data-header-tone='light'] .header:not(.is-scrolled) .header__link:hover,
-body[data-header-tone='light'] .header:not(.is-scrolled) .header__icon:hover,
-body[data-header-tone='light'] .header:not(.is-scrolled) .wordmark {
+body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .header__link:hover,
+body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .header__icon:hover,
+body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .wordmark {
   color: var(--bone);
 }
-body[data-header-tone='light'] .header:not(.is-scrolled) .wordmark__sub {
+body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .wordmark__sub {
   color: var(--brass-lit);
 }
-body[data-header-tone='light'] .header:not(.is-scrolled) .header__burger i {
+body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .header__burger i {
   background: var(--bone);
 }
-body[data-header-tone='light'] .header:not(.is-scrolled) .header__count {
+body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .header__count {
   background: var(--brass-lit);
   color: var(--ink);
 }

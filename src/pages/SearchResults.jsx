@@ -65,7 +65,7 @@ export default function SearchResults() {
           <div className="listing__main">
             <ActiveChips filters={filters} setFilters={setFilters} />
             {results.length > 0 ? (
-              <ProductGrid products={results} cols={3} />
+              <ProductGrid products={results} cols={3} label="Search results" />
             ) : (
               <EmptyState
                 title="Filters narrowed it to nothing"

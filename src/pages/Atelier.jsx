@@ -89,7 +89,7 @@ export default function Atelier() {
             sizes="100vw"
             alt=""
             loading="eager"
-            fetchPriority="high"
+            fetchpriority="high"
             decoding="async"
           />
         </div>
@@ -153,8 +153,8 @@ export default function Atelier() {
             </div>
             <div ref={plateB}>
               <Figure
-                image={IMG.craftPlinth}
-                alt="A plinth in the studio"
+                image={IMG.fabricCreamFold}
+                alt="Folded cream silk"
                 ratio={1.15}
                 width={640}
                 sizes="(max-width: 900px) 40vw, 21vw"

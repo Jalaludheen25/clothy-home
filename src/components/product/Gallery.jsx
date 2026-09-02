@@ -100,7 +100,7 @@ function Plate({ image, alt, eager, onOpen, tone }) {
         sizes="(max-width: 999px) 92vw, 46vw"
         alt={alt}
         loading={eager ? 'eager' : 'lazy'}
-        fetchPriority={eager ? 'high' : 'auto'}
+        fetchpriority={eager ? 'high' : 'auto'}
         decoding="async"
         onLoad={() => setLoaded(true)}
         onError={() => setLoaded(true)}
