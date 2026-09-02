@@ -76,18 +76,32 @@ weave appears in the filter rail on its own.
 
 ### Swapping the photography
 
-Every image is referenced through `src/data/images.js`, which appends width and
-crop hints to a CDN URL. Point `src()` at a different host — or at files in
-`public/` — and nothing else has to change.
+All 118 photographs are referenced through `src/data/images.js`, which appends
+width and crop hints to a CDN URL. Point `src()` at a different host — or at
+files in `public/` — and nothing else has to change.
+
+The home hero carries a `focus` per frame (`src/pages/Home.jsx`), used as
+`object-position`. Full-bleed crops of portrait photographs need telling where
+the subject is, or the hero cuts the model off. Hero frames are also chosen for
+how the headline sits on them: the type is bottom-left, so a frame that is
+bright there is out however good the picture — measured, not eyeballed.
 
 ---
 
 ## Design
 
+**Brand.** The supplied artwork lives in `public/logo/` in two inks (oxblood
+`#450b17` and off-white `#f8eee4`) and two weights. `src/components/ui/Logo.jsx`
+picks the right one per surface; the header renders *both* inks and cross-fades
+them, because swapping `src` as it leaves a hero would flash an undecoded image.
+The favicon is the house-and-C mark cropped out of the wordmark. The oxblood is
+the palette's `--maroon`, and drives offer badges, saved state and low-stock.
+
 **Palette.** A warm neutral ground (bone, sand, clay) against espresso ink, with
-brass as the only metal. Colour is left to the textiles. Dark passages use the
-`.on-ink` class, which re-points the token set rather than restating colours;
-anything that must survive that swap reads from `--ink-base` / `--bone-base`.
+brass as the only metal and the brand oxblood as the one saturated accent.
+Colour is otherwise left to the textiles. Dark passages use the `.on-ink` class,
+which re-points the token set rather than restating colours; anything that must
+survive that swap reads from `--ink-base` / `--bone-base`.
 
 **Type.** Fraunces for display and Inter Tight for interface, on a fluid clamp
 scale so a 360px phone and a 1600px desktop both get a considered measure.

@@ -5,6 +5,7 @@ import { src } from '../data/images.js';
 import { useStore } from '../context/StoreContext.jsx';
 import { Wordmark } from '../components/layout/Header.jsx';
 import { useMinimalChrome } from '../hooks/useHeaderTone.js';
+import { Logo } from '../components/ui/Logo.jsx';
 import { EmptyState, MagneticButton, Reveal, RevealText } from '../components/ui/Primitives.jsx';
 
 /* ==========================================================================
@@ -403,8 +404,7 @@ export default function Checkout() {
       {placing ? (
         <div className="placing" aria-live="assertive">
           <div className="placing__mark">
-            <span className="display">Clothy</span>
-            <em className="serif-italic">Home</em>
+            <Logo tone="light" alt="" />
           </div>
           <p className="eyebrow">Confirming your order</p>
           <span className="placing__bar">

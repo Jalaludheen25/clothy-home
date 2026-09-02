@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../context/StoreContext.jsx';
 import { prefersReducedMotion } from '../../hooks/useMotion.js';
+import { Logo } from '../ui/Logo.jsx';
 
 /* ==========================================================================
    Chrome — preloader, page transition veil, cursor and toasts
@@ -66,8 +67,7 @@ export function Preloader({ onDone }) {
       </div>
       <div className="preloader__body">
         <div className="preloader__mark">
-          <span className="display">Clothy</span>
-          <em className="serif-italic">Home</em>
+          <Logo tone="light" className="preloader__logo" alt="" />
         </div>
         <p className="preloader__line eyebrow">Handwoven in India</p>
         <div className="preloader__bar">

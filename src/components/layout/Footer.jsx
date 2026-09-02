@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { CATEGORIES, COLLECTIONS } from '../../data/catalog.js';
 import { useStore } from '../../context/StoreContext.jsx';
 import { Marquee, Reveal, RevealText } from '../ui/Primitives.jsx';
+import { Logo } from '../ui/Logo.jsx';
 
 /* ==========================================================================
    Footer
@@ -138,7 +139,7 @@ export default function Footer() {
       </div>
 
       <div className="footer__mark" aria-hidden="true">
-        <span className="display">Clothy Home</span>
+        <Logo tone="light" weight="heavy" className="footer__logo" alt="" />
       </div>
 
       <div className="footer__base shell">

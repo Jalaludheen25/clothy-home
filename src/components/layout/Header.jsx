@@ -5,6 +5,7 @@ import { src } from '../../data/images.js';
 import { useStore } from '../../context/StoreContext.jsx';
 import { useEscape, useScrollLock } from '../../hooks/useMotion.js';
 import { useLenis } from '../../hooks/useLenis.jsx';
+import { Logo } from '../ui/Logo.jsx';
 
 /* ==========================================================================
    Header
@@ -32,11 +33,11 @@ function Glyph({ name }) {
   );
 }
 
-export function Wordmark({ compact = false }) {
+export function Wordmark({ compact = false, tone = 'dark' }) {
   return (
     <Link to="/" className={`wordmark ${compact ? 'is-compact' : ''}`} aria-label="Clothy Home, home">
-      <span className="wordmark__name display">Clothy</span>
-      <span className="wordmark__sub serif-italic">Home</span>
+      <Logo tone={tone} alt="" />
+      <span className="sr-only">Clothy Home</span>
     </Link>
   );
 }
@@ -142,7 +143,7 @@ export default function Header() {
           </div>
 
           <div className="header__cluster header__cluster--centre" onMouseEnter={closePanel}>
-            <Wordmark compact={scrolled} />
+            <Wordmark compact={scrolled} tone="auto" />
           </div>
 
           <div className="header__cluster header__cluster--end" onMouseEnter={closePanel}>

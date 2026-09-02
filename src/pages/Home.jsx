@@ -30,10 +30,16 @@ import { useDarkHeader } from '../hooks/useHeaderTone.js';
    Home
    ========================================================================== */
 
+/* Hero frames are chosen for how the headline sits on them as much as for the
+   picture: the type is bottom-left, so anything bright there is out, however
+   good the photograph. */
+/* `focus` is the object-position for the full-bleed crop: a frame that is
+   composed for portrait needs telling where its subject actually is, or the
+   hero cuts the person off at the ankles. */
 const HERO_SLIDES = [
-  { image: IMG.editorialMist, kicker: 'Autumn / Winter', tone: '#b9b3ad' },
-  { image: IMG.sareeBanarasiGold, kicker: 'The Zari Edit', tone: '#8d7444' },
-  { image: IMG.editorialLightRay, kicker: 'Bridal 2026', tone: '#6d4a3c' },
+  { image: IMG.sareeRoseCopperWall, kicker: 'Autumn / Winter', tone: '#4a1418', focus: '62% 12%' },
+  { image: IMG.sareeBanarasiGold, kicker: 'The Zari Edit', tone: '#8d7444', focus: '58% 38%' },
+  { image: IMG.editorialRouge, kicker: 'Bridal 2026', tone: '#4a2222', focus: '55% 40%' },
 ];
 
 function Hero() {
@@ -73,6 +79,7 @@ function Hero() {
               srcSet={srcSet(item.image, 1.28, [900, 1280, 1800, 2400])}
               sizes="100vw"
               alt=""
+              style={{ objectPosition: item.focus }}
               loading={i === 0 ? 'eager' : 'lazy'}
               fetchpriority={i === 0 ? 'high' : 'low'}
               decoding="async"
@@ -172,12 +179,12 @@ function Manifesto() {
         <div className="manifesto__plates">
           <div className="manifesto__plate manifesto__plate--a" ref={plateA}>
             <Figure
-              image={IMG.craftHandFabric}
-              alt="A weaver's hands smoothing cloth"
+              image={IMG.jewelGoldHeadpieceProfile}
+              alt="Gold headpiece and marigold, in profile"
               ratio={1.32}
               width={760}
               sizes="(max-width: 900px) 44vw, 27vw"
-              tone="#c9ab86"
+              tone="#2a1c14"
             />
           </div>
           <div className="manifesto__plate manifesto__plate--b" ref={plateB}>
@@ -298,8 +305,8 @@ function Feature() {
           style={{ transform: `scale(${1.14 - progress * 0.14})` }}
         >
           <img
-            src={src(IMG.fabricWovenGold, 2000, 0.62)}
-            srcSet={srcSet(IMG.fabricWovenGold, 0.62, [900, 1400, 2000])}
+            src={src(IMG.silkAmberDrape, 2000, 0.62)}
+            srcSet={srcSet(IMG.silkAmberDrape, 0.62, [900, 1400, 2000])}
             sizes="100vw"
             alt=""
             loading="lazy"
@@ -348,8 +355,8 @@ function Editorial() {
           </div>
           <div className="editorial__plate editorial__plate--wide">
             <Figure
-              image={IMG.detailBangleFabric}
-              alt="Bangles resting on printed silk"
+              image={IMG.sareeOchreCheck}
+              alt="A checked silk saree, in shadow"
               ratio={0.74}
               width={900}
               sizes="(max-width: 900px) 60vw, 27vw"

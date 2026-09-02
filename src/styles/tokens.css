@@ -30,7 +30,10 @@
   --brass: #a8834a;
   --brass-lit: #c9a55c;
   --brass-pale: #e3d3b4;
-  --rouge: #7c2f2f;
+  /* Sampled from the supplied logo artwork. */
+  --maroon: #450b17;
+  --maroon-lit: #6d2030;
+  --rouge: var(--maroon);
   --jade: #2f4c42;
 
   /* --- surfaces ---------------------------------------------------------- */

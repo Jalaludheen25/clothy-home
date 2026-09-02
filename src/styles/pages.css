@@ -17,6 +17,10 @@
 .hero__media {
   position: absolute;
   inset: 0;
+  /* An explicit z-index (not auto) so this element forms a stacking context:
+     the slides and the wash order themselves inside it, and none of them can
+     out-rank .hero__body above. */
+  z-index: 0;
   background: var(--ink);
 }
 .hero__slide {
@@ -56,16 +60,13 @@
 .hero__wash {
   position: absolute;
   inset: 0;
+  /* Must out-rank the slides, which carry a z-index of their own so the
+     outgoing frame can sit under the incoming one during a crossfade. */
+  z-index: 3;
   background:
     linear-gradient(180deg, rgba(20, 17, 13, 0.58) 0%, rgba(20, 17, 13, 0) 26%),
-    linear-gradient(0deg, rgba(20, 17, 13, 0.92) 0%, rgba(20, 17, 13, 0.62) 46%, rgba(20, 17, 13, 0.14) 80%),
-    linear-gradient(
-      96deg,
-      rgba(20, 17, 13, 0.84) 0%,
-      rgba(20, 17, 13, 0.6) 26%,
-      rgba(20, 17, 13, 0.26) 48%,
-      transparent 70%
-    );
+    linear-gradient(0deg, rgba(20, 17, 13, 0.88) 0%, rgba(20, 17, 13, 0.4) 44%, rgba(20, 17, 13, 0.06) 78%),
+    linear-gradient(96deg, rgba(20, 17, 13, 0.66) 0%, rgba(20, 17, 13, 0.3) 32%, transparent 62%);
 }
 
 .hero__body {
@@ -2272,15 +2273,7 @@
   animation: lbIn 0.4s var(--ease) both;
 }
 .placing__mark {
-  display: flex;
-  align-items: baseline;
-  gap: 0.34em;
-  font-size: clamp(2rem, 6vw, 3.6rem);
-  line-height: 1;
-}
-.placing__mark em {
-  font-size: 0.54em;
-  color: var(--brass-lit);
+  --logo-h: clamp(40px, 7vw, 64px);
 }
 .placing .eyebrow {
   color: rgba(247, 243, 236, 0.45);
@@ -3076,17 +3069,17 @@
 
 .footer__mark {
   padding-inline: var(--gut);
-  line-height: 0.78;
   overflow: hidden;
   pointer-events: none;
 }
-.footer__mark span {
-  display: block;
-  font-size: clamp(3.5rem, 17vw, 17rem);
-  font-weight: 300;
-  letter-spacing: -0.05em;
-  color: rgba(247, 243, 236, 0.075);
-  white-space: nowrap;
+.footer__logo {
+  height: auto;
+  width: min(100%, 1180px);
+  opacity: 0.09;
+}
+.footer__logo .logo__img {
+  width: 100%;
+  height: auto;
 }
 
 .footer__base {

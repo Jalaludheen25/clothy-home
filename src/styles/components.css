@@ -786,3 +786,43 @@
     font-size: 0.74rem;
   }
 }
+
+/* --- brand mark ----------------------------------------------------------- */
+
+.logo {
+  display: block;
+  height: var(--logo-h, 26px);
+  line-height: 0;
+}
+.logo__img {
+  height: 100%;
+  width: auto;
+  aspect-ratio: var(--logo-ratio, 3.23);
+  object-fit: contain;
+}
+
+/* Both inks are painted; CSS chooses. Swapping src would flash an undecoded
+   image over the hero at the exact moment the header changes state. */
+.logo--auto {
+  position: relative;
+}
+.logo--auto .logo__img--light {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+.logo--auto .logo__img--dark {
+  opacity: 1;
+  transition: opacity 0.4s var(--ease);
+}
+body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .logo__img--light {
+  opacity: 1;
+}
+body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .logo__img--dark {
+  opacity: 0;
+}
+
+.logo-link {
+  display: inline-block;
+}
