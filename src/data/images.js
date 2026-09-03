@@ -105,7 +105,6 @@ const IMG = {
   sareeMagentaRedBackdrop: "https://images.pexels.com/photos/38998847/pexels-photo-38998847.jpeg",
   jewelTempleSetMaroon: "https://images.pexels.com/photos/28347073/pexels-photo-28347073.jpeg",
   jewelGoldHeadpieceProfile: "https://images.pexels.com/photos/36947949/pexels-photo-36947949.jpeg",
-  jewelBridalMaroonGold: "https://images.pexels.com/photos/15455512/pexels-photo-15455512.jpeg",
   jewelNathRedVeil: "https://images.pexels.com/photos/32081723/pexels-photo-32081723.jpeg",
   neckGoldKasavuWhite: "https://images.pexels.com/photos/36806826/pexels-photo-36806826.jpeg",
   neckKundanTeal: "https://images.pexels.com/photos/11784752/pexels-photo-11784752.jpeg",
@@ -130,6 +129,8 @@ const IMG = {
   velvetDarkTeal: "https://images.pexels.com/photos/7717505/pexels-photo-7717505.jpeg",
   bridalIvoryNight: "https://images.pexels.com/photos/31750757/pexels-photo-31750757.jpeg",
   jewelEmeraldVelvet: "https://images.pexels.com/photos/32988530/pexels-photo-32988530.jpeg",
+  jewelThaliBridalSet: "https://images.pexels.com/photos/29037987/pexels-photo-29037987.jpeg",
+  earKundanPearlDrop: "https://images.pexels.com/photos/8751528/pexels-photo-8751528.jpeg",
 };
 
 /**
