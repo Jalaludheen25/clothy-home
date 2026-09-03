@@ -373,11 +373,11 @@
   backdrop-filter: blur(4px);
 }
 .tag--offer {
-  background: var(--rouge);
-  color: var(--bone);
+  background: var(--maroon);
+  color: var(--bone-base);
 }
 .tag--rare {
-  background: var(--ink);
+  background: var(--ink-base);
   color: var(--brass-lit);
 }
 

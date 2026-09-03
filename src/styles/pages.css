@@ -1327,7 +1327,10 @@
   gap: 0.4rem;
   margin-bottom: 1.1rem;
 }
-.pdp__badges .tag {
+/* Only the plain badge takes the panel's tint — scoping this loosely used to
+   out-rank .tag--offer and paint bone text on a bone ground, which made the
+   discount badge invisible on every product page that had one. */
+.pdp__badges .tag:not(.tag--offer):not(.tag--rare) {
   background: var(--bone-dim);
 }
 .pdp__cat {

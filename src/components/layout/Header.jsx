@@ -121,7 +121,7 @@ export default function Header() {
                 className={`header__link ${panel === 'shop' ? 'is-active' : ''}`}
                 onMouseEnter={() => openPanel('shop')}
                 onFocus={() => openPanel('shop')}
-                onClick={() => setPanel((p) => (p === 'shop' ? null : 'shop'))}
+                onClick={() => openPanel('shop')}
                 aria-expanded={panel === 'shop'}
               >
                 Shop
@@ -131,7 +131,7 @@ export default function Header() {
                 className={`header__link ${panel === 'collections' ? 'is-active' : ''}`}
                 onMouseEnter={() => openPanel('collections')}
                 onFocus={() => openPanel('collections')}
-                onClick={() => setPanel((p) => (p === 'collections' ? null : 'collections'))}
+                onClick={() => openPanel('collections')}
                 aria-expanded={panel === 'collections'}
               >
                 Collections

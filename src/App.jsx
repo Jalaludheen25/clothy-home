@@ -37,28 +37,35 @@ function Router() {
   const [shown, setShown] = useState(location);
   const [playing, setPlaying] = useState(false);
   const first = useRef(true);
+  /* Held in refs so they cannot become effect dependencies — see the note on
+     the transition effect below. */
+  const shownKey = useRef(location.key);
+  const lenisRef = useRef(lenis);
+  lenisRef.current = lenis;
 
   useEffect(() => {
     if (first.current) {
       first.current = false;
       return undefined;
     }
-    if (location.key === shown.key) return undefined;
+    if (location.key === shownKey.current) return undefined;
 
     setPlaying(true);
     const swap = window.setTimeout(() => {
+      shownKey.current = location.key;
       setShown(location);
+      const l = lenisRef.current;
       if (location.hash) {
         // Let the new page mount, then move to the anchor.
         window.setTimeout(() => {
           const el = document.querySelector(location.hash);
           if (el) {
-            if (lenis) lenis.scrollTo(el, { offset: -110, immediate: true });
+            if (l) l.scrollTo(el, { offset: -110, immediate: true });
             else el.scrollIntoView();
           }
         }, 40);
-      } else if (lenis) {
-        lenis.scrollTo(0, { immediate: true });
+      } else if (l) {
+        l.scrollTo(0, { immediate: true });
       } else {
         window.scrollTo(0, 0);
       }
@@ -69,7 +76,20 @@ function Router() {
       window.clearTimeout(swap);
       window.clearTimeout(open);
     };
-  }, [location, shown.key, lenis]);
+    // Only a genuinely new location restarts this. The shown route and the
+    // Lenis instance are read through refs on purpose: when they were
+    // dependencies, swapping the route re-ran the effect and the cleanup
+    // cancelled the timer that lifts the curtain — leaving every navigated
+    // page under a full-screen black panel.
+  }, [location]);
+
+  /* The veil covers the entire viewport, so a missed timer is a blank screen
+     rather than a cosmetic glitch. This guarantees it always lifts. */
+  useEffect(() => {
+    if (!playing) return undefined;
+    const bail = window.setTimeout(() => setPlaying(false), TRANSITION_MS + 400);
+    return () => window.clearTimeout(bail);
+  }, [playing]);
 
   return (
     <>
