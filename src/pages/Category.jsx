@@ -63,6 +63,7 @@ export default function Category() {
               srcSet={srcSet(category.hero, 0.72, [900, 1400, 1800, 2400])}
               sizes="100vw"
               alt=""
+              style={{ objectPosition: category.heroFocus }}
               loading="eager"
               fetchpriority="high"
               decoding="async"

@@ -1111,7 +1111,10 @@
 .ahero__scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, rgba(20, 17, 13, 0.86) 0%, rgba(20, 17, 13, 0.22) 48%, rgba(20, 17, 13, 0.34) 100%);
+  background:
+    linear-gradient(180deg, rgba(20, 17, 13, 0.5) 0%, rgba(20, 17, 13, 0) 32%),
+    linear-gradient(0deg, rgba(20, 17, 13, 0.9) 0%, rgba(20, 17, 13, 0.5) 46%, rgba(20, 17, 13, 0.1) 82%),
+    linear-gradient(96deg, rgba(20, 17, 13, 0.68) 0%, rgba(20, 17, 13, 0.32) 34%, transparent 66%);
 }
 .cathero__body,
 .colhero__body,
@@ -1134,10 +1137,10 @@
 .cathero__tag {
   margin-top: 1rem;
   font-size: clamp(1.05rem, 2vw, 1.5rem);
-  color: var(--brass-lit);
+  color: var(--brass-pale);
 }
 .colhero__kicker {
-  color: var(--brass-lit);
+  color: var(--brass-pale);
   margin-bottom: 1rem;
 }
 .colhero__blurb,
@@ -1147,11 +1150,14 @@
   color: rgba(247, 243, 236, 0.78);
 }
 
+.catintro {
+  padding-block: clamp(2.2rem, 4.5vw, 4rem);
+}
 .catintro__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 0.75fr);
   gap: clamp(2rem, 6vw, 5rem);
-  align-items: center;
+  align-items: end;
 }
 .catintro__blurb {
   max-width: 46ch;
@@ -2474,6 +2480,7 @@
 .track__form {
   display: grid;
   grid-template-columns: minmax(0, 320px) auto;
+  justify-content: start;
   gap: 0.6rem;
   margin-top: 1.6rem;
 }
@@ -3110,4 +3117,54 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 2rem 1.4rem;
   }
+}
+
+/* ==========================================================================
+   Narrow-viewport corrections
+   ========================================================================== */
+
+/* The product grid's `1fr` track cannot shrink below its content's min-content
+   width, and the bag button is `nowrap` — so a long price ("Add to bag —
+   ₹38,900") pushed the whole page ~10px wider than a 360px screen. Let the
+   track shrink, and let the button take its own row when space runs out. */
+@media (max-width: 999px) {
+  .pdp__main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.pdp__gallery,
+.pdp__panel {
+  min-width: 0;
+}
+
+@media (max-width: 460px) {
+  .pdp__buy {
+    flex-wrap: wrap;
+  }
+  .pdp__add {
+    flex: 1 1 100%;
+  }
+  .btn--lg {
+    padding-inline: 1.5rem;
+  }
+  /* Three columns of dispatch/delivery/returns is too many at this width. */
+  .pdp__assure {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 0.8rem;
+  }
+  .marks > div {
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+/* Touch-target corrections that must live here: pages.css loads after
+   components.css, so these selectors have to be re-stated to win. */
+.hero__tick {
+  padding-block: 12px;
+}
+.cline__name a,
+.line__name a {
+  display: inline-block;
+  padding-block: 0.15rem;
 }

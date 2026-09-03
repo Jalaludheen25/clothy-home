@@ -1094,3 +1094,53 @@ body[data-chrome='minimal'] .header,
 body[data-chrome='minimal'] .footer {
   display: none;
 }
+
+/* --- header touch targets -------------------------------------------------
+   The icons drew at 18x18 and the menu button at 22x7. Each control now
+   occupies a 44px box with the glyph centred, and the mobile gap tightens so
+   the larger boxes still fit a 360px bar without colliding. */
+
+.header__icon {
+  min-height: 44px;
+  padding-block: 0.35rem;
+}
+
+.header__burger {
+  position: relative;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin-left: -0.6rem; /* keep the bars optically aligned to the gutter */
+}
+
+@media (max-width: 940px) {
+  .header__icon {
+    display: grid;
+    place-items: center;
+    min-width: 44px;
+  }
+  .header__cluster {
+    gap: 0.15rem;
+  }
+  /* The badge hangs off a 44px box now, so pull it back over the glyph. */
+  .header__count {
+    top: 4px;
+    left: 26px;
+  }
+}
+
+/* Four icons plus a 44px menu button will not fit a 360px bar. Account is one
+   tap away in the menu sheet, so it stands down first. */
+@media (max-width: 560px) {
+  .header__icon--user {
+    display: none;
+  }
+}
+
+/* The mark is the home link — give it a real target rather than the 22px the
+   artwork happens to occupy. */
+.wordmark {
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+}

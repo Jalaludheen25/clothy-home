@@ -17,6 +17,7 @@ export const CATEGORIES = [
     blurb:
       'Kanjivaram, Banarasi, Chanderi and Tussar — woven on pit looms in Kanchipuram, Varanasi and Bhagalpur, then finished in our Chennai atelier.',
     hero: IMG.heroArchKanjivaram,
+    heroFocus: '62% 14%',
     plate: IMG.silkCrimson,
   },
   {
@@ -27,6 +28,7 @@ export const CATEGORIES = [
     blurb:
       'Ready kurta sets cut to a modern line, and unstitched dress material for those who would rather bring it to their own tailor.',
     hero: IMG.suitChikanCream,
+    heroFocus: '55% 22%',
     plate: IMG.fabricChikankari,
   },
   {
@@ -37,6 +39,7 @@ export const CATEGORIES = [
     blurb:
       'Made by families who have been setting stones for four generations. Gold-plated over sterling, with every stone seated by hand.',
     hero: IMG.jewelTempleSetMaroon,
+    heroFocus: '50% 34%',
     plate: IMG.jewelBridalMaroonGold,
   },
   {
@@ -47,6 +50,7 @@ export const CATEGORIES = [
     blurb:
       'From a mini hoop worn every day of the week to a temple jhumka that has to be taken off carefully.',
     hero: IMG.jewelGoldHeadpieceProfile,
+    heroFocus: '52% 26%',
     plate: IMG.earJhumkaLong,
   },
   {
@@ -57,6 +61,7 @@ export const CATEGORIES = [
     blurb:
       'A fine chain for the collarbone, a kundan choker for the wedding — and the baroque pearl strand that goes with both.',
     hero: IMG.neckKundanTeal,
+    heroFocus: '54% 24%',
     plate: IMG.neckPearlRedStudio,
   },
   {
@@ -67,6 +72,7 @@ export const CATEGORIES = [
     blurb:
       'Kada, kundan bangles and slim cuffs — the pieces that stack, clink, and become the sound of a room.',
     hero: IMG.accEmeraldRoseGoldBangle,
+    heroFocus: '50% 46%',
     plate: IMG.accKundanBanglePair,
   },
 ];
@@ -78,6 +84,7 @@ export const COLLECTIONS = [
     kicker: 'Just off the loom',
     blurb: 'The most recent forty days of the atelier, in the order it arrived.',
     hero: IMG.editorialMist,
+    focus: '55% 38%',
   },
   {
     slug: 'best-sellers',
@@ -85,6 +92,7 @@ export const COLLECTIONS = [
     kicker: 'Most asked for',
     blurb: 'What our clients come back for, reordered in three sizes and four colourways.',
     hero: IMG.sareeOrangeBanarasiPortrait,
+    focus: '55% 25%',
   },
   {
     slug: 'zari-and-gold',
@@ -100,7 +108,8 @@ export const COLLECTIONS = [
     kicker: 'Worn on a Tuesday',
     blurb:
       'Mulmul, cotton-silk, and a chain you never take off. Luxury that does not announce itself.',
-    hero: IMG.craftLinenSleeve,
+    hero: IMG.sareePinkMintTissue,
+    focus: '58% 42%',
   },
   {
     slug: 'bridal',
@@ -109,6 +118,7 @@ export const COLLECTIONS = [
     blurb:
       'Kanjivaram, polki and the full jewellery set — built for eighteen hours of being looked at.',
     hero: IMG.jewelBridalMaroonGold,
+    focus: '52% 28%',
   },
   {
     slug: 'archive-sale',

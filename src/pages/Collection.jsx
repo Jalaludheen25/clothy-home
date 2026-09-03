@@ -47,6 +47,7 @@ export default function Collection() {
             srcSet={srcSet(collection.hero, 0.78, [900, 1400, 1800, 2400])}
             sizes="100vw"
             alt=""
+            style={{ objectPosition: collection.focus }}
             loading="eager"
             fetchpriority="high"
             decoding="async"

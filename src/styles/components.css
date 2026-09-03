@@ -826,3 +826,93 @@ body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .logo__im
 .logo-link {
   display: inline-block;
 }
+
+/* ==========================================================================
+   Touch targets
+   --------------------------------------------------------------------------
+   Icon-only controls were drawing at their glyph size (18px, and the menu
+   button at 22x7). Everything interactive now clears 24px, and the
+   icon-only controls clear 44px, without moving anything visually — the box
+   grows around the glyph rather than the glyph growing.
+   ========================================================================== */
+
+.stepper button {
+  min-width: 32px;
+  min-height: 32px;
+}
+
+/* Standalone text controls — links in a sentence are exempt, these are not. */
+.link-line,
+.crumbs a,
+.footer__col a,
+.footer__legal a,
+.cline__acts button,
+.pdp__sizes-guide,
+.account__signout,
+.summary__back,
+.drawer__link,
+.auth__switch button,
+.frail__clear,
+.search__all,
+.tcard__link,
+.checkout__back {
+  display: inline-block;
+  min-height: 24px;
+  padding-block: 0.2rem;
+}
+
+.subscribe button,
+.summary__promo button,
+.track__form button,
+.frail__apply {
+  min-height: 44px;
+}
+
+.steps__item button {
+  min-height: 32px;
+  padding-block: 0.25rem;
+}
+
+.sortbar__filters,
+.sortbar__sort select {
+  min-height: 40px;
+}
+
+/* Close buttons sit alone in a corner, so they can afford a full 44px box. */
+.sheet__close,
+.drawer__close,
+.frail__close,
+.lightbox__close,
+.line__remove {
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin: -0.5rem; /* keep the glyph optically where it was */
+}
+
+/* The jewel-stage dots are 6px marks; give them an invisible 32px hit area. */
+.stage__dot {
+  position: relative;
+}
+.stage__dot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  transform: translate(-50%, -50%);
+}
+
+.hero__tick {
+  padding-block: 9px;
+}
+
+/* The card title is a second route to a product the image already links, but
+   17px is a fiddly thing to hit. Padding grows the box, not the type; the
+   flex row aligns on the text baseline so nothing shifts. */
+.card__name a {
+  display: inline-block;
+  padding-block: 0.25rem;
+}
