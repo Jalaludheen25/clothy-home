@@ -13,7 +13,7 @@ import { useLenisPaused } from '../../hooks/useLenis.jsx';
    highlighted one, so the whole thing works without touching the mouse.
    ========================================================================== */
 
-const SUGGESTIONS = ['Kanjivaram', 'Chikankari', 'Jhumka', 'Pearl', 'Bridal', 'Under ₹10,000'];
+const SUGGESTIONS = ['Kanjivaram', 'Chikankari', 'Banarasi', 'Organza', 'Bridal', 'Under ₹10,000'];
 
 export default function SearchOverlay() {
   const { searchOpen, setSearchOpen } = useStore();
@@ -86,7 +86,7 @@ export default function SearchOverlay() {
             ref={inputRef}
             type="search"
             value={query}
-            placeholder="Search sarees, jhumkas, chikankari…"
+            placeholder="Search sarees, chikankari, Kanjivaram…"
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={onKeyDown}
             aria-label="Search products"
@@ -162,7 +162,7 @@ export default function SearchOverlay() {
             <div className="search__none">
               <p className="display d3">Nothing matched “{query.trim()}”.</p>
               <p className="lead">
-                Try a weave — Kanjivaram, Chanderi, Tussar — or a piece, like jhumka or kada.
+                Try a weave — Kanjivaram, Chanderi, Tussar — or an occasion, like bridal or everyday.
               </p>
             </div>
           )}

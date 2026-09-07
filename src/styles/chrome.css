@@ -435,17 +435,17 @@ body.has-cursor button {
 }
 .mega__link em {
   font-size: 0.82rem;
-  color: var(--ink-38);
+  color: var(--ink-60);
   transition: color 0.3s var(--ease);
 }
 .mega__link:hover {
   transform: translateX(7px);
 }
 .mega__link:hover span {
-  color: var(--brass);
+  color: var(--brass-ink);
 }
 .mega__link:hover em {
-  color: var(--ink-55);
+  color: var(--ink-60);
 }
 
 .mega__card {
@@ -520,7 +520,7 @@ body.has-cursor button {
   font-size: clamp(1.05rem, 1.5vw, 1.28rem);
 }
 .mega__tile:hover .mega__tile-meta strong {
-  color: var(--brass);
+  color: var(--brass-ink);
 }
 
 @media (max-width: 1100px) {
@@ -588,7 +588,7 @@ body.has-cursor button {
   width: 100%;
   padding: 0.9rem 1.1rem;
   border: 1px solid var(--line);
-  color: var(--ink-55);
+  color: var(--ink-60);
   font-size: var(--fs-sm);
 }
 .sheet__group .eyebrow {
@@ -607,19 +607,19 @@ body.has-cursor button {
   transition: color 0.3s var(--ease), transform 0.4s var(--ease);
 }
 .sheet__link:hover {
-  color: var(--brass);
+  color: var(--brass-ink);
   transform: translateX(6px);
 }
 .sheet__group--minor ul {
   display: grid;
   gap: 0.55rem;
   font-size: var(--fs-sm);
-  color: var(--ink-55);
+  color: var(--ink-60);
   padding-top: 1.4rem;
   border-top: 1px solid var(--line-soft);
 }
 .sheet__close {
-  color: var(--ink-55);
+  color: var(--ink-60);
 }
 .sheet__scrim {
   position: fixed;
@@ -679,7 +679,7 @@ body.has-cursor button {
   margin-bottom: 0.45rem;
 }
 .drawer__close {
-  color: var(--ink-55);
+  color: var(--ink-60);
   padding: 0.3rem;
   transition: transform 0.4s var(--ease), color 0.3s;
 }
@@ -756,7 +756,7 @@ body.has-cursor button {
   letter-spacing: -0.012em;
 }
 .line__remove {
-  color: var(--ink-38);
+  color: var(--ink-60);
   padding: 0.2rem;
   transition: color 0.3s;
 }
@@ -794,7 +794,7 @@ body.has-cursor button {
   font-size: var(--fs-sm);
 }
 .drawer__sums dt {
-  color: var(--ink-55);
+  color: var(--ink-60);
 }
 .drawer__sums dd {
   margin: 0;
@@ -818,7 +818,7 @@ body.has-cursor button {
   width: 100%;
   margin-top: 0.85rem;
   font-size: var(--fs-sm);
-  color: var(--ink-55);
+  color: var(--ink-60);
   text-align: center;
   text-decoration: underline;
   text-underline-offset: 4px;
@@ -874,7 +874,7 @@ body.has-cursor button {
   gap: 1rem;
   padding-block: clamp(1.3rem, 3vw, 2rem);
   border-bottom: 1px solid var(--line-soft);
-  color: var(--ink-38);
+  color: var(--ink-60);
 }
 .search__bar input {
   flex: 1;
@@ -889,14 +889,14 @@ body.has-cursor button {
   letter-spacing: -0.03em;
 }
 .search__bar input::placeholder {
-  color: var(--ink-38);
+  color: var(--ink-60);
 }
 .search__close {
   display: flex;
   align-items: center;
   gap: 0.6rem;
   font-size: var(--fs-sm);
-  color: var(--ink-55);
+  color: var(--ink-60);
   white-space: nowrap;
 }
 .search__close kbd {
@@ -905,7 +905,7 @@ body.has-cursor button {
   letter-spacing: 0.1em;
   padding: 0.2rem 0.42rem;
   border: 1px solid var(--line);
-  color: var(--ink-38);
+  color: var(--ink-60);
 }
 
 .search__body {
@@ -1004,7 +1004,7 @@ body.has-cursor button {
   display: inline-block;
   margin-top: 1.4rem;
   font-size: var(--fs-sm);
-  color: var(--brass);
+  color: var(--brass-ink);
   text-decoration: underline;
   text-underline-offset: 4px;
 }

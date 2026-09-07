@@ -11,6 +11,7 @@ import {
 } from '../components/ui/Primitives.jsx';
 import { src, srcSet } from '../data/images.js';
 import { useDarkHeader } from '../hooks/useHeaderTone.js';
+import { EMAIL, EMAIL_HREF } from '../data/contact.js';
 
 /* ==========================================================================
    Atelier — the about / help page
@@ -43,7 +44,7 @@ const WEAVERS = [
     place: 'Kota, Rajasthan',
     since: '1979',
     note: 'Kota doria on throw-shuttle looms — a square check so fine the finished cloth is almost weightless.',
-    image: IMG.fabricChikankari,
+    image: IMG.fabricWovenGold,
   },
 ];
 
@@ -310,7 +311,7 @@ export default function Atelier() {
             </Reveal>
           </div>
           <Reveal delay={230}>
-            <MagneticButton href="mailto:studio@clothyhome.in" variant="line" size="lg">
+            <MagneticButton href={EMAIL_HREF} variant="line" size="lg">
               Ask for a time
             </MagneticButton>
           </Reveal>

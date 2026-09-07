@@ -433,7 +433,7 @@
   margin-top: 0.9rem;
   font-style: normal;
   font-size: var(--fs-sm);
-  color: var(--ink-38);
+  color: var(--ink-60);
 }
 @media (max-width: 900px) {
   .editorial__grid {
@@ -489,7 +489,7 @@
   transition: color 0.3s var(--ease);
 }
 .tileS:hover .tileS__meta strong {
-  color: var(--brass);
+  color: var(--brass-ink);
 }
 .tileS__blurb {
   font-size: 0.84rem;
@@ -557,7 +557,7 @@
 .listing__count,
 .listing__end {
   font-size: var(--fs-sm);
-  color: var(--ink-38);
+  color: var(--ink-60);
   text-align: center;
 }
 .listing__end {
@@ -607,7 +607,7 @@
   position: relative;
   width: 9px;
   height: 9px;
-  color: var(--ink-38);
+  color: var(--ink-60);
 }
 .fgroup__sign i {
   position: absolute;
@@ -670,7 +670,7 @@
 }
 .check__count {
   font-size: 0.74rem;
-  color: var(--ink-38);
+  color: var(--ink-60);
 }
 .check input:focus-visible + .check__box {
   outline: 2px solid var(--brass);
@@ -754,7 +754,7 @@
 }
 .chip--clear {
   border-color: transparent;
-  color: var(--brass);
+  color: var(--brass-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -810,7 +810,7 @@
   }
   .frail__clear {
     font-size: var(--fs-sm);
-    color: var(--ink-55);
+    color: var(--ink-60);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
@@ -948,7 +948,7 @@
   transition: color 0.35s var(--ease);
 }
 .catnext__link:hover .catnext__name {
-  color: var(--brass);
+  color: var(--brass-ink);
 }
 .catnext__thumb {
   width: 0;
@@ -964,12 +964,12 @@
   object-fit: cover;
 }
 .catnext__arrow {
-  color: var(--ink-38);
+  color: var(--ink-60);
   transition: transform 0.5s var(--ease), color 0.35s;
 }
 .catnext__link:hover .catnext__arrow {
   transform: translateX(8px);
-  color: var(--brass);
+  color: var(--brass-ink);
 }
 
 .colnext {
@@ -989,366 +989,6 @@
   }
 }
 
-/* --- product detail ------------------------------------------------------- */
-
-.pdp__crumbs {
-  padding-top: calc(var(--header-h) + clamp(1.4rem, 3vw, 2.4rem));
-  padding-bottom: clamp(1rem, 2vw, 1.6rem);
-}
-
-.pdp__main {
-  display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-  gap: clamp(1.5rem, 4vw, 4.5rem);
-  padding-inline: var(--gut);
-  max-width: 1680px;
-  margin-inline: auto;
-  align-items: start;
-}
-
-.gallery {
-  display: grid;
-  gap: clamp(0.7rem, 1.4vw, 1.2rem);
-}
-.reel {
-  display: none;
-}
-
-.pdp__panel {
-  position: relative;
-}
-.pdp__sticky {
-  position: sticky;
-  top: calc(var(--header-h) + clamp(1.2rem, 3vw, 2.4rem));
-  padding-bottom: clamp(2rem, 4vw, 3rem);
-}
-.pdp__badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-bottom: 1.1rem;
-}
-/* Only the plain badge takes the panel's tint — scoping this loosely used to
-   out-rank .tag--offer and paint bone text on a bone ground, which made the
-   discount badge invisible on every product page that had one. */
-.pdp__badges .tag:not(.tag--offer):not(.tag--rare) {
-  background: var(--bone-dim);
-}
-.pdp__cat {
-  margin-bottom: 0.85rem;
-}
-.pdp__title {
-  margin-bottom: 1rem;
-}
-.pdp__rating {
-  margin-bottom: 1.4rem;
-}
-.pdp__price {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-.pdp__price-now {
-  font-size: clamp(1.35rem, 2.2vw, 1.72rem);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-}
-.pdp__price-was {
-  color: var(--ink-38);
-  text-decoration: line-through;
-}
-.pdp__price-save {
-  padding: 0.24rem 0.55rem;
-  background: var(--rouge);
-  color: var(--bone);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.pdp__tax {
-  margin-top: 0.4rem;
-  font-size: 0.78rem;
-}
-.pdp__story {
-  margin-block: clamp(1.4rem, 3vw, 2.1rem);
-  padding-top: clamp(1.4rem, 3vw, 2.1rem);
-  border-top: 1px solid var(--line-soft);
-  font-size: var(--fs-lead);
-  line-height: 1.62;
-  color: var(--ink-70);
-  max-width: 48ch;
-}
-.pdp__swatch {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: var(--fs-sm);
-  color: var(--ink-70);
-  margin-bottom: 1.5rem;
-}
-.pdp__swatch-dot {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 1px rgba(20, 17, 13, 0.16);
-}
-
-.pdp__sizes {
-  margin-bottom: 1.5rem;
-}
-.pdp__sizes-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.75rem;
-}
-.pdp__sizes-guide {
-  font-size: 0.76rem;
-  color: var(--ink-55);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.pdp__size-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-.sizebtn {
-  min-width: 52px;
-  padding: 0.62rem 0.95rem;
-  border: 1px solid var(--line);
-  font-size: 0.83rem;
-  letter-spacing: 0.02em;
-  transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease),
-    color 0.3s var(--ease);
-}
-.sizebtn:hover {
-  border-color: var(--ink-38);
-}
-.sizebtn.is-on {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--bone);
-}
-.pdp__sizes.has-error .pdp__size-row .sizebtn {
-  border-color: #c0655c;
-}
-.pdp__size-error {
-  margin-top: 0.55rem;
-  font-size: 0.78rem;
-  color: #b0554c;
-}
-
-.pdp__stock {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-size: var(--fs-sm);
-  color: var(--ink-70);
-  margin-bottom: 1.3rem;
-}
-.pdp__dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--jade);
-}
-.pdp__dot.is-low {
-  background: var(--rouge);
-  box-shadow: 0 0 0 0 rgba(124, 47, 47, 0.5);
-  animation: pulse 2.2s var(--ease) infinite;
-}
-@keyframes pulse {
-  70% {
-    box-shadow: 0 0 0 8px rgba(124, 47, 47, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(124, 47, 47, 0);
-  }
-}
-
-.pdp__buy {
-  display: flex;
-  align-items: stretch;
-  gap: 0.7rem;
-  margin-bottom: 0.7rem;
-}
-.pdp__buy .stepper {
-  flex: none;
-}
-.pdp__add {
-  flex: 1;
-}
-.pdp__add .btn {
-  width: 100%;
-}
-.pdp__buy-secondary {
-  display: flex;
-  gap: 0.7rem;
-  margin-bottom: 1.8rem;
-}
-.pdp__now {
-  flex: 1;
-}
-.pdp__now .btn {
-  width: 100%;
-}
-.pdp__save {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding-inline: 1.1rem;
-  border: 1px solid var(--line);
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-70);
-  transition: border-color 0.3s, color 0.3s;
-}
-.pdp__save:hover,
-.pdp__save.is-saved {
-  color: var(--rouge);
-  border-color: rgba(124, 47, 47, 0.4);
-}
-
-.pdp__assure {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.8rem;
-  padding-block: 1.3rem;
-  border-block: 1px solid var(--line-soft);
-  margin-bottom: 0.6rem;
-}
-.pdp__assure li {
-  display: flex;
-  flex-direction: column;
-  gap: 0.24rem;
-}
-.pdp__assure strong {
-  font-size: var(--fs-micro);
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-38);
-}
-.pdp__assure span {
-  font-size: 0.83rem;
-  color: var(--ink-70);
-}
-
-.pdp__contact {
-  color: var(--brass);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.marks {
-  display: grid;
-  gap: 0.55rem;
-}
-.marks > div {
-  display: grid;
-  grid-template-columns: 108px minmax(0, 1fr);
-  gap: 1rem;
-  font-size: 0.86rem;
-}
-.marks dt {
-  color: var(--ink-38);
-  font-size: var(--fs-micro);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding-top: 0.16rem;
-}
-.marks dd {
-  margin: 0;
-  color: var(--ink-70);
-}
-
-.prov {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
-  margin-top: clamp(3rem, 7vw, 6rem);
-  overflow: hidden;
-}
-.prov__plate {
-  height: 100%;
-}
-.prov__body {
-  padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1.5rem, 5vw, 5rem);
-}
-.prov__title {
-  margin-block: 1rem 1.3rem;
-}
-.prov__blurb {
-  max-width: 44ch;
-  margin-bottom: 2rem;
-}
-
-@media (max-width: 999px) {
-  .pdp__main {
-    grid-template-columns: 1fr;
-    padding-inline: 0;
-  }
-  .pdp__crumbs {
-    padding-bottom: 1rem;
-  }
-  .reel {
-    display: block;
-    position: relative;
-  }
-  .reel__track {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-  }
-  .reel__track::-webkit-scrollbar {
-    display: none;
-  }
-  .reel__cell {
-    flex: 0 0 100%;
-    scroll-snap-align: start;
-    background: var(--tone, var(--sand));
-  }
-  .reel__cell img {
-    width: 100%;
-    aspect-ratio: 1 / 1.25;
-    object-fit: cover;
-  }
-  .reel__dots {
-    position: absolute;
-    left: 50%;
-    bottom: 0.9rem;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 0.4rem;
-  }
-  .reel__dots span {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: rgba(247, 243, 236, 0.5);
-    transition: background-color 0.3s, transform 0.3s;
-  }
-  .reel__dots span.is-on {
-    background: var(--bone);
-    transform: scale(1.4);
-  }
-  .pdp__panel {
-    padding-inline: var(--gut);
-    margin-top: clamp(1.6rem, 4vw, 2.4rem);
-  }
-  .pdp__sticky {
-    position: static;
-  }
-  .prov {
-    grid-template-columns: 1fr;
-  }
-}
 
 /* --- lightbox ------------------------------------------------------------- */
 
@@ -1489,7 +1129,7 @@
   line-height: 1.2;
 }
 .cline__name a:hover {
-  color: var(--brass);
+  color: var(--brass-ink);
 }
 .cline__attrs {
   margin-top: 0.3rem;
@@ -1515,7 +1155,7 @@
   display: flex;
   gap: 1.1rem;
   font-size: 0.79rem;
-  color: var(--ink-55);
+  color: var(--ink-60);
 }
 .cline__acts button {
   text-decoration: underline;
@@ -1580,7 +1220,7 @@
   margin-bottom: 1.2rem;
 }
 .summary__promo-on button {
-  color: var(--ink-38);
+  color: var(--ink-60);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -1602,7 +1242,7 @@
   font-size: var(--fs-sm);
 }
 .summary__sums dt {
-  color: var(--ink-55);
+  color: var(--ink-60);
 }
 .summary__sums dd {
   margin: 0;
@@ -1640,7 +1280,7 @@
   display: block;
   margin-top: 0.85rem;
   font-size: var(--fs-sm);
-  color: var(--ink-55);
+  color: var(--ink-60);
   text-align: center;
   text-decoration: underline;
   text-underline-offset: 4px;
@@ -1652,7 +1292,7 @@
   padding-top: 1.2rem;
   border-top: 1px solid var(--line-soft);
   font-size: 0.78rem;
-  color: var(--ink-55);
+  color: var(--ink-60);
 }
 .summary__trust li {
   position: relative;
@@ -1709,7 +1349,7 @@
 }
 .checkout__back {
   font-size: var(--fs-sm);
-  color: var(--ink-55);
+  color: var(--ink-60);
   transition: color 0.3s;
 }
 .checkout__back:hover {
@@ -1727,7 +1367,7 @@
   display: flex;
   align-items: baseline;
   gap: 0.55rem;
-  color: var(--ink-38);
+  color: var(--ink-60);
   transition: color 0.35s var(--ease);
 }
 .steps__item.is-on button,
@@ -1735,7 +1375,7 @@
   color: var(--ink);
 }
 .steps__item.is-done button {
-  color: var(--brass);
+  color: var(--brass-ink);
 }
 .steps__num {
   font-size: 0.68rem;
@@ -1854,7 +1494,7 @@
 .option__body em {
   font-style: normal;
   font-size: 0.79rem;
-  color: var(--ink-55);
+  color: var(--ink-60);
 }
 .option__cost {
   font-size: 0.85rem;
@@ -1960,7 +1600,7 @@
 .orail__body em {
   font-style: normal;
   font-size: 0.76rem;
-  color: var(--ink-55);
+  color: var(--ink-60);
 }
 .orail__price {
   font-size: 0.87rem;
@@ -2037,7 +1677,7 @@
 }
 .track__head .eyebrow {
   margin-block: 1.2rem 0.9rem;
-  color: var(--brass);
+  color: var(--brass-ink);
 }
 .track__blurb {
   margin-top: 1.1rem;
@@ -2098,7 +1738,7 @@
   font-weight: 300;
   font-size: clamp(1.15rem, 1.9vw, 1.5rem);
   letter-spacing: -0.022em;
-  color: var(--ink-38);
+  color: var(--ink-60);
   transition: color 0.5s var(--ease);
 }
 .ladder__step.is-done .ladder__label {
@@ -2142,7 +1782,7 @@
 .track__item-body em {
   font-style: normal;
   font-size: 0.79rem;
-  color: var(--ink-55);
+  color: var(--ink-60);
 }
 
 .track__side {
@@ -2170,7 +1810,7 @@
   display: block;
   margin-top: 0.6rem;
   font-size: 0.86rem;
-  color: var(--brass);
+  color: var(--brass-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -2237,7 +1877,7 @@
   padding-left: 0.5rem;
 }
 .track__row-status {
-  color: var(--brass);
+  color: var(--brass-ink);
 }
 
 @media (max-width: 900px) {
@@ -2289,7 +1929,7 @@
 }
 .auth__switch {
   font-size: var(--fs-sm);
-  color: var(--ink-55);
+  color: var(--ink-60);
 }
 .auth__switch button {
   color: var(--ink);
@@ -2331,7 +1971,7 @@
 }
 .account__signout {
   font-size: var(--fs-sm);
-  color: var(--ink-55);
+  color: var(--ink-60);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -2349,12 +1989,12 @@
   font-size: clamp(1.6rem, 3vw, 2.5rem);
   font-weight: 300;
   letter-spacing: -0.035em;
-  color: var(--brass);
+  color: var(--brass-ink);
 }
 .afig__label {
   margin-top: 0.4rem;
   font-size: var(--fs-sm);
-  color: var(--ink-55);
+  color: var(--ink-60);
 }
 
 .tabs {
@@ -2376,7 +2016,7 @@
   padding-bottom: 0.9rem;
   white-space: nowrap;
   font-size: var(--fs-sm);
-  color: var(--ink-38);
+  color: var(--ink-60);
   transition: color 0.3s var(--ease);
 }
 .tabs__btn::after {
@@ -2399,7 +2039,7 @@
 }
 .tabs__count {
   font-size: 0.68rem;
-  color: var(--ink-38);
+  color: var(--ink-60);
 }
 .account__panel {
   padding-bottom: clamp(3rem, 7vw, 6rem);
@@ -2452,18 +2092,18 @@
 .aorder__body em {
   font-style: normal;
   font-size: 0.79rem;
-  color: var(--ink-55);
+  color: var(--ink-60);
 }
 .aorder__total {
   font-weight: 500;
 }
 .aorder__go {
-  color: var(--ink-38);
+  color: var(--ink-60);
   transition: transform 0.45s var(--ease), color 0.3s;
 }
 .aorder:hover .aorder__go {
   transform: translateX(6px);
-  color: var(--brass);
+  color: var(--brass-ink);
 }
 
 .adetails {
@@ -2630,7 +2270,7 @@
 .weaver__place {
   margin-top: 0.35rem;
   font-size: 0.95rem;
-  color: var(--brass);
+  color: var(--brass-ink);
 }
 .weaver__note {
   margin-top: 0.8rem;
@@ -2734,7 +2374,7 @@
   outline: none;
 }
 .subscribe input::placeholder {
-  color: var(--ink-38);
+  color: var(--ink-60);
 }
 .subscribe button {
   display: flex;
@@ -2775,6 +2415,33 @@
   transform: translateX(4px);
 }
 
+/* The social row sits under the phone and email in the same column, marked
+   with line icons so it reads as one list rather than a badge strip. */
+.footer__social {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1.15rem;
+  padding-top: 1.05rem;
+  border-top: 1px solid rgba(247, 243, 236, 0.12);
+}
+.footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 28px;
+  font-size: 0.87rem;
+  color: var(--ink-70);
+  transition: color 0.3s var(--ease), transform 0.35s var(--ease);
+}
+.footer__social-link:hover {
+  color: var(--brass-lit);
+  transform: translateX(4px);
+}
+.footer__social-link svg {
+  flex: none;
+  opacity: 0.85;
+}
+
 .footer__mark {
   padding-inline: var(--gut);
   overflow: hidden;
@@ -2804,7 +2471,7 @@
 .footer__legal {
   display: flex;
   gap: 1.4rem;
-  color: var(--ink-55);
+  color: var(--ink-60);
 }
 .footer__legal a:hover {
   color: var(--brass-lit);
@@ -2824,51 +2491,9 @@
    Narrow-viewport corrections
    ========================================================================== */
 
-/* The product grid's `1fr` track cannot shrink below its content's min-content
-   width, and the bag button is `nowrap` — so a long price ("Add to bag —
-   ₹38,900") pushed the whole page ~10px wider than a 360px screen. Let the
-   track shrink, and let the button take its own row when space runs out. */
-@media (max-width: 999px) {
-  .pdp__main {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-.pdp__gallery,
-.pdp__panel {
-  min-width: 0;
-}
-
-/* One frame is much shorter than the buy panel beside it, so the gallery
-   column sticks — otherwise the left side empties into a long void as the
-   panel scrolls, which the old stacked gallery happened to hide. The sticky
-   sits on the grid item: its grid area spans the full row, whereas the inner
-   element is only as tall as itself and has nothing to stick against. */
-@media (min-width: 1000px) {
-  .pdp__gallery {
-    position: sticky;
-    top: calc(var(--header-h) + 1.5rem);
-    align-self: start;
-  }
-}
-
 @media (max-width: 460px) {
-  .pdp__buy {
-    flex-wrap: wrap;
-  }
-  .pdp__add {
-    flex: 1 1 100%;
-  }
   .btn--lg {
     padding-inline: 1.5rem;
-  }
-  /* Three columns of dispatch/delivery/returns is too many at this width. */
-  .pdp__assure {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem 0.8rem;
-  }
-  .marks > div {
-    grid-template-columns: 92px minmax(0, 1fr);
-    gap: 0.75rem;
   }
 }
 
@@ -2883,244 +2508,15 @@
   padding-block: 0.15rem;
 }
 
-/* ==========================================================================
-   Product gallery — main frame + thumbnail rail
-   ========================================================================== */
-
-.gal {
-  display: grid;
-  grid-template-columns: 84px minmax(0, 1fr);
-  gap: clamp(0.6rem, 1.2vw, 1rem);
-  align-items: start;
-}
-.gal__thumbs {
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-}
-.gal__thumb {
-  display: block;
-  overflow: hidden;
-  background: var(--tone, var(--sand));
-  border: 1px solid transparent;
-  outline-offset: 2px;
-  transition: border-color 0.32s var(--ease), opacity 0.32s var(--ease);
-  opacity: 0.62;
-}
-.gal__thumb img {
-  width: 100%;
-  aspect-ratio: 1 / 1.25;
-  object-fit: cover;
-}
-.gal__thumb:hover,
-.gal__thumb.is-on {
-  opacity: 1;
-}
-.gal__thumb.is-on {
-  border-color: var(--ink);
-}
-
-.gal__main {
-  position: relative;
-  min-width: 0;
-}
-.gal__frame {
-  position: relative;
-  display: block;
-  width: 100%;
-  overflow: hidden;
-  background: var(--tone, var(--sand));
-  aspect-ratio: 1 / 1.25;
-  cursor: zoom-in;
-}
-.gal__frame img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transform: scale(1.03);
-  transform-origin: var(--origin, 50% 50%);
-  transition: opacity 0.6s var(--ease), transform 0.85s var(--ease);
-}
-.gal__frame img.is-on {
-  opacity: 1;
-  transform: scale(1);
-}
-.gal__frame.is-zoomed img.is-on {
-  transform: scale(var(--zoom, 2.3));
-  transition: transform 0.3s var(--ease), opacity 0.6s var(--ease);
-}
-.gal__cue {
-  position: absolute;
-  left: 0.85rem;
-  bottom: 0.85rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.4rem 0.7rem;
-  background: rgba(247, 243, 236, 0.9);
-  backdrop-filter: blur(4px);
-  font-size: 0.66rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-70);
-  opacity: 0;
-  transition: opacity 0.4s var(--ease);
-  pointer-events: none;
-}
-.gal__frame:hover .gal__cue {
-  opacity: 1;
-}
-.gal__frame.is-zoomed .gal__cue {
-  opacity: 0;
-}
-.gal__count {
-  margin-top: 0.75rem;
-  font-size: var(--fs-micro);
-  letter-spacing: 0.2em;
-  color: var(--ink-38);
-}
-
-/* ==========================================================================
-   Product panel additions
-   ========================================================================== */
-
-.pdp__cat {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-}
-.pdp__sku {
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
-  color: var(--ink-38);
-}
-
-.pdp__trust {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 1.2rem;
-  margin-top: 1.1rem;
-  padding-top: 1.1rem;
-  border-top: 1px solid var(--line-soft);
-}
-.pdp__trust li {
-  position: relative;
-  padding-left: 1.05rem;
-  font-size: 0.78rem;
-  color: var(--ink-70);
-}
-.pdp__trust li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.42em;
-  width: 9px;
-  height: 5px;
-  border-left: 1.5px solid var(--brass);
-  border-bottom: 1.5px solid var(--brass);
-  transform: rotate(-45deg);
-}
-
-.pdp__pin {
-  margin-bottom: 1.1rem;
-  padding: 0.95rem 1.05rem;
-  background: var(--bone-dim);
-  border: 1px solid var(--line-soft);
-}
-.pdp__pin label {
-  display: block;
-  font-size: var(--fs-micro);
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ink-55);
-  margin-bottom: 0.6rem;
-}
-.pdp__pin-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.5rem;
-}
-.pdp__pin-row input {
-  padding: 0.72rem 0.85rem;
-  background: var(--bone);
-  border: 1px solid var(--line);
-  font-size: 0.88rem;
-  outline: none;
-  transition: border-color 0.3s var(--ease);
-}
-.pdp__pin-row input:focus {
-  border-color: var(--brass);
-}
-.pdp__pin-row button {
-  min-height: 44px;
-  padding-inline: 1.15rem;
-  border: 1px solid var(--ink);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
-}
-.pdp__pin-row button:hover {
-  background: var(--ink);
-  color: var(--bone-base);
-}
-.pdp__pin-out {
-  margin-top: 0.65rem;
-  font-size: 0.82rem;
-}
-.pdp__pin-out.is-ok {
-  color: var(--jade);
-}
-.pdp__pin-out.is-bad {
-  color: var(--maroon);
-}
-
-.pdp__share {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-height: 24px;
-  padding-block: 0.2rem;
-  margin-bottom: 1.2rem;
-  font-size: var(--fs-sm);
-  color: var(--ink-55);
-  transition: color 0.3s var(--ease);
-}
-.pdp__share:hover {
-  color: var(--ink);
-}
-
-.pdp__spec {
-  padding-block: clamp(1.2rem, 2.4vw, 1.8rem);
-  border-top: 1px solid var(--line-soft);
-}
-.pdp__spec h2 {
-  margin-bottom: 1.1rem;
-}
-
-@media (max-width: 999px) {
-  .gal {
-    display: none;
-  }
-}
-@media (min-width: 1000px) and (max-width: 1180px) {
-  .gal {
-    grid-template-columns: 68px minmax(0, 1fr);
-  }
-}
 
 /* ==========================================================================
    Shop the Look
    --------------------------------------------------------------------------
-   Measurements taken off the reference section as rendered: 3 columns at
-   300px rows on desktop, 2 columns at 200px on mobile, 10px gap and 10px
-   radius throughout, overlay label with an underlined "Explore" beneath it.
+   The reference's tabbed style carousel — centred title over a rule, three
+   pills with the active one filled, cards in a row beneath. Its cards are
+   image-only and link to a collection; ours carry the pieces, their prices
+   and a button that bags the pair, so the card is taller and the type inside
+   it has to hold at 320px as well as 1600.
    ========================================================================== */
 
 .stl {
@@ -3145,6 +2541,11 @@
   height: 1px;
   margin: 0.85rem auto 0;
   background: var(--line);
+}
+.stl__sub {
+  margin-top: 0.8rem;
+  font-size: var(--fs-sm);
+  color: var(--ink-60);
 }
 
 .stl__tabs {
@@ -3185,74 +2586,218 @@
 .stl__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-auto-rows: 300px;
-  gap: 10px;
+  gap: clamp(10px, 1.4vw, 18px);
+  align-items: start;
   max-width: 1680px;
   margin-inline: auto;
 }
 
-.stl__card {
-  position: relative;
-  display: block;
+/* --- one look ----------------------------------------------------------- */
+
+.look {
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
+  border: 1px solid var(--line-soft);
   border-radius: 10px;
-  background: var(--tone, var(--sand));
+  background: var(--surface);
   opacity: 0;
   transform: translateY(22px);
-  transition: opacity 0.75s var(--ease), transform 0.85s var(--ease);
+  transition: opacity 0.75s var(--ease), transform 0.85s var(--ease),
+    border-color 0.4s var(--ease);
   transition-delay: var(--stl-delay, 0ms);
 }
-.stl__card.is-in {
+.look.is-in {
   opacity: 1;
   transform: none;
 }
-.stl__img {
+.look:hover {
+  border-color: var(--ink-14);
+}
+
+.look__shot {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 1 / 1.04;
+  background: var(--tone, var(--sand));
+}
+.look__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 1.15s var(--ease);
 }
-.stl__card:hover .stl__img {
+.look:hover .look__img {
   transform: scale(1.045);
 }
-
-.stl__overlay {
+.look__chip {
   position: absolute;
-  inset: 0;
+  left: 12px;
+  bottom: 12px;
+  padding: 0.34rem 0.66rem;
+  border-radius: 999px;
+  background: rgba(20, 17, 13, 0.66);
+  color: var(--bone-base);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  backdrop-filter: blur(6px);
+}
+
+.look__body {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 0.4rem;
-  padding: 1.15rem;
-  color: var(--bone-base);
-  /* A soft wash from the left so the label holds against any photograph,
-     matching the reference's legibility without a visible plate. */
-  background: linear-gradient(96deg, rgba(20, 17, 13, 0.82) 0%, rgba(20, 17, 13, 0.58) 42%, rgba(20, 17, 13, 0.16) 74%, transparent 94%);
+  flex: 1;
+  gap: 0.5rem;
+  padding: clamp(0.95rem, 1.5vw, 1.35rem);
 }
-.stl__label {
+.look__name {
   font-family: var(--serif);
   font-weight: 500;
-  font-size: clamp(1rem, 1.35vw, 1.16rem);
-  line-height: 1.25;
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  line-height: 1.2;
   letter-spacing: -0.01em;
-  text-shadow: 0 1px 16px rgba(20, 17, 13, 0.5);
 }
-.stl__explore {
-  font-size: 0.84rem;
-  font-weight: 500;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-shadow: 0 1px 14px rgba(20, 17, 13, 0.5);
+.look__note {
+  font-size: var(--fs-sm);
+  color: var(--ink-60);
+  line-height: 1.45;
 }
 
-@media (max-width: 900px) {
+.look__list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.35rem;
+  border-top: 1px solid var(--line-soft);
+}
+
+/* Name and price on one line, the role above it, the size picker beside the
+   price. `minmax(0, 1fr)` so a long product name wraps instead of setting a
+   min-content width the card cannot shrink below. */
+.look__piece {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.15rem 0.7rem;
+  padding-block: 0.7rem;
+  border-bottom: 1px solid var(--line-soft);
+}
+.look__role {
+  grid-column: 1 / -1;
+  font-size: var(--fs-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  /* --ink-38 measures 2.44:1 on bone, which 11px caps cannot carry. */
+  color: var(--ink-60);
+}
+.look__piece-name {
+  /* Padded out to a comfortable target — the bare text box came to 18px, and
+     these links are the only way into those products from the card. */
+  display: inline-block;
+  padding-block: 5px;
+  font-size: var(--fs-sm);
+  line-height: 1.35;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.3s var(--ease);
+}
+.look__piece-name:hover {
+  text-decoration-color: var(--ink-38);
+}
+.look__price {
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.look__size {
+  grid-column: 1 / -1;
+  margin-top: 0.4rem;
+}
+.look__size select {
+  min-height: 34px;
+  padding: 0.3rem 1.7rem 0.3rem 0.6rem;
+  border: 1px solid var(--ink-14);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.look__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-top: auto;
+  padding-top: 0.9rem;
+}
+.look__total {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-size: var(--fs-sm);
+  color: var(--ink-60);
+}
+.look__total strong {
+  font-size: 1.02rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.look__add {
+  min-height: 44px;
+  padding: 0.6rem 1.15rem;
+  border-radius: 999px;
+  background: var(--maroon);
+  color: var(--bone-base);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: background-color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.look__add:hover {
+  background: var(--maroon-lit);
+}
+.look__add:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 1080px) {
   .stl__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: 200px;
   }
-  /* The reference keeps all three pills on one row; ours carry a longer word,
-     so the padding comes in rather than letting them wrap. */
+}
+
+/* Below two columns the cards would stack into a very tall wall, so they
+   become the carousel the reference name implies: one and a bit in view,
+   swiped through, snapping. */
+@media (max-width: 720px) {
+  .stl__panel {
+    padding-inline: 0;
+  }
+  .stl__grid {
+    display: flex;
+    gap: 12px;
+    padding-inline: var(--gut);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .stl__grid::-webkit-scrollbar {
+    display: none;
+  }
+  .look {
+    flex: 0 0 min(80vw, 330px);
+    scroll-snap-align: center;
+  }
   .stl__tabs {
     flex-wrap: nowrap;
     gap: 0.4rem;
@@ -3261,20 +2806,779 @@
     padding-inline: 0.8rem;
     font-size: 0.79rem;
   }
-  /* The reference drops the side wash for a band across the foot and centres
-     the label, which is what keeps 13px type readable at 173px wide. */
-  .stl__overlay {
-    align-items: center;
-    justify-content: flex-end;
-    gap: 0.2rem;
-    padding: 0.7rem 0.6rem;
-    background: linear-gradient(0deg, rgba(20, 17, 13, 0.62) 0%, rgba(20, 17, 13, 0.42) 22%, transparent 46%);
-    text-align: center;
+  .look__foot {
+    flex-direction: column;
+    align-items: stretch;
   }
-  .stl__label {
-    font-size: 0.83rem;
+  .look__add {
+    width: 100%;
   }
-  .stl__explore {
-    font-size: 0.76rem;
+}
+
+/* ==========================================================================
+   Touch targets
+   --------------------------------------------------------------------------
+   Controls that are the only way to perform their action, sized for a finger
+   rather than a cursor. Redundant links — a product title sitting under its
+   own large image link — are left alone, since the big target is right there.
+   ========================================================================== */
+
+@media (pointer: coarse), (max-width: 768px) {
+  .cline__acts {
+    gap: 0.9rem;
+  }
+  .cline__acts button {
+    min-height: 30px;
+    padding-block: 4px;
+  }
+  .pdp__sizes-guide {
+    min-height: 30px;
+    padding-block: 4px;
+  }
+  .hero__tick {
+    min-height: 30px;
+    min-width: 30px;
+  }
+}
+
+/* ==========================================================================
+   Product detail
+   --------------------------------------------------------------------------
+   Built to the reference product page, measured off it at 1440px rather than
+   eyeballed:
+
+     breadcrumb    pill, radius 50px, 5px/14px padding
+     columns       media 601 / info 630, media sticky, info inset from it
+     main image    20px radius, portrait
+     thumbnails    a row of four squares beneath it, 20px radius
+     title         44px serif, 1.32px tracking, 56.6px line
+     price         24px, 700
+     controls      49px tall; quantity a 30px-radius pill, buttons 45px wide
+     add to cart   pill, gold ground, 12px uppercase label
+     buy it now    full-width pill on the darkest ground
+     trust badges  four boxes, 8px radius, 1px rule, 12px gap
+     accordions    54px rows, hairline above each
+
+   The proportions and rhythm are the reference's; the palette, type and copy
+   are ours — brass stands in for its gold, ink for its black, bone for white.
+   ========================================================================== */
+
+.pdp__crumbs {
+  padding-top: calc(var(--header-h) + clamp(1rem, 2.2vw, 1.7rem));
+  padding-bottom: clamp(0.9rem, 1.8vw, 1.4rem);
+}
+.pdp__crumbpill {
+  display: inline-flex;
+  max-width: 100%;
+  padding: 5px 14px;
+  border-radius: 50px;
+  background: var(--bone-dim);
+}
+.pdp__crumbpill .crumbs {
+  margin: 0;
+  min-width: 0;
+}
+
+.pdp__main {
+  display: grid;
+  grid-template-columns: minmax(0, 601fr) minmax(0, 734fr);
+  gap: clamp(1.6rem, 3vw, 2.6rem);
+  max-width: 1335px;
+  margin-inline: auto;
+  padding-inline: var(--gut);
+  padding-bottom: clamp(2.4rem, 5vw, 4rem);
+}
+.pdp__gallery,
+.pdp__panel {
+  min-width: 0;
+}
+
+/* The gallery is much shorter than the buy column beside it, so it sticks —
+   otherwise the left side empties into a long void as the panel scrolls. The
+   sticky sits on the grid item: its area spans the full row, where the inner
+   element is only as tall as itself and has nothing to stick against. */
+@media (min-width: 1000px) {
+  .pdp__gallery {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+    align-self: start;
+  }
+  /* The reference insets its info column from the media rather than centring
+     it, which is what gives the block its off-centre balance. */
+  .pdp__info {
+    max-width: 630px;
+    padding-left: clamp(0.5rem, 4vw, 5.5rem);
+  }
+}
+
+/* --- the information column ---------------------------------------------- */
+
+.pdp__info > * + * {
+  margin-top: 10.5px;
+}
+
+.pdp__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 30px;
+}
+.pdp__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+/* The offer and last-one tags carry their own ground; everything else in this
+   row is a quiet outline so the price stays the loudest thing on the page. */
+.pdp__badges .tag:not(.tag--offer):not(.tag--rare) {
+  border: 1px solid var(--ink-14);
+}
+
+.pdp__share {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 30px;
+  font-size: 0.87rem;
+  color: var(--ink-70);
+  white-space: nowrap;
+  transition: color 0.3s var(--ease);
+}
+.pdp__share:hover {
+  color: var(--ink);
+}
+
+.pdp__title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.9rem, 3.1vw, 2.75rem);
+  line-height: 1.29;
+  letter-spacing: 0.012em;
+  color: var(--ink);
+}
+
+.pdp__price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 0.9rem;
+}
+.pdp__price-now {
+  font-size: 1.52rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+.pdp__price-was {
+  font-size: 1rem;
+  color: var(--ink-60);
+  text-decoration: line-through;
+}
+.pdp__price-save {
+  font-size: 0.79rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--rouge);
+}
+
+.pdp__tax {
+  margin-top: 0.2rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+  color: var(--ink-60);
+}
+.pdp__tax a {
+  color: var(--ink-70);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pdp__tax a:hover {
+  color: var(--ink);
+}
+
+.pdp__sku {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-size: 0.87rem;
+  color: var(--ink-70);
+}
+.pdp__sku strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.pdp__rating {
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+/* --- stock ---------------------------------------------------------------- */
+
+.pdp__stock {
+  display: grid;
+  gap: 0.5rem;
+}
+.pdp__stock-line {
+  font-size: 0.87rem;
+  color: var(--ink-70);
+}
+.pdp__stock-line.is-low {
+  color: var(--rouge);
+  font-style: italic;
+}
+.pdp__stock-bar {
+  display: block;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--ink-08);
+  overflow: hidden;
+}
+.pdp__stock-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--brass);
+}
+
+/* --- variants ------------------------------------------------------------- */
+
+.pdp__label {
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+}
+.pdp__chosen {
+  margin-left: 0.5rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--ink);
+}
+
+.pdp__sizes-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.7rem;
+}
+.pdp__sizes-guide {
+  font-size: 0.82rem;
+  color: var(--ink-70);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pdp__sizes-guide:hover {
+  color: var(--ink);
+}
+.pdp__size-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+/* Variant controls take the reference's pill, sized to the same control
+   height as the quantity stepper beside them. */
+.sizebtn {
+  min-height: 44px;
+  padding: 0.6rem 1.15rem;
+  border: 1px solid var(--ink-14);
+  border-radius: 999px;
+  background: transparent;
+  font-size: 0.87rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-70);
+  transition: border-color 0.3s var(--ease), color 0.3s var(--ease),
+    background-color 0.3s var(--ease);
+}
+.sizebtn:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.sizebtn.is-on {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--bone-base);
+}
+.pdp__sizes.has-error .sizebtn {
+  border-color: var(--rouge);
+}
+.pdp__size-error {
+  margin-top: 0.55rem;
+  font-size: 0.82rem;
+  color: var(--rouge);
+}
+
+.pdp__colour {
+  display: grid;
+  gap: 0.55rem;
+}
+.pdp__swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.92rem;
+  color: var(--ink-70);
+}
+.pdp__swatch-dot {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(20, 17, 13, 0.16);
+}
+
+/* --- buy ------------------------------------------------------------------ */
+
+.pdp__buy {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-top: 1.3rem;
+}
+.pdp__qty {
+  display: grid;
+  gap: 0.5rem;
+  flex: none;
+}
+/* The stepper is shared with the bag, so the pill shape is scoped here rather
+   than changed everywhere else it appears. */
+.pdp__qty .stepper {
+  min-height: 49px;
+  border-radius: 30px;
+  border: 1px solid var(--ink-14);
+  padding-inline: 0.3rem;
+}
+.pdp__qty .stepper button {
+  width: 40px;
+  min-height: 47px;
+}
+
+.pdp__add {
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 49px;
+  padding: 0.9rem 1.9rem;
+  border-radius: 999px;
+  /* Brass in place of the reference's gold, with ink on top: 5.39:1, and the
+     same dark-label-on-metal reading. */
+  background: var(--brass);
+  color: var(--ink-base);
+  font-size: 0.79rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.pdp__add:hover {
+  background: var(--brass-lit);
+}
+.pdp__add:active {
+  transform: translateY(1px);
+}
+
+.pdp__now {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 49px;
+  padding: 0.9rem 1.9rem;
+  border-radius: 999px;
+  background: var(--ink-base);
+  color: var(--bone-base);
+  font-size: 0.94rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background-color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.pdp__now:hover {
+  background: var(--maroon);
+}
+.pdp__now:active {
+  transform: translateY(1px);
+}
+
+.pdp__save {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 34px;
+  font-size: 0.87rem;
+  color: var(--ink-70);
+  transition: color 0.3s var(--ease);
+}
+.pdp__save:hover,
+.pdp__save.is-saved {
+  color: var(--rouge);
+}
+
+/* --- trust badges --------------------------------------------------------- */
+
+.pdp__trust {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 1.3rem;
+}
+.pdp__trust li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 72px;
+  padding: 10px;
+  border: 1px solid var(--brass);
+  border-radius: 8px;
+}
+.pdp__trust-mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--brass);
+  color: var(--brass-ink);
+}
+.pdp__trust-label {
+  display: grid;
+  font-size: 0.76rem;
+  line-height: 1.3;
+  color: var(--ink-70);
+}
+
+/* --- accordions ----------------------------------------------------------- */
+
+.pdp__panels {
+  margin-top: 1.65rem;
+}
+.pdp__panelrow {
+  border-top: 1px solid var(--ink-08);
+}
+.pdp__panelrow:last-child {
+  border-bottom: 1px solid var(--ink-08);
+}
+.pdp__panelrow h3 {
+  font: inherit;
+  margin: 0;
+}
+.pdp__panelhead {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 54px;
+  padding-block: 15.75px;
+  text-align: left;
+  font-size: 0.94rem;
+  color: var(--ink-70);
+  transition: color 0.3s var(--ease);
+}
+.pdp__panelhead:hover {
+  color: var(--ink);
+}
+.pdp__panelicon {
+  flex: none;
+  color: var(--ink-60);
+}
+.pdp__paneltitle {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.pdp__panelchev {
+  flex: none;
+  color: var(--ink-60);
+  transition: transform 0.34s var(--ease);
+}
+.pdp__panelrow.is-open .pdp__panelchev {
+  transform: rotate(180deg);
+}
+.pdp__panelrow.is-open .pdp__panelhead {
+  color: var(--ink);
+}
+.pdp__panelinner {
+  display: grid;
+  gap: 0.85rem;
+  padding-bottom: 1.4rem;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--ink-70);
+}
+.pdp__contact {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* --- delivery check ------------------------------------------------------- */
+
+.pdp__pin {
+  margin-top: 0.35rem;
+}
+.pdp__pin label {
+  display: block;
+  margin-bottom: 0.55rem;
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+}
+.pdp__pin-row {
+  display: flex;
+  gap: 0.5rem;
+}
+.pdp__pin-row input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--ink-14);
+  border-radius: 999px;
+  background: var(--surface);
+  font: inherit;
+  font-size: 0.87rem;
+  color: var(--ink);
+}
+.pdp__pin-row input:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+.pdp__pin-row button {
+  flex: none;
+  min-height: 44px;
+  padding-inline: 1.35rem;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  font-size: 0.79rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: background-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+.pdp__pin-row button:hover {
+  background: var(--ink);
+  color: var(--bone-base);
+}
+.pdp__pin-out {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+}
+.pdp__pin-out.is-ok {
+  color: var(--jade);
+}
+.pdp__pin-out.is-bad {
+  color: var(--rouge);
+}
+
+/* --- spec list ------------------------------------------------------------ */
+
+.marks {
+  display: grid;
+  gap: 0.55rem;
+}
+.marks > div {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr);
+  gap: 1rem;
+  font-size: 0.86rem;
+}
+.marks dt {
+  color: var(--ink-60);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding-top: 0.16rem;
+}
+.marks dd {
+  margin: 0;
+  color: var(--ink-70);
+}
+
+/* ==========================================================================
+   Product gallery — one frame, thumbnails beneath
+   ========================================================================== */
+
+.gal {
+  display: grid;
+  gap: 12px;
+}
+.gal__frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1.5;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--tone, var(--sand));
+  cursor: zoom-in;
+}
+.gal__frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease), transform 0.85s var(--ease);
+}
+.gal__frame img.is-on {
+  opacity: 1;
+}
+.gal__frame.is-zoomed img.is-on {
+  transform: scale(var(--zoom, 2.2));
+  transform-origin: var(--origin, 50% 50%);
+  transition: transform 0.32s var(--ease);
+}
+.gal__cue {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(20, 17, 13, 0.62);
+  color: var(--bone-base);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+  backdrop-filter: blur(6px);
+}
+.gal__frame:hover .gal__cue {
+  opacity: 1;
+}
+.gal__frame.is-zoomed .gal__cue {
+  opacity: 0;
+}
+
+.gal__thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.gal__thumb {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--tone, var(--sand));
+  /* An inset ring rather than a border, so the active state does not resize
+     the tile and shift the row beside it. */
+  box-shadow: inset 0 0 0 1px rgba(20, 17, 13, 0.1);
+  transition: box-shadow 0.3s var(--ease), opacity 0.3s var(--ease);
+  opacity: 0.72;
+}
+.gal__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gal__thumb:hover {
+  opacity: 1;
+}
+.gal__thumb.is-on {
+  opacity: 1;
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+
+/* --- phone: a snapping reel ---------------------------------------------- */
+
+.reel {
+  display: none;
+}
+@media (max-width: 999px) {
+  .gal {
+    display: none;
+  }
+  .reel {
+    display: block;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .reel__track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .reel__track::-webkit-scrollbar {
+    display: none;
+  }
+  .reel__cell {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    background: var(--tone, var(--sand));
+  }
+  .reel__cell img {
+    width: 100%;
+    aspect-ratio: 1 / 1.25;
+    object-fit: cover;
+  }
+  .reel__dots {
+    position: absolute;
+    left: 50%;
+    bottom: 0.9rem;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.4rem;
+  }
+  .reel__dots span {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(247, 243, 236, 0.5);
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  .reel__dots span.is-on {
+    background: var(--bone);
+    transform: scale(1.4);
+  }
+}
+
+/* --- narrower viewports --------------------------------------------------- */
+
+@media (max-width: 999px) {
+  .pdp__main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pdp__panel {
+    margin-top: clamp(1.4rem, 3.5vw, 2rem);
+  }
+}
+
+@media (max-width: 620px) {
+  .pdp__trust {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  /* The bag button's label is nowrap, so at this width it takes its own row
+     rather than forcing the page wider than the screen. */
+  .pdp__buy {
+    flex-wrap: wrap;
+  }
+  .pdp__add {
+    flex: 1 1 100%;
+  }
+  .marks > div {
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 0.75rem;
   }
 }

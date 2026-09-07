@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CATEGORIES, COLLECTIONS } from '../../data/catalog.js';
+import { EMAIL, EMAIL_HREF, PHONE, PHONE_HREF, SOCIAL } from '../../data/contact.js';
 import { useStore } from '../../context/StoreContext.jsx';
 import { Marquee, Reveal, RevealText } from '../ui/Primitives.jsx';
 import { Logo } from '../ui/Logo.jsx';
@@ -8,6 +9,45 @@ import { Logo } from '../ui/Logo.jsx';
 /* ==========================================================================
    Footer
    ========================================================================== */
+
+/* Line marks drawn to the same 1.2px weight as the rest of the chrome, so the
+   row reads as part of the footer rather than three pasted brand badges. */
+function SocialMark({ id }) {
+  const common = {
+    viewBox: '0 0 20 20',
+    width: 16,
+    height: 16,
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1.2,
+    'aria-hidden': true,
+    focusable: 'false',
+  };
+  if (id === 'instagram') {
+    return (
+      <svg {...common}>
+        <rect x="3" y="3" width="14" height="14" rx="4.2" />
+        <circle cx="10" cy="10" r="3.4" />
+        <circle cx="14.1" cy="5.9" r="0.9" fill="currentColor" stroke="none" />
+      </svg>
+    );
+  }
+  if (id === 'facebook') {
+    return (
+      <svg {...common}>
+        <path d="M12.6 3.4h-1.7a2.9 2.9 0 0 0-2.9 2.9v2.1H6.3v2.6H8v6.6h2.6V11h2l.4-2.6h-2.4V6.6c0-.5.3-.7.8-.7h1.2z" />
+      </svg>
+    );
+  }
+  return (
+    /* Google — the listing, so a map pin rather than the wordmark. */
+    <svg {...common}>
+      <path d="M10 17.5s5.2-5 5.2-8.6a5.2 5.2 0 1 0-10.4 0C4.8 12.5 10 17.5 10 17.5z" />
+      <circle cx="10" cy="8.8" r="2" />
+    </svg>
+  );
+}
+
 
 const HELP = [
   { label: 'Track an order', to: '/track' },
@@ -128,11 +168,28 @@ export default function Footer() {
                 <Link to="/atelier#weavers">The weavers</Link>
               </li>
               <li>
-                <a href="tel:+914428110098">+91 44 2811 0098</a>
+                <a href={PHONE_HREF}>{PHONE}</a>
               </li>
               <li>
-                <a href="mailto:studio@clothyhome.in">studio@clothyhome.in</a>
+                <a href={EMAIL_HREF}>{EMAIL}</a>
               </li>
+            </ul>
+
+            <ul className="footer__social">
+              {SOCIAL.map((s) => (
+                <li key={s.id}>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="footer__social-link"
+                    aria-label={`Clothy Home on ${s.label}`}
+                  >
+                    <SocialMark id={s.id} />
+                    <span>{s.label}</span>
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
         </nav>
@@ -150,11 +207,6 @@ export default function Footer() {
           </li>
           <li>
             <Link to="/atelier#privacy">Privacy</Link>
-          </li>
-          <li>
-            <a href="https://instagram.com" target="_blank" rel="noreferrer noopener">
-              Instagram
-            </a>
           </li>
         </ul>
       </div>

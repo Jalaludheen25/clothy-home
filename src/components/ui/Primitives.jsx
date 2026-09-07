@@ -1,5 +1,5 @@
-import { Fragment, forwardRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Fragment, forwardRef, useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { src, srcSet } from '../../data/images.js';
 import { useInView, useMagnetic, useParallax } from '../../hooks/useMotion.js';
 
@@ -285,10 +285,20 @@ export function Stepper({ value, min = 1, max = 99, onChange, label = 'Quantity'
 }
 
 /** Disclosure row used on the product page and in the footer. */
-export function Accordion({ title, children, defaultOpen = false }) {
+export function Accordion({ title, children, defaultOpen = false, id }) {
+  const { hash } = useLocation();
   const [open, setOpen] = useState(defaultOpen);
+
+  /* An `id` makes this panel linkable. Without it being rendered onto the
+     element, /atelier#care scrolled nowhere; and a link that points at a panel
+     should open it rather than leave the reader to find and click it. */
+  const targeted = Boolean(id) && hash === `#${id}`;
+  useEffect(() => {
+    if (targeted) setOpen(true);
+  }, [targeted]);
+
   return (
-    <div className={`accordion ${open ? 'is-open' : ''}`}>
+    <div id={id} className={`accordion ${open ? 'is-open' : ''}`}>
       <button
         type="button"
         className="accordion__head"

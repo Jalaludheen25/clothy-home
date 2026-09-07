@@ -740,6 +740,9 @@ const SIZES = {
   sarees: ['5.5m + blouse piece'],
   churidar: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
 };
+/* Unstitched cloth is sold by the metre, so it takes no garment size — the cut
+   lengths are listed on the piece itself. Without this it inherited churidar's
+   XS-XXL row and asked for a size that means nothing on a bolt of fabric. */
 
 /** Deterministic hash so stock levels stay stable across renders and reloads. */
 function seeded(str, n) {
@@ -758,7 +761,7 @@ export const PRODUCTS = RAW.map((p, i) => {
     ...p,
     currency: 'INR',
     images: p.images.filter(Boolean),
-    sizes: SIZES[p.category] || null,
+    sizes: p.unstitched ? ['Unstitched length'] : SIZES[p.category] || null,
     stock,
     inStock: stock > 0,
     care: CARE[p.category],

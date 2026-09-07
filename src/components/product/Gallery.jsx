@@ -1,14 +1,15 @@
 import { useCallback, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { src, srcSet } from '../../data/images.js';
 import { useEscape, useMediaQuery, useScrollLock } from '../../hooks/useMotion.js';
 
 /* ==========================================================================
    Product gallery
    --------------------------------------------------------------------------
-   One large frame with a thumbnail rail, a position counter, and
-   hover-to-magnify — the conventional premium arrangement, where the earlier
-   stacked column made the buy panel scroll away while you were still looking.
-   Phones keep a snapping reel. Both open a full-screen lightbox with pan.
+   Built to the reference product page: one tall frame with the thumbnails in
+   a row beneath it rather than a rail down the side, so the image gets the
+   full column width. Hover magnifies, click opens a full-screen lightbox.
+   Phones keep the snapping reel.
    ========================================================================== */
 
 const ZOOM = 2.35;
@@ -26,7 +27,7 @@ function Lightbox({ images, index, onClose, onStep, alt }) {
     });
   };
 
-  return (
+  return createPortal(
     <div className="lightbox" role="dialog" aria-modal="true" aria-label={`${alt}, enlarged`}>
       <button type="button" className="lightbox__close" onClick={onClose} aria-label="Close">
         <svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true">
@@ -68,7 +69,8 @@ function Lightbox({ images, index, onClose, onStep, alt }) {
       <p className="lightbox__count num">
         {index + 1} / {images.length}
       </p>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
@@ -101,8 +103,47 @@ export default function Gallery({ images, alt, tone }) {
 
   return (
     <>
-      {/* Desktop / tablet: main frame plus a thumbnail rail. */}
+      {/* Desktop / tablet: one frame with the thumbnails beneath it. */}
       <div className="gal">
+        <button
+          type="button"
+          ref={frame}
+          className={`gal__frame ${zoomed ? 'is-zoomed' : ''} ${loaded[index] ? 'is-loaded' : ''}`}
+          style={{ '--tone': tone, '--zoom': ZOOM, '--origin': origin }}
+          onMouseEnter={() => canZoom && setZoomed(true)}
+          onMouseLeave={() => setZoomed(false)}
+          onMouseMove={canZoom ? onMove : undefined}
+          onClick={() => setOpen(true)}
+          aria-label={`${alt} — open enlarged`}
+        >
+          {images.map((image, i) => (
+            <img
+              key={image}
+              className={i === index ? 'is-on' : ''}
+              src={src(image, 1200, 1.5)}
+              srcSet={srcSet(image, 1.5, [640, 900, 1280, 1800])}
+              sizes="(max-width: 999px) 92vw, 42vw"
+              alt={i === index ? alt : ''}
+              aria-hidden={i !== index}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : 'auto'}
+              decoding="async"
+              onLoad={() => setLoaded((l) => (l[i] ? l : { ...l, [i]: true }))}
+              onError={() => setLoaded((l) => ({ ...l, [i]: true }))}
+            />
+          ))}
+
+          {canZoom ? (
+            <span className="gal__cue" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="13" height="13">
+                <circle cx="7" cy="7" r="5.4" fill="none" stroke="currentColor" strokeWidth="1.1" />
+                <path d="M11 11l4 4M7 4.6v4.8M4.6 7h4.8" stroke="currentColor" strokeWidth="1.1" />
+              </svg>
+              Hover to zoom
+            </span>
+          ) : null}
+        </button>
+
         <div className="gal__thumbs" role="tablist" aria-label="Product images">
           {images.map((image, i) => (
             <button
@@ -116,55 +157,9 @@ export default function Gallery({ images, alt, tone }) {
               onClick={() => setIndex(i)}
               onMouseEnter={() => setIndex(i)}
             >
-              <img src={src(image, 200, 1.25)} alt="" loading="lazy" decoding="async" />
+              <img src={src(image, 300, 1)} alt="" loading="lazy" decoding="async" />
             </button>
           ))}
-        </div>
-
-        <div className="gal__main">
-          <button
-            type="button"
-            ref={frame}
-            className={`gal__frame ${zoomed ? 'is-zoomed' : ''} ${loaded[index] ? 'is-loaded' : ''}`}
-            style={{ '--tone': tone, '--zoom': ZOOM, '--origin': origin }}
-            onMouseEnter={() => canZoom && setZoomed(true)}
-            onMouseLeave={() => setZoomed(false)}
-            onMouseMove={canZoom ? onMove : undefined}
-            onClick={() => setOpen(true)}
-            aria-label={`${alt} — open enlarged`}
-          >
-            {images.map((image, i) => (
-              <img
-                key={image}
-                className={i === index ? 'is-on' : ''}
-                src={src(image, 1200, 1.25)}
-                srcSet={srcSet(image, 1.25, [640, 900, 1280, 1800])}
-                sizes="(max-width: 999px) 92vw, 44vw"
-                alt={i === index ? alt : ''}
-                aria-hidden={i !== index}
-                loading={i === 0 ? 'eager' : 'lazy'}
-                fetchpriority={i === 0 ? 'high' : 'auto'}
-                decoding="async"
-                onLoad={() => setLoaded((l) => (l[i] ? l : { ...l, [i]: true }))}
-                onError={() => setLoaded((l) => ({ ...l, [i]: true }))}
-              />
-            ))}
-
-            {canZoom ? (
-              <span className="gal__cue" aria-hidden="true">
-                <svg viewBox="0 0 16 16" width="13" height="13">
-                  <circle cx="7" cy="7" r="5.4" fill="none" stroke="currentColor" strokeWidth="1.1" />
-                  <path d="M11 11l4 4M7 4.6v4.8M4.6 7h4.8" stroke="currentColor" strokeWidth="1.1" />
-                </svg>
-                Hover to zoom
-              </span>
-            ) : null}
-          </button>
-
-          <p className="gal__count num" aria-live="polite">
-            {index + 1} <span aria-hidden="true">/</span>
-            <span className="sr-only">of</span> {images.length}
-          </p>
         </div>
       </div>
 

@@ -37,7 +37,7 @@ export default function SearchResults() {
             <input
               type="search"
               value={query}
-              placeholder="Search sarees, jhumkas, chikankari…"
+              placeholder="Search sarees, chikankari, Kanjivaram…"
               onChange={(e) => setParams(e.target.value ? { q: e.target.value } : {}, { replace: true })}
               aria-label="Search products"
             />
@@ -82,7 +82,7 @@ export default function SearchResults() {
         <div className="shell">
           <EmptyState
             title={query ? `Nothing matched “${query}”` : 'What are you looking for?'}
-            blurb="Try a weave — Kanjivaram, Chanderi, Tussar, chikankari — or a piece, like jhumka, kada or choker."
+            blurb="Try a weave — Kanjivaram, Chanderi, Tussar, chikankari — or an occasion, like bridal, festive or workwear."
             action={
               <MagneticButton variant="line" onClick={() => setSearchOpen(true)}>
                 Open search

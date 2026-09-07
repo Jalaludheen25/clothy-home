@@ -10,6 +10,7 @@ import {
   Reveal,
   RevealText,
 } from '../components/ui/Primitives.jsx';
+import { EMAIL, EMAIL_HREF, PHONE, PHONE_HREF } from '../data/contact.js';
 
 /* ==========================================================================
    Order tracking
@@ -153,11 +154,11 @@ function OrderView({ order }) {
               The studio answers 10am–7pm IST, and we keep a note of every order against your
               phone number.
             </p>
-            <a href="tel:+914428110098" className="tcard__link">
-              +91 44 2811 0098
+            <a href={PHONE_HREF} className="tcard__link">
+              {PHONE}
             </a>
-            <a href="mailto:studio@clothyhome.in" className="tcard__link">
-              studio@clothyhome.in
+            <a href={EMAIL_HREF} className="tcard__link">
+              {EMAIL}
             </a>
           </div>
         </aside>

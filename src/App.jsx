@@ -31,7 +31,7 @@ const TRANSITION_MS = 520;
  * page behind it, then opens again — so a route change reads as one move
  * rather than a flash of empty background.
  */
-function Router() {
+function Router({ booted }) {
   const location = useLocation();
   const lenis = useLenis();
   const [shown, setShown] = useState(location);
@@ -82,6 +82,41 @@ function Router() {
     // cancelled the timer that lifts the curtain — leaving every navigated
     // page under a full-screen black panel.
   }, [location]);
+
+  /* A deep link carrying a hash — /atelier#care from a shared URL or a fresh
+     tab — never reached its anchor: the effect above skips the first render,
+     and Lenis owns scrolling so the browser's own fragment jump does not
+     stick. It also has to wait for the preloader, which locks body scroll
+     while it is up, and for the lazy route to mount — hence the retry. */
+  const seeded = useRef(false);
+  useEffect(() => {
+    if (!booted || seeded.current) return undefined;
+    const { hash } = window.location;
+    if (!hash || hash.length < 2) return undefined;
+    seeded.current = true;
+
+    let tries = 0;
+    let timer = 0;
+    const seek = () => {
+      let el = null;
+      try {
+        el = document.querySelector(hash);
+      } catch {
+        return; // a hash that is not a valid selector is not ours to handle
+      }
+      if (el) {
+        const l = lenisRef.current;
+        if (l) l.scrollTo(el, { offset: -110, immediate: true });
+        else el.scrollIntoView();
+        return;
+      }
+      if (tries++ < 24) timer = window.setTimeout(seek, 100);
+    };
+    timer = window.setTimeout(seek, 120);
+    return () => window.clearTimeout(timer);
+    // Runs once, on the first render after boot. Later hash changes go
+    // through the transition effect above.
+  }, [booted]);
 
   /* The veil covers the entire viewport, so a missed timer is a blank screen
      rather than a cosmetic glitch. This guarantees it always lifts. */
@@ -138,7 +173,7 @@ function Shell() {
       <Cursor />
       <div className={`app ${booted ? 'is-ready' : ''} ${cartOpen || searchOpen ? 'is-veiled' : ''}`}>
         <Header />
-        <Router />
+        <Router booted={booted} />
         <Footer />
       </div>
       <CartDrawer />

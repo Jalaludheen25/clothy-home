@@ -21,7 +21,11 @@
   /* --- ink --------------------------------------------------------------- */
   --ink: var(--ink-base);
   --ink-70: rgba(20, 17, 13, 0.7);
-  --ink-55: rgba(20, 17, 13, 0.55);
+  /* Was 0.55, which measured 4.04:1 on bone — a hair under AA for the
+     secondary copy set in it. 0.60 clears it at 4.76:1. */
+  --ink-60: rgba(20, 17, 13, 0.6);
+  /* Decoration only — hairlines and underlines. At 2.44:1 on bone no text
+     set in it can reach AA, however large the type. */
   --ink-38: rgba(20, 17, 13, 0.38);
   --ink-14: rgba(20, 17, 13, 0.14);
   --ink-08: rgba(20, 17, 13, 0.08);
@@ -30,6 +34,10 @@
   --brass: #a8834a;
   --brass-lit: #c9a55c;
   --brass-pale: #e3d3b4;
+  /* Brass carries the accent, but at 3.16:1 on bone it cannot carry text.
+     This is the same hue taken down to 5.50:1 (4.57:1 on sand) for anything
+     that has to be read; --brass itself stays put for rules and marks. */
+  --brass-ink: #7d5c33;
   /* Sampled from the supplied logo artwork. */
   --maroon: #450b17;
   --maroon-lit: #6d2030;
@@ -93,11 +101,12 @@
   --line-soft: rgba(247, 243, 236, 0.08);
   --ink: var(--bone-base);
   --ink-70: rgba(247, 243, 236, 0.72);
-  --ink-55: rgba(247, 243, 236, 0.56);
+  --ink-60: rgba(247, 243, 236, 0.56); /* 5.89:1 on ink — already clear */
   --ink-38: rgba(247, 243, 236, 0.38);
   --ink-14: rgba(247, 243, 236, 0.16);
   --ink-08: rgba(247, 243, 236, 0.08);
   --brass: var(--brass-lit);
+  --brass-ink: var(--brass-lit);
   color: var(--ink);
   background: var(--surface);
 }

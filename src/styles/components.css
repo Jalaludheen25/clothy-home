@@ -465,7 +465,7 @@
   transition: color 0.3s var(--ease);
 }
 .card:hover .card__name a {
-  color: var(--brass);
+  color: var(--brass-ink);
 }
 .card__price {
   flex: none;
@@ -474,7 +474,7 @@
 }
 .card__was {
   margin-right: 0.45rem;
-  color: var(--ink-38);
+  color: var(--ink-60);
   text-decoration: line-through;
   font-weight: 400;
 }
@@ -484,7 +484,7 @@
 }
 .card__dot {
   margin-inline: 0.42em;
-  color: var(--ink-38);
+  color: var(--ink-60);
 }
 
 /* Touch devices: no hover to reveal, so the affordances stay put. */
@@ -552,7 +552,7 @@
   font-size: 0.76rem;
   letter-spacing: 0.055em;
   text-transform: uppercase;
-  color: var(--ink-38);
+  color: var(--ink-60);
 }
 .crumbs a {
   transition: color 0.3s;
@@ -617,7 +617,7 @@
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--ink-55);
+  color: var(--ink-60);
 }
 .field input,
 .field select,
@@ -638,7 +638,7 @@
   background: rgba(168, 131, 74, 0.045);
 }
 .field input::placeholder {
-  color: var(--ink-38);
+  color: var(--ink-60);
 }
 .field--error input {
   border-color: #c0655c;
@@ -705,7 +705,7 @@
   transition: color 0.3s;
 }
 .accordion__head:hover {
-  color: var(--brass);
+  color: var(--brass-ink);
 }
 .accordion__sign {
   position: relative;
@@ -762,7 +762,7 @@
   margin-inline: auto;
 }
 .empty__mark {
-  color: var(--brass);
+  color: var(--brass-ink);
   margin-bottom: 0.4rem;
 }
 .empty .lead {
