@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   CATEGORIES,
   FABRICS,
-  METALS,
   OCCASIONS,
   PRICE_BANDS,
   SORTS,
@@ -19,7 +18,6 @@ import { useEscape, useMediaQuery, useScrollLock } from '../../hooks/useMotion.j
 export const EMPTY_FILTERS = {
   category: [],
   fabric: [],
-  metal: [],
   occasion: [],
   price: [],
   only: [], // 'new' | 'offer' | 'stock'
@@ -29,7 +27,6 @@ export function applyFilters(products, filters, sort = 'featured') {
   const out = products.filter((p) => {
     if (filters.category.length && !filters.category.includes(p.category)) return false;
     if (filters.fabric.length && !filters.fabric.includes(p.fabric)) return false;
-    if (filters.metal.length && !filters.metal.includes(p.metal)) return false;
     if (filters.occasion.length && !(p.occasion || []).some((o) => filters.occasion.includes(o)))
       return false;
     if (filters.price.length) {
@@ -148,7 +145,6 @@ export function FilterRail({
     return {
       category: tally((p) => p.category),
       fabric: tally((p) => p.fabric),
-      metal: tally((p) => p.metal),
       occasion: tally((p) => p.occasion),
       price: new Map(PRICE_BANDS.map((b) => [b.id, pool.filter(b.test).length])),
     };
@@ -218,13 +214,6 @@ export function FilterRail({
           />
 
           <Group
-            title="Metal"
-            options={opt(METALS, counts.metal)}
-            selected={filters.metal}
-            onToggle={toggle('metal')}
-          />
-
-          <Group
             title="Occasion"
             options={opt(OCCASIONS, counts.occasion)}
             selected={filters.occasion}
@@ -287,7 +276,6 @@ export function ActiveChips({ filters, setFilters }) {
   );
   filters.price.forEach((v) => push('price', v, PRICE_BANDS.find((b) => b.id === v)?.label ?? v));
   filters.fabric.forEach((v) => push('fabric', v, v));
-  filters.metal.forEach((v) => push('metal', v, v));
   filters.occasion.forEach((v) => push('occasion', v, v));
   filters.only.forEach((v) =>
     push('only', v, { new: 'New arrivals', offer: 'On offer', stock: 'In stock' }[v]),

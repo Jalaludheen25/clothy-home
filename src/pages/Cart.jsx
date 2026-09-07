@@ -84,7 +84,7 @@ export default function Cart() {
                       <Link to={`/product/${line.slug}`}>{line.product.name}</Link>
                     </h2>
                     <p className="cline__attrs muted">
-                      {line.product.fabric || line.product.metal}
+                      {line.product.fabric}
                       {line.size ? ` · ${line.size}` : ''} · {line.product.colour}
                     </p>
                   </div>

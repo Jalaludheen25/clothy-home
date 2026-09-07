@@ -891,19 +891,6 @@ body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .logo__im
   margin: -0.5rem; /* keep the glyph optically where it was */
 }
 
-/* The jewel-stage dots are 6px marks; give them an invisible 32px hit area. */
-.stage__dot {
-  position: relative;
-}
-.stage__dot::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 32px;
-  height: 32px;
-  transform: translate(-50%, -50%);
-}
 
 .hero__tick {
   padding-block: 9px;

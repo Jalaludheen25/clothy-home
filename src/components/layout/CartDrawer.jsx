@@ -92,7 +92,7 @@ export default function CartDrawer() {
                       </button>
                     </div>
                     <p className="line__attrs muted">
-                      {line.product.fabric || line.product.metal}
+                      {line.product.fabric}
                       {line.size ? ` · ${line.size}` : ''}
                     </p>
                     <div className="line__foot">

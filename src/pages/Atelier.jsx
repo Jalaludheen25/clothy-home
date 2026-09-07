@@ -39,11 +39,11 @@ const WEAVERS = [
     image: IMG.fabricChikankari,
   },
   {
-    name: 'Soni Jewellers',
-    place: 'Jaipur, Rajasthan',
-    since: '1952',
-    note: 'Kundan setting in lac, four generations deep. They still cut every stone by eye before it goes into the bed.',
-    image: IMG.jewelGoldMacro,
+    name: 'Kota Weavers' + String.fromCharCode(39) + ' Collective',
+    place: 'Kota, Rajasthan',
+    since: '1979',
+    note: 'Kota doria on throw-shuttle looms — a square check so fine the finished cloth is almost weightless.',
+    image: IMG.fabricChikankari,
   },
 ];
 
@@ -134,8 +134,9 @@ export default function Atelier() {
                 than most and why the pieces last.
               </p>
               <p>
-                The jewellery came later, in 2009, for the same reason: clients kept asking what
-                to wear a silk with, and we did not have a good answer.
+                The dress fabrics came later, in 2009, for the same reason: clients kept asking
+                where to find cloth of the same standard by the metre, and we did not have a good
+                answer.
               </p>
             </Reveal>
           </div>
@@ -228,9 +229,9 @@ export default function Atelier() {
                 XXL 44&Prime;.
               </p>
               <p>
-                <strong>Bangles</strong> are sized 2.4in, 2.6in and 2.8in across the inside
-                diameter. Most adults take 2.6in. Measure the widest part of your hand with the
-                thumb tucked in, and divide by 3.14.
+                <strong>Unstitched fabric</strong> is cut generously — 2.5 to 3 metres for a top,
+                with the border running along the selvedge so a tailor can place it without waste.
+                Tell us if you need a longer cut and we will send it.
               </p>
             </Accordion>
 
@@ -246,8 +247,8 @@ export default function Atelier() {
               </p>
               <p>
                 Unworn pieces with tags intact may be returned within thirty days for a full
-                refund. Made-to-order and altered pieces are final sale, as are pierced earrings
-                once the seal is broken.
+                refund. Made-to-order and altered pieces are final sale, as is cut cloth once it
+                has left the bolt.
               </p>
             </Accordion>
 
@@ -264,22 +265,24 @@ export default function Atelier() {
               </p>
             </Accordion>
 
-            <Accordion title="Gold plating & jewellery care">
+            <Accordion title="Real zari, and how to tell">
               <p>
-                Our plating is 22k gold over brass or sterling, at 1.5 to 3 microns depending on
-                the piece — thick enough for years of ordinary wear.
+                Real zari is silver drawn into wire, gilded, then wound onto a silk core. It is
+                heavy, it tarnishes rather than flakes, and it costs what it costs because it is
+                precious metal woven into cloth.
               </p>
               <p>
-                Perfume, hairspray and chlorine are what actually kill plating, not time. Put
-                jewellery on last and take it off first. Wipe with the flannel in the pouch.
+                Tested zari carries a hallmark on the bolt. Where a piece uses half-fine or
+                tested zari rather than pure, the product page says so.
               </p>
             </Accordion>
 
             <Accordion title="Repairs & alterations" id="terms">
               <p>
                 We repair anything we made, for as long as we are in business. Re-tipping a zari
-                border, restringing pearls, resizing a bangle — send it to the studio and we will
-                quote before doing anything. Within the first year, most small repairs are free.
+                border, darning a small pull, re-hemming a kurta — send it to the studio and we
+                will quote before doing anything. Within the first year, most small repairs are
+                free.
               </p>
             </Accordion>
 

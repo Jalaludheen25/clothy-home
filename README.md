@@ -1,9 +1,9 @@
 # Clothy Home
 
 A storefront for a modern Indian fashion house — handwoven sarees, churidar sets
-and dress cloth by the metre, and fine adornment. Built as a single-page React
-app with no backend: the catalogue is a data module and the basket, wishlist,
-account and orders live in the visitor's own browser.
+and dress cloth by the metre. Built as a single-page React app with no backend:
+the catalogue is a data module and the basket, wishlist, account and orders live
+in the visitor's own browser.
 
 ```bash
 npm install
@@ -20,11 +20,11 @@ Node 18+ is required.
 
 | Route | Page |
 | --- | --- |
-| `/` | Home — hero, atelier note, category wall, the 3D adornment room, edits |
+| `/` | Home — hero, Shop the Look, new arrivals, category wall, edits |
 | `/shop` | Full catalogue with the filter rail and sorting |
-| `/category/:slug` | Sarees · Churidar & Fabric · Jewellery · Earrings · Necklaces · Accessories |
+| `/category/:slug` | Sarees · Churidar & Fabric |
 | `/collection/:slug` | New Arrivals · Best Sellers · Zari & Gold · The Quiet Everyday · Bridal · Archive Offers |
-| `/product/:slug` | Editorial product page — stacked gallery, hover zoom, lightbox, provenance |
+| `/product/:slug` | Sticky gallery with a thumbnail rail, hover zoom, lightbox, delivery check, specs |
 | `/search?q=` | Weighted search results, filterable |
 | `/wishlist` | Saved pieces, with "add all in stock" |
 | `/cart` | Full bag with promotion codes |
@@ -56,7 +56,7 @@ src/
 │   ├── layout/              Header · Footer · CartDrawer · SearchOverlay · Chrome
 │   ├── ui/Primitives.jsx    Reveal · RevealText · Figure · MagneticButton · …
 │   ├── product/             ProductCard · Filters · Gallery
-│   └── home/JewelStage.jsx  the drag-to-turn 3D showcase
+│   └── home/ShopTheLook.jsx occasion tabs over a rail of shoppable looks
 ├── pages/                   one file per route
 └── styles/
     ├── tokens.css           colour, type scale, rhythm, motion
@@ -65,6 +65,13 @@ src/
     ├── components.css       buttons, cards, grids, form controls
     └── pages.css            per-page layout
 ```
+
+### Shop the Look
+
+Looks live in `src/components/home/ShopTheLook.jsx` as a list of product
+slugs, not duplicated product data — a look whose pieces have been retired
+stops rendering rather than showing a dead price. Occasion tabs are derived
+from the looks that actually exist.
 
 ### Adding a product
 
@@ -76,7 +83,7 @@ weave appears in the filter rail on its own.
 
 ### Swapping the photography
 
-All 118 photographs are referenced through `src/data/images.js`, which appends
+All the photographs are referenced through `src/data/images.js`, which appends
 width and crop hints to a CDN URL. Point `src()` at a different host — or at
 files in `public/` — and nothing else has to change.
 
@@ -108,8 +115,8 @@ scale so a 360px phone and a 1600px desktop both get a considered measure.
 
 **Motion.** Smooth scrolling via Lenis; masked word reveals, scroll-scrubbed
 parallax, magnetic buttons, a pointer-tracking cursor, card tilt and image
-swaps, a curtain between routes, and a CSS-3D ring in the adornment room that
-drifts on its own and can be dragged, wheeled or arrow-keyed.
+swaps, and a curtain between routes. The header turns oxblood once the page
+moves and cross-fades the mark to its off-white cut.
 
 Every effect is transform- and opacity-only, driven from shared
 `requestAnimationFrame` loops rather than scroll listeners.

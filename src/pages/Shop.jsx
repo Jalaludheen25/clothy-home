@@ -42,8 +42,8 @@ export default function Shop() {
           <Crumbs items={[{ label: 'Home', to: '/' }, { label: 'Shop' }]} />
           <RevealText as="h1" className="display d1 listing__title" text="Everything we make" />
           <Reveal as="p" className="lead listing__blurb" delay={140}>
-            Sixty-eight pieces across cloth and adornment, made in runs small enough that we
-            know roughly where each one went.
+            Every saree, kurta set and cut of cloth we make, in runs small enough that we know
+            roughly where each one went.
           </Reveal>
         </div>
       </header>

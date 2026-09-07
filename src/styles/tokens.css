@@ -84,7 +84,7 @@
   }
 }
 
-/* Dark passages (the ink-ground sections and the jewellery world) invert the
+/* Dark passages (the ink-ground sections) invert the
    token set rather than re-declaring colours at every call site. */
 .on-ink {
   --surface: var(--ink-base);

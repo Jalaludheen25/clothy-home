@@ -234,11 +234,13 @@ body.has-cursor button {
   border-bottom: 1px solid transparent;
 }
 .header.is-scrolled {
-  background: rgba(247, 243, 236, 0.86);
+  background: var(--maroon);
   backdrop-filter: blur(16px) saturate(1.2);
-  border-bottom-color: var(--line-soft);
+  border-bottom-color: rgba(247, 243, 236, 0.14);
 }
-.header.is-open {
+/* Panel open at the top of the page: the bar joins the bone panel. Once
+   scrolled, the maroon above wins and the panel simply hangs beneath it. */
+.header.is-open:not(.is-scrolled) {
   background: var(--bone);
   backdrop-filter: none;
 }
@@ -1143,4 +1145,32 @@ body[data-chrome='minimal'] .footer {
   display: grid;
   place-items: center;
   min-height: 44px;
+}
+
+/* --- scrolled: oxblood bar, light ink -------------------------------------
+   Scoped to .header so the mega panel underneath keeps its own colours. */
+
+.header.is-scrolled .header__link,
+.header.is-scrolled .header__icon {
+  color: rgba(247, 243, 236, 0.82);
+}
+.header.is-scrolled .header__link:hover,
+.header.is-scrolled .header__link.is-active,
+.header.is-scrolled .header__link.active,
+.header.is-scrolled .header__icon:hover {
+  color: var(--bone-base);
+}
+.header.is-scrolled .header__burger i {
+  background: var(--bone-base);
+}
+.header.is-scrolled .header__count {
+  background: var(--brass-lit);
+  color: var(--ink-base);
+}
+/* The mark carries both inks; show the off-white cut over the oxblood. */
+.header.is-scrolled .logo__img--light {
+  opacity: 1;
+}
+.header.is-scrolled .logo__img--dark {
+  opacity: 0;
 }

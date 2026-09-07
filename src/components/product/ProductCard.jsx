@@ -129,7 +129,7 @@ function ProductCardBase({ product, index = 0, priority = false, size = 'md' }) 
           </p>
         </div>
         <p className="card__sub muted">
-          {product.fabric || product.metal}
+          {product.fabric}
           <span className="card__dot" aria-hidden="true">
             ·
           </span>

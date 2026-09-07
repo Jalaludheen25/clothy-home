@@ -237,3 +237,14 @@ svg {
     scroll-behavior: auto !important;
   }
 }
+
+/* Two sections in a row each contribute a full rhythm step, which stacks into
+   a hole rather than reading as a break. The second gives up its top padding —
+   the first one's bottom padding is already a complete step. Sections that
+   paint their own ground keep theirs, or the copy would touch the edge. */
+.section + .section:not(.on-ink),
+.section + .section-tight:not(.on-ink),
+.section-tight + .section:not(.on-ink),
+.section-tight + .section-tight:not(.on-ink) {
+  padding-top: 0;
+}

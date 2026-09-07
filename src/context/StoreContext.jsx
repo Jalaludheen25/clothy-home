@@ -116,7 +116,7 @@ function reducer(state, action) {
 
 const FREE_SHIPPING_OVER = 15000;
 const SHIPPING_FLAT = 350;
-const GST_RATE = 0.05; // 5% on textiles and fashion jewellery in India
+const GST_RATE = 0.05; // 5% on textiles and apparel in India
 
 export const PROMOS = {
   ATELIER10: { type: 'percent', value: 10, label: '10% off your order' },
@@ -369,7 +369,7 @@ export function searchProducts(query, limit = 24) {
     const haystacks = [
       [p.name.toLowerCase(), 10],
       [p.category, 6],
-      [(p.fabric || p.metal || '').toLowerCase(), 5],
+      [(p.fabric || '').toLowerCase(), 5],
       [p.colour.toLowerCase(), 4],
       [(p.occasion || []).join(' ').toLowerCase(), 3],
       [(p.origin || '').toLowerCase(), 2],

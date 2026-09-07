@@ -142,7 +142,7 @@ export default function SearchOverlay() {
                       <span className="search__hit-body">
                         <span className="search__hit-name">{p.name}</span>
                         <span className="search__hit-sub muted">
-                          {p.fabric || p.metal} · {p.colour}
+                          {p.fabric} · {p.colour}
                         </span>
                       </span>
                       <span className="search__hit-price num">{formatINR(p.price)}</span>

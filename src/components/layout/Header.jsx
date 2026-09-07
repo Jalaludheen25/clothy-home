@@ -15,7 +15,9 @@ import { Logo } from '../ui/Logo.jsx';
    desktop mega-panel and the mobile sheet render from the same taxonomy.
    ========================================================================== */
 
-const GROUPS = ['Cloth', 'Adornment'];
+/* Derived, so removing a whole group from the catalogue does not leave an
+   empty column behind in the menu. */
+const GROUPS = [...new Set(CATEGORIES.map((c) => c.group))];
 
 function Glyph({ name }) {
   const paths = {
@@ -93,8 +95,6 @@ export default function Header() {
     closeTimer.current = window.setTimeout(() => setPanel(null), 140);
   };
 
-  const cloth = CATEGORIES.filter((c) => c.group === 'Cloth');
-  const adorn = CATEGORIES.filter((c) => c.group === 'Adornment');
 
   return (
     <>
@@ -116,6 +116,9 @@ export default function Header() {
               <i />
             </button>
             <nav className="header__nav" aria-label="Primary">
+              <NavLink to="/" end className="header__link" onMouseEnter={closePanel}>
+                Home
+              </NavLink>
               <button
                 type="button"
                 className={`header__link ${panel === 'shop' ? 'is-active' : ''}`}
@@ -181,7 +184,7 @@ export default function Header() {
                     <div className="mega__col" key={group}>
                       <p className="eyebrow">{group}</p>
                       <ul>
-                        {(group === 'Cloth' ? cloth : adorn).map((c) => (
+                        {CATEGORIES.filter((c) => c.group === group).map((c) => (
                           <li key={c.slug}>
                             <Link to={`/category/${c.slug}`} className="mega__link">
                               <span>{c.name}</span>
@@ -302,6 +305,9 @@ export default function Header() {
 
           <section className="sheet__group sheet__group--minor">
             <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
               <li>
                 <Link to="/shop">All pieces</Link>
               </li>

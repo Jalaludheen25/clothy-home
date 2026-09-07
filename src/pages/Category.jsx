@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { CATEGORIES, categoryBySlug, inCategory } from '../data/catalog.js';
 import { src, srcSet } from '../data/images.js';
-import { useParallax, useScrollProgress } from '../hooks/useMotion.js';
+import { useScrollProgress } from '../hooks/useMotion.js';
 import { ProductGrid } from '../components/product/ProductCard.jsx';
 import {
   ActiveChips,
@@ -13,7 +13,6 @@ import {
 import {
   Crumbs,
   EmptyState,
-  Figure,
   MagneticButton,
   Reveal,
   RevealText,
@@ -38,7 +37,6 @@ export default function Category() {
   const [railOpen, setRailOpen] = useState(false);
 
   const [heroRef, progress] = useScrollProgress({ mode: 'exit' });
-  const plateRef = useParallax(0.1);
 
   const pool = useMemo(() => (category ? inCategory(category.slug) : []), [category]);
   const results = useMemo(() => applyFilters(pool, filters, sort), [pool, filters, sort]);
@@ -80,25 +78,11 @@ export default function Category() {
           <Reveal as="p" className="serif-italic cathero__tag" delay={130}>
             {category.tagline}
           </Reveal>
-        </div>
-      </header>
-
-      <section className="catintro section-tight">
-        <div className="shell catintro__grid">
-          <Reveal as="p" className="lead catintro__blurb">
+          <Reveal as="p" className="lead cathero__blurb" delay={200}>
             {category.blurb}
           </Reveal>
-          <div className="catintro__plate" ref={plateRef}>
-            <Figure
-              image={category.plate}
-              alt=""
-              ratio={0.78}
-              width={900}
-              sizes="(max-width: 900px) 90vw, 34vw"
-            />
-          </div>
         </div>
-      </section>
+      </header>
 
       <div className="shell listing__body">
         <FilterRail

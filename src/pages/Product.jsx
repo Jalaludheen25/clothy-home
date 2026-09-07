@@ -34,12 +34,95 @@ function deliveryWindow(days) {
   return `${fmt(new Date(now + days * 86400000))} – ${fmt(new Date(now + (days + 4) * 86400000))}`;
 }
 
+/** PIN-code delivery estimate — the reference site's "need it shipped today?".
+    There is no carrier behind this, so it derives a window from the piece's own
+    lead time and says plainly that it is an estimate. */
+function DeliveryCheck({ days }) {
+  const [pin, setPin] = useState('');
+  const [result, setResult] = useState(null);
+
+  const check = (e) => {
+    e.preventDefault();
+    if (!/^\d{6}$/.test(pin.trim())) {
+      setResult({ ok: false, text: 'Indian PIN codes are six digits.' });
+      return;
+    }
+    /* Metro PINs (a leading 1, 4, 5, 6 or 7) get the express lane. */
+    const metro = /^[14567]/.test(pin.trim());
+    setResult({
+      ok: true,
+      text: `Estimated delivery ${deliveryWindow(days + (metro ? 2 : 4))}${
+        metro ? ' — express available' : ''
+      }`,
+    });
+  };
+
+  return (
+    <div className="pdp__pin">
+      <form onSubmit={check}>
+        <label htmlFor="pin-check">Check delivery</label>
+        <div className="pdp__pin-row">
+          <input
+            id="pin-check"
+            inputMode="numeric"
+            maxLength={6}
+            value={pin}
+            placeholder="Enter PIN code"
+            onChange={(e) => {
+              setPin(e.target.value.replace(/[^0-9]/g, ''));
+              setResult(null);
+            }}
+          />
+          <button type="submit">Check</button>
+        </div>
+      </form>
+      {result ? (
+        <p className={`pdp__pin-out ${result.ok ? 'is-ok' : 'is-bad'}`} role="status">
+          {result.text}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+/** Copy the page address. Falls back to a prompt-free select when the
+    clipboard API is unavailable (http origins, older browsers). */
+function ShareRow({ name }) {
+  const [copied, setCopied] = useState(false);
+
+  const share = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: name, url });
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* dismissed the share sheet, or clipboard blocked — nothing to recover */
+    }
+  };
+
+  return (
+    <button type="button" className="pdp__share" onClick={share}>
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+        <path
+          d="M11 5.5a2 2 0 1 0-1.9-2.6L6 4.6a2 2 0 1 0 0 2.8l3.1 1.7a2 2 0 1 0 .5-.9L6.5 6.5a2 2 0 0 0 0-1l3.1-1.7c.36.44.9.7 1.4.7Z"
+          fill="currentColor"
+        />
+      </svg>
+      {copied ? 'Link copied' : 'Share'}
+    </button>
+  );
+}
+
 function Marks({ product }) {
   const rows = [
     product.origin && { label: 'Made in', value: product.origin },
     product.weaver && { label: 'Technique', value: product.weaver },
     product.fabric && { label: 'Fabric', value: product.fabric },
-    product.metal && { label: 'Metal', value: product.metal },
     product.pieces && { label: 'Includes', value: product.pieces },
     product.dims && { label: 'Dimensions', value: product.dims },
     { label: 'Colourway', value: product.colour },
@@ -124,7 +207,10 @@ export default function Product() {
               {product.limited ? <Tag tone="rare">Last one</Tag> : null}
             </div>
 
-            <p className="eyebrow pdp__cat">{category.name}</p>
+            <p className="eyebrow pdp__cat">
+              {category.name}
+              <span className="pdp__sku num">SKU {product.id}</span>
+            </p>
             <RevealText as="h1" className="display d2 pdp__title" text={product.name} />
 
             <div className="pdp__rating">
@@ -144,6 +230,12 @@ export default function Product() {
             </div>
             <p className="pdp__tax muted">Inclusive of all taxes. Duties shown at checkout.</p>
 
+            <ul className="pdp__trust" aria-label="What we promise">
+              {['Handwoven', 'Secure payment', '100% authentic', 'Easy returns'].map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+
             <p className="pdp__story">{product.story}</p>
 
             <div className="pdp__swatch">
@@ -154,7 +246,7 @@ export default function Product() {
             {product.sizes ? (
               <div className={`pdp__sizes ${sizeError ? 'has-error' : ''}`} id="size-picker">
                 <div className="pdp__sizes-head">
-                  <p className="eyebrow">{product.category === 'accessories' ? 'Bangle size' : 'Size'}</p>
+                  <p className="eyebrow">Size</p>
                   {product.sizes.length > 1 ? (
                     <Link to="/atelier#sizing" className="pdp__sizes-guide">
                       Size guide
@@ -219,6 +311,10 @@ export default function Product() {
               </button>
             </div>
 
+            <DeliveryCheck days={product.days} />
+
+            <ShareRow name={product.name} />
+
             <ul className="pdp__assure">
               <li>
                 <strong>Dispatch</strong>
@@ -234,10 +330,14 @@ export default function Product() {
               </li>
             </ul>
 
+            <section className="pdp__spec" aria-labelledby="spec-title">
+              <h2 className="eyebrow" id="spec-title">
+                {category.slug === 'sarees' ? 'Saree details' : 'Piece details'}
+              </h2>
+              <Marks product={product} />
+            </section>
+
             <div className="pdp__acc">
-              <Accordion title="Details & provenance" defaultOpen>
-                <Marks product={product} />
-              </Accordion>
               <Accordion title="Care">
                 <p>{product.care}</p>
               </Accordion>

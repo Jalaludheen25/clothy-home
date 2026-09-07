@@ -8,7 +8,6 @@ import {
 } from '../data/catalog.js';
 import IMG, { src, srcSet } from '../data/images.js';
 import {
-  useCountUp,
   useInView,
   useParallax,
   useScrollProgress,
@@ -23,7 +22,7 @@ import {
   SectionHead,
 } from '../components/ui/Primitives.jsx';
 import { ProductGrid, ProductRail } from '../components/product/ProductCard.jsx';
-import JewelStage from '../components/home/JewelStage.jsx';
+import ShopTheLook from '../components/home/ShopTheLook.jsx';
 import { useDarkHeader } from '../hooks/useHeaderTone.js';
 
 /* ==========================================================================
@@ -110,12 +109,12 @@ function Hero() {
 
         <div className="hero__foot">
           <p className="hero__blurb">
-            Handloom sarees, dress cloth by the metre and fine adornment — made in
-            small runs across seven Indian workshops.
+            Handloom sarees, kurta sets and dress cloth by the metre — made in small
+            runs across seven Indian workshops.
           </p>
           <div className="hero__actions">
             <MagneticButton to="/shop" variant="bone" size="lg">
-              Enter the house
+              Shop Now
             </MagneticButton>
             <MagneticButton to="/collection/new-arrivals" variant="ghost" size="lg" className="hero__ghost">
               New arrivals
@@ -146,100 +145,16 @@ function Hero() {
   );
 }
 
-function Manifesto() {
-  const plateA = useParallax(0.09);
-  const plateB = useParallax(-0.07);
-
-  return (
-    <section className="manifesto section">
-      <div className="shell manifesto__grid">
-        <div className="manifesto__lead">
-          <Reveal as="p" className="eyebrow">
-            Est. 1998 — Chennai
-          </Reveal>
-          <RevealText
-            as="h2"
-            className="display d1 manifesto__title"
-            text="We buy the loom time, not the fabric."
-            delay={80}
-          />
-          <Reveal as="p" className="lead manifesto__body" delay={220}>
-            Most of what is sold as handloom in India is powerloom with a story attached. We
-            work the other way round: we pay for a weaver&rsquo;s months before a single
-            thread is on the frame, and we take whatever the loom gives us — which is why
-            some pieces exist only once.
-          </Reveal>
-          <Reveal delay={300}>
-            <LinkLine to="/atelier" className="manifesto__link">
-              How we work
-            </LinkLine>
-          </Reveal>
-        </div>
-
-        <div className="manifesto__plates">
-          <div className="manifesto__plate manifesto__plate--a" ref={plateA}>
-            <Figure
-              image={IMG.jewelGoldHeadpieceProfile}
-              alt="Gold headpiece and marigold, in profile"
-              ratio={1.32}
-              width={760}
-              sizes="(max-width: 900px) 44vw, 27vw"
-              tone="#2a1c14"
-            />
-          </div>
-          <div className="manifesto__plate manifesto__plate--b" ref={plateB}>
-            <Figure
-              image={IMG.fabricZariBorder}
-              alt="Gold zari border detail"
-              ratio={1.18}
-              width={620}
-              sizes="(max-width: 900px) 40vw, 22vw"
-              tone="#b4954f"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="manifesto__stats shell">
-        {[
-          { to: 27, suffix: '', label: 'Weaving families on retainer' },
-          { to: 81, suffix: ' days', label: 'Longest single piece on the loom' },
-          { to: 7, suffix: '', label: 'Workshops across four states' },
-          { to: 1998, suffix: '', label: 'First saree sold, in Mylapore', plain: true },
-        ].map((stat) => (
-          <Stat key={stat.label} {...stat} />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function Stat({ to, suffix = '', label, plain }) {
-  const [ref, value] = useCountUp(to, { duration: plain ? 1700 : 1300 });
-  return (
-    <div className="stat" ref={ref}>
-      <p className="stat__num display">
-        {plain ? Math.round(value) : Math.round(value)}
-        {suffix}
-      </p>
-      <p className="stat__label">{label}</p>
-    </div>
-  );
-}
-
 function CategoryWall() {
-  const [cloth, adorn] = [
-    CATEGORIES.filter((c) => c.group === 'Cloth'),
-    CATEGORIES.filter((c) => c.group === 'Adornment'),
-  ];
+  const cloth = CATEGORIES;
 
   return (
     <section className="wall section">
       <div className="shell">
         <SectionHead
           eyebrow="The rooms"
-          title="Two halves of one wardrobe."
-          blurb="Cloth on one side, adornment on the other. Most of our clients end up crossing between them."
+          title="Two ways into the wardrobe."
+          blurb="Six yards on one side, stitched sets and cloth by the metre on the other. Most of our clients end up with both."
           action={<LinkLine to="/shop">All pieces</LinkLine>}
         />
 
@@ -269,24 +184,6 @@ function CategoryWall() {
             </Reveal>
           ))}
 
-          {adorn.map((c, i) => (
-            <Reveal key={c.slug} delay={i * 80} className="wall__cell">
-              <Link to={`/category/${c.slug}`} className="tileC tileC--sm">
-                <Figure
-                  image={c.hero}
-                  alt={c.name}
-                  ratio={1.22}
-                  width={760}
-                  sizes="(max-width: 900px) 46vw, 24vw"
-                  className="tileC__fig"
-                />
-                <span className="tileC__body">
-                  <strong className="display d3">{c.name}</strong>
-                  <span className="tileC__tag serif-italic">{c.tagline}</span>
-                </span>
-              </Link>
-            </Reveal>
-          ))}
         </div>
       </div>
     </section>
@@ -477,6 +374,8 @@ export default function Home() {
     <>
       <Hero />
 
+      <ShopTheLook />
+
       <Marquee
         className="band-marquee"
         items={[
@@ -488,8 +387,6 @@ export default function Home() {
         ]}
         speed={38}
       />
-
-      <Manifesto />
 
       <section className="section-tight">
         <div className="shell">
@@ -505,7 +402,6 @@ export default function Home() {
       <CategoryWall />
       <Feature />
       <Editorial />
-      <JewelStage />
 
       <section className="section">
         <div className="shell">
