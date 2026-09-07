@@ -1,207 +1,112 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { OCCASIONS, PRODUCTS, formatINR } from '../../data/catalog.js';
+import { PRODUCTS } from '../../data/catalog.js';
 import { src, srcSet } from '../../data/images.js';
-import { useStore } from '../../context/StoreContext.jsx';
 import { useInView } from '../../hooks/useMotion.js';
-import { LinkLine, RevealText } from '../ui/Primitives.jsx';
 
 /* ==========================================================================
    Shop the Look
    --------------------------------------------------------------------------
-   Occasion tabs over a horizontal rail of styled looks — the pattern the
-   reference site uses for browsing by style rather than by category.
+   Built to the reference site's "Shop The Style" section, measured off the
+   rendered page rather than eyeballed:
 
-   Where it goes further: a look is not a link to a collection, it is the
-   actual pieces. Each card lists what is in it with prices, and the whole
-   look can go into the bag in one action, which is the thing "shop the look"
-   is supposed to mean.
+     centred title with a rule under it
+     three pill tabs, active one filled
+     3-column grid, 300px rows, 10px gap, 10px corner radius
+     each card an image with an overlay label and an "Explore" link
+     mobile: 2 columns, 200px rows, label in a band across the bottom
+
+   Its three tabs are Party / Casual / Office Wear; ours map onto the
+   occasions this catalogue actually carries.
+
+   Cards are derived from the catalogue rather than hand-listed, so a retired
+   piece drops out instead of leaving a dead card behind.
    ========================================================================== */
 
-/**
- * Looks are defined by product slug so they can never drift out of sync with
- * the catalogue — a look whose pieces have been retired simply stops
- * rendering rather than showing a dead price.
- */
-const LOOKS = [
-  {
-    id: 'temple-morning',
-    name: 'The Temple Morning',
-    occasion: 'Festive',
-    note: 'Undyed tussar with a narrow gold border, and cloth to match.',
-    pieces: ['alaknanda-ivory-tussar-saree', 'gold-zari-border-silk-fabric'],
-  },
-  {
-    id: 'long-reception',
-    name: 'The Long Reception',
-    occasion: 'Bridal',
-    note: 'Real zari on the loom for eighty-one days, worn with a rouge katan.',
-    pieces: ['suvarna-banarasi-tissue-saree', 'aaravi-rouge-silk-saree'],
-  },
-  {
-    id: 'working-week',
-    name: 'The Working Week',
-    occasion: 'Workwear',
-    note: 'Cotton-silk that holds its shape from a meeting through to dinner.',
-    pieces: ['sharada-sage-cotton-silk-set', 'dhara-mocha-tussar-set'],
-  },
-  {
-    id: 'quiet-tuesday',
-    name: 'A Quiet Tuesday',
-    occasion: 'Everyday',
-    note: 'Two-hundred-count mulmul, and a kota so fine it weighs nothing.',
-    pieces: ['vaidehi-ivory-mulmul-saree', 'mrittika-terracotta-kota-suit'],
-  },
-  {
-    id: 'evening-ink',
-    name: 'Evening in Ink',
-    occasion: 'Evening',
-    note: 'Black on a Chanderi loom, with satin silk by the metre beside it.',
-    pieces: ['ratri-noir-chanderi-saree', 'noir-satin-silk-fabric'],
-  },
-  {
-    id: 'lucknow-afternoon',
-    name: 'The Lucknow Afternoon',
-    occasion: 'Festive',
-    note: 'Four hundred hours of chikankari, and the cloth to have more made.',
-    pieces: ['avadh-cream-chikankari-set', 'ivory-chikankari-dress-fabric'],
-  },
-  {
-    id: 'kanchi-red',
-    name: 'Kanchipuram Red',
-    occasion: 'Bridal',
-    note: 'A korvai border joined by hand, against a deep maroon pit-loom silk.',
-    pieces: ['meenakshi-kanjivaram-silk-saree', 'anahi-handloom-silk-saree'],
-  },
-  {
-    id: 'garden-party',
-    name: 'The Garden Party',
-    occasion: 'Everyday',
-    note: 'Ajrakh dyed sixteen times by hand, with mulmul cotton to follow.',
-    pieces: ['gulnaar-rose-ajrakh-set', 'sharan-ivory-cotton-dress'],
-  },
+const TABS = [
+  { id: 'Festive', label: 'Festive Wear' },
+  { id: 'Everyday', label: 'Everyday Wear' },
+  { id: 'Workwear', label: 'Office Wear' },
 ];
 
-function LookCard({ look, index }) {
-  const { addToCart, toast } = useStore();
-  const [ref, inView] = useInView({ threshold: 0.12 });
+const PER_TAB = 6;
 
-  const pieces = useMemo(
-    () => look.pieces.map((slug) => PRODUCTS.find((p) => p.slug === slug)).filter(Boolean),
-    [look.pieces],
-  );
-  if (!pieces.length) return null;
-
-  const [lead] = pieces;
-  const total = pieces.reduce((sum, p) => sum + p.price, 0);
-
-  const addLook = () => {
-    const available = pieces.filter((p) => p.inStock);
-    if (!available.length) {
-      toast('That look is between runs just now', 'error');
-      return;
-    }
-    available.forEach((p) =>
-      addToCart(p, {
-        /* Default to the middle size where a piece has a size chart, the same
-           rule the quick-add on a product card uses. */
-        size: p.sizes ? p.sizes[Math.min(2, p.sizes.length - 1)] : null,
-        silent: true,
-        open: false,
-      }),
-    );
-    toast(`${look.name} — ${available.length} pieces added`);
-  };
+function Card({ product, index }) {
+  const [ref, inView] = useInView({ threshold: 0.1 });
+  /* Landscape crop: the cards are wider than tall, and the portrait source
+     would otherwise show a sliver of the middle. */
+  const ratio = 0.68;
 
   return (
-    <article
-      className={`look ${inView ? 'is-in' : ''}`}
+    <Link
+      to={`/product/${product.slug}`}
+      className={`stl__card ${inView ? 'is-in' : ''}`}
       ref={ref}
-      style={{ '--look-delay': `${Math.min(index, 5) * 80}ms` }}
+      style={{ '--stl-delay': `${Math.min(index, 5) * 70}ms`, '--tone': product.swatch }}
     >
-      <Link to={`/product/${lead.slug}`} className="look__media" style={{ '--tone': lead.swatch }}>
-        <img
-          src={src(lead.images[0], 900, 1.28)}
-          srcSet={srcSet(lead.images[0], 1.28, [420, 640, 900, 1280])}
-          sizes="(max-width: 700px) 78vw, (max-width: 1100px) 42vw, 30vw"
-          alt={look.name}
-          loading="lazy"
-          decoding="async"
-        />
-        <span className="look__count">{pieces.length} pieces</span>
-      </Link>
-
-      <div className="look__body">
-        <p className="eyebrow look__occasion">{look.occasion}</p>
-        <h3 className="look__name display d3">
-          <Link to={`/product/${lead.slug}`}>{look.name}</Link>
-        </h3>
-        <p className="look__note muted">{look.note}</p>
-
-        <ul className="look__pieces">
-          {pieces.map((p) => (
-            <li key={p.slug}>
-              <Link to={`/product/${p.slug}`}>
-                <img src={src(p.images[0], 120, 1.25)} alt="" loading="lazy" />
-                <span className="look__piece-name">{p.name}</span>
-                <span className="look__piece-price num">{formatINR(p.price)}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <div className="look__foot">
-          <button type="button" className="look__add" onClick={addLook}>
-            Add the look
-          </button>
-          <span className="look__total num">{formatINR(total)}</span>
-        </div>
-      </div>
-    </article>
+      <img
+        className="stl__img"
+        src={src(product.images[0], 900, ratio)}
+        srcSet={srcSet(product.images[0], ratio, [420, 640, 900, 1280])}
+        sizes="(max-width: 760px) 46vw, 31vw"
+        alt={product.name}
+        loading="lazy"
+        decoding="async"
+      />
+      <span className="stl__overlay">
+        <span className="stl__label">{product.name}</span>
+        <span className="stl__explore">Explore</span>
+      </span>
+    </Link>
   );
 }
 
 export default function ShopTheLook() {
-  const [tab, setTab] = useState('All');
+  const [tab, setTab] = useState(TABS[0].id);
 
-  /* Only offer a tab that actually has looks behind it. */
-  const tabs = useMemo(
-    () => ['All', ...OCCASIONS.filter((o) => LOOKS.some((l) => l.occasion === o))],
-    [],
-  );
-  const shown = tab === 'All' ? LOOKS : LOOKS.filter((l) => l.occasion === tab);
+  const byTab = useMemo(() => {
+    const out = {};
+    for (const t of TABS) {
+      out[t.id] = PRODUCTS.filter((p) => (p.occasion || []).includes(t.id))
+        .sort((a, b) => b.rating - a.rating || b.reviews - a.reviews)
+        .slice(0, PER_TAB);
+    }
+    return out;
+  }, []);
+
+  /* Never render a tab that cannot fill itself. */
+  const tabs = TABS.filter((t) => byTab[t.id].length > 0);
+  const cards = byTab[tab] || [];
 
   return (
-    <section className="stl section-tight" aria-labelledby="stl-title">
-      <div className="shell">
-        <header className="stl__head">
-          <div>
-            <p className="eyebrow">Styled by the house</p>
-            <RevealText as="h2" className="display d2 stl__title" id="stl-title" text="Shop the look" />
-          </div>
-          <LinkLine to="/shop">All pieces</LinkLine>
-        </header>
+    <section className="stl" aria-labelledby="stl-title">
+      <div className="stl__head">
+        <h2 className="stl__title" id="stl-title">
+          Shop the Look
+        </h2>
+        <span className="stl__rule" aria-hidden="true" />
 
         <div className="stl__tabs" role="tablist" aria-label="Looks by occasion">
           {tabs.map((t) => (
             <button
               type="button"
-              key={t}
+              key={t.id}
               role="tab"
-              aria-selected={tab === t}
-              className={`stl__tab ${tab === t ? 'is-on' : ''}`}
-              onClick={() => setTab(t)}
+              aria-selected={tab === t.id}
+              aria-controls="stl-panel"
+              className={`stl__tab ${tab === t.id ? 'is-active' : ''}`}
+              onClick={() => setTab(t.id)}
             >
-              {t}
+              {t.label}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="stl__rail">
-        <div className="stl__track">
-          {shown.map((look, i) => (
-            <LookCard look={look} index={i} key={look.id} />
+      <div className="stl__panel" id="stl-panel" role="tabpanel">
+        <div className="stl__grid">
+          {cards.map((p, i) => (
+            <Card product={p} index={i} key={p.slug} />
           ))}
         </div>
       </div>

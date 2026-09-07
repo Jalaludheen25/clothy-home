@@ -224,7 +224,7 @@ export default function Header() {
                     <img src={src(COLLECTIONS[4].hero, 640, 1.15)} alt="" loading="lazy" />
                     <span className="mega__card-meta">
                       <em className="eyebrow">Featured</em>
-                      <strong className="display d3">Bridal &amp; Ceremony</strong>
+                      <strong className="mega__label">Bridal &amp; Ceremony</strong>
                     </span>
                   </Link>
                 </div>
@@ -240,7 +240,7 @@ export default function Header() {
                     </span>
                     <span className="mega__tile-meta">
                       <em className="eyebrow">{c.kicker}</em>
-                      <strong className="display d3">{c.name}</strong>
+                      <strong className="mega__label">{c.name}</strong>
                     </span>
                   </Link>
                 ))}
@@ -281,7 +281,7 @@ export default function Header() {
               <ul>
                 {CATEGORIES.filter((c) => c.group === group).map((c) => (
                   <li key={c.slug}>
-                    <Link to={`/category/${c.slug}`} className="sheet__link display d3">
+                    <Link to={`/category/${c.slug}`} className="sheet__link">
                       {c.name}
                     </Link>
                   </li>
@@ -295,7 +295,7 @@ export default function Header() {
             <ul>
               {COLLECTIONS.map((c) => (
                 <li key={c.slug}>
-                  <Link to={`/collection/${c.slug}`} className="sheet__link display d3">
+                  <Link to={`/collection/${c.slug}`} className="sheet__link">
                     {c.name}
                   </Link>
                 </li>
