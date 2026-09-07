@@ -252,6 +252,7 @@ export default function Product() {
   const category = categoryBySlug(product.category);
   const saved = isSaved(product.slug);
   const needsSize = Boolean(product.sizes && product.sizes.length > 1);
+  const lowStock = product.stock <= STOCK_SCALE;
   const stockPct = Math.max(6, Math.min(100, (product.stock / STOCK_SCALE) * 100));
 
   const commit = (thenGo) => {
@@ -331,22 +332,29 @@ export default function Product() {
                   ? `Only ${product.stock} left — made to order after that`
                   : 'In stock, ready to dispatch'}
               </p>
-              <span className="pdp__stock-bar" aria-hidden="true">
-                <span style={{ width: `${stockPct}%` }} />
-              </span>
+              {lowStock ? (
+                <span className="pdp__stock-bar" aria-hidden="true">
+                  <span style={{ width: `${stockPct}%` }} />
+                </span>
+              ) : null}
             </div>
 
-            {product.sizes ? (
+            {product.sizes && !needsSize ? (
+              <div className="pdp__colour">
+                <p className="pdp__label">Size</p>
+                <span className="pdp__swatch">{product.sizes[0]}</span>
+              </div>
+            ) : null}
+
+            {needsSize ? (
               <div className={`pdp__sizes ${sizeError ? 'has-error' : ''}`} id="size-picker">
                 <div className="pdp__sizes-head">
                   <p className="pdp__label">
                     Size{size ? <span className="pdp__chosen">{size}</span> : null}
                   </p>
-                  {product.sizes.length > 1 ? (
-                    <Link to="/atelier#sizing" className="pdp__sizes-guide">
-                      Size guide
-                    </Link>
-                  ) : null}
+                  <Link to="/atelier#sizing" className="pdp__sizes-guide">
+                    Size guide
+                  </Link>
                 </div>
                 <div className="pdp__size-row" role="radiogroup" aria-label="Size">
                   {product.sizes.map((s) => (

@@ -2424,7 +2424,10 @@
   padding-top: 1.05rem;
   border-top: 1px solid rgba(247, 243, 236, 0.12);
 }
-.footer__social-link {
+/* Scoped to the column: a bare .footer__social-link loses to .footer__col a,
+   which sets inline-block and would drop the icon onto its own line (svg is
+   display:block globally). */
+.footer__col .footer__social-link {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
@@ -2433,11 +2436,11 @@
   color: var(--ink-70);
   transition: color 0.3s var(--ease), transform 0.35s var(--ease);
 }
-.footer__social-link:hover {
+.footer__col .footer__social-link:hover {
   color: var(--brass-lit);
   transform: translateX(4px);
 }
-.footer__social-link svg {
+.footer__col .footer__social-link svg {
   flex: none;
   opacity: 0.85;
 }
