@@ -74,7 +74,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="footer on-ink">
+    <footer className="footer">
       <Marquee
         className="footer__marquee"
         items={[
@@ -196,7 +196,7 @@ export default function Footer() {
       </div>
 
       <div className="footer__mark" aria-hidden="true">
-        <Logo tone="light" weight="heavy" className="footer__logo" alt="" />
+        <Logo tone="dark" weight="heavy" className="footer__logo" alt="" />
       </div>
 
       <div className="footer__base shell">

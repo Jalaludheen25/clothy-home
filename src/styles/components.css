@@ -355,6 +355,9 @@
   top: 0.72rem;
   left: 0.72rem;
   z-index: 4;
+  /* Labels, not controls. They sat over the product link and swallowed any
+     tap in the top-left corner of the photograph. */
+  pointer-events: none;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -416,11 +419,16 @@
   bottom: 0.62rem;
   z-index: 4;
   opacity: 0;
+  /* Invisible means untappable. Without this a touch screen that reports
+     hover:hover puts an unseeable Add-to-bag button over the bottom of the
+     product link. */
+  pointer-events: none;
   transform: translateY(12px);
   transition: opacity 0.42s var(--ease), transform 0.5s var(--ease);
 }
 .card.is-hovered .card__quick {
   opacity: 1;
+  pointer-events: auto;
   transform: none;
 }
 .card__quick-btn {
@@ -487,12 +495,38 @@
   color: var(--ink-60);
 }
 
-/* Touch devices: no hover to reveal, so the affordances stay put. */
+/* Touch devices: no hover to reveal, so the affordances stay put — but the
+   quick-add bar comes off the photograph. Pinned over it, a tap anywhere in
+   the lower sixth of a card hit Add to bag and slid the drawer open instead
+   of opening the product, which reads as "it needs two taps". Static, it sits
+   under the image and the whole picture is the link again. */
 @media (hover: none) {
-  .card__save,
-  .card__quick {
+  .card__save {
     opacity: 1;
+    pointer-events: auto;
     transform: none;
+  }
+  .card__quick {
+    position: static;
+    margin-top: 0.6rem;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+  /* Off the photograph it needs its own edges: the near-bone plate it wore as
+     an overlay is invisible against the page, which left the label floating
+     as bare text between the picture and the name. */
+  .card__quick-btn {
+    min-height: 40px;
+    padding: 0.7rem;
+    border: 1px solid var(--ink-14);
+    border-radius: 999px;
+    background: transparent;
+    backdrop-filter: none;
+  }
+  .card__quick-btn:active:not(:disabled) {
+    background: var(--ink-base);
+    color: var(--bone-base);
   }
 }
 
@@ -847,7 +881,6 @@ body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .logo__im
 .footer__col a,
 .footer__legal a,
 .cline__acts button,
-.pdp__sizes-guide,
 .account__signout,
 .summary__back,
 .drawer__link,
@@ -891,10 +924,6 @@ body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .logo__im
   margin: -0.5rem; /* keep the glyph optically where it was */
 }
 
-
-.hero__tick {
-  padding-block: 9px;
-}
 
 /* The card title is a second route to a product the image already links, but
    17px is a fiddly thing to hit. Padding grows the box, not the type; the

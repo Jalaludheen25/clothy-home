@@ -67,6 +67,15 @@
     linear-gradient(180deg, rgba(20, 17, 13, 0.58) 0%, rgba(20, 17, 13, 0) 26%),
     linear-gradient(0deg, rgba(20, 17, 13, 0.88) 0%, rgba(20, 17, 13, 0.4) 44%, rgba(20, 17, 13, 0.06) 78%),
     linear-gradient(96deg, rgba(20, 17, 13, 0.66) 0%, rgba(20, 17, 13, 0.3) 32%, transparent 62%);
+  transition: opacity 0.6s var(--ease);
+}
+/* Pale frames — an ivory suit against a white wall — need more under the
+   headline than a dark drape does. */
+.hero__wash.is-deep {
+  background:
+    linear-gradient(180deg, rgba(20, 17, 13, 0.62) 0%, rgba(20, 17, 13, 0) 26%),
+    linear-gradient(0deg, rgba(20, 17, 13, 0.94) 0%, rgba(20, 17, 13, 0.66) 44%, rgba(20, 17, 13, 0.22) 82%),
+    linear-gradient(96deg, rgba(20, 17, 13, 0.78) 0%, rgba(20, 17, 13, 0.46) 34%, rgba(20, 17, 13, 0.08) 68%);
 }
 
 .hero__body {
@@ -169,7 +178,7 @@
   }
 }
 
-.hero__rail {
+.hero__nav {
   position: absolute;
   right: var(--gut);
   top: 50%;
@@ -177,23 +186,49 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  align-items: center;
+  gap: 0.65rem;
+  color: rgba(247, 243, 236, 0.72);
 }
-.hero__tick {
+.hero__step {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(247, 243, 236, 0.28);
+  border-radius: 50%;
+  color: inherit;
+  transition: border-color 0.35s var(--ease), background-color 0.35s var(--ease),
+    color 0.35s var(--ease);
+}
+.hero__step:hover {
+  border-color: rgba(247, 243, 236, 0.7);
+  background: rgba(247, 243, 236, 0.12);
+  color: var(--bone-base);
+}
+.hero__count {
+  display: flex;
+  align-items: baseline;
+  gap: 0.22rem;
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+}
+.hero__count-of {
+  opacity: 0.5;
+}
+.hero__track {
   display: block;
-  width: 30px;
-  padding-block: 4px;
+  width: 1px;
+  height: 74px;
+  background: rgba(247, 243, 236, 0.26);
+  overflow: hidden;
 }
-.hero__tick i {
+.hero__track span {
   display: block;
-  height: 1px;
-  background: rgba(247, 243, 236, 0.35);
-  transition: background-color 0.4s var(--ease), transform 0.5s var(--ease);
-  transform-origin: right;
-}
-.hero__tick.is-on i {
+  width: 100%;
   background: var(--brass-lit);
-  transform: scaleX(1.55);
+  transition: height 0.6s var(--ease);
 }
 
 .hero__scroll {
@@ -242,7 +277,8 @@
   }
 }
 @media (max-width: 700px) {
-  .hero__rail {
+  /* The counter would sit on top of the headline at this width. */
+  .hero__nav {
     display: none;
   }
   .hero__actions {
@@ -664,6 +700,16 @@
   border-color: var(--ink);
   color: var(--bone);
 }
+/* The colour rows carry a dot of the family's own colour. An inset ring
+   rather than a border, so a pale ivory still reads as a disc against bone. */
+.check__swatch {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(20, 17, 13, 0.18);
+}
+
 .check__label {
   flex: 1;
   min-width: 0;
@@ -2325,12 +2371,22 @@
 
 /* --- footer --------------------------------------------------------------- */
 
+/* A light gradient rather than the ink slab it was: bone at the marquee,
+   settling into sand by the legal row, so the page closes by deepening
+   instead of by switching to a dark panel. */
 .footer {
   padding-top: clamp(2.5rem, 5vw, 4rem);
   overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    var(--bone) 0%,
+    var(--bone-dim) 34%,
+    #ebe3d7 68%,
+    var(--sand) 100%
+  );
 }
 .footer__marquee {
-  color: rgba(247, 243, 236, 0.34);
+  color: var(--ink-60);
   padding-bottom: clamp(2.5rem, 5vw, 4.5rem);
   border-bottom: 1px solid var(--line-soft);
 }
@@ -2349,7 +2405,7 @@
 }
 .footer__done {
   font-size: 1.15rem;
-  color: var(--brass-lit);
+  color: var(--brass-ink);
 }
 
 .subscribe {
@@ -2361,7 +2417,7 @@
   transition: border-color 0.35s var(--ease);
 }
 .subscribe:focus-within {
-  border-bottom-color: var(--brass-lit);
+  border-bottom-color: var(--brass-ink);
 }
 .subscribe input {
   flex: 1;
@@ -2384,7 +2440,7 @@
   font-weight: 500;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: var(--brass-lit);
+  color: var(--brass-ink);
   white-space: nowrap;
   transition: gap 0.4s var(--ease);
 }
@@ -2411,7 +2467,7 @@
   display: inline-block;
 }
 .footer__col a:hover {
-  color: var(--brass-lit);
+  color: var(--brass-ink);
   transform: translateX(4px);
 }
 
@@ -2422,7 +2478,7 @@
   gap: 0.5rem;
   margin-top: 1.15rem;
   padding-top: 1.05rem;
-  border-top: 1px solid rgba(247, 243, 236, 0.12);
+  border-top: 1px solid var(--line-soft);
 }
 /* Scoped to the column: a bare .footer__social-link loses to .footer__col a,
    which sets inline-block and would drop the icon onto its own line (svg is
@@ -2437,7 +2493,7 @@
   transition: color 0.3s var(--ease), transform 0.35s var(--ease);
 }
 .footer__col .footer__social-link:hover {
-  color: var(--brass-lit);
+  color: var(--brass-ink);
   transform: translateX(4px);
 }
 .footer__col .footer__social-link svg {
@@ -2453,7 +2509,7 @@
 .footer__logo {
   height: auto;
   width: min(100%, 1180px);
-  opacity: 0.09;
+  opacity: 0.06;
 }
 .footer__logo .logo__img {
   width: 100%;
@@ -2477,7 +2533,7 @@
   color: var(--ink-60);
 }
 .footer__legal a:hover {
-  color: var(--brass-lit);
+  color: var(--brass-ink);
 }
 
 @media (max-width: 880px) {
@@ -2502,9 +2558,6 @@
 
 /* Touch-target corrections that must live here: pages.css loads after
    components.css, so these selectors have to be re-stated to win. */
-.hero__tick {
-  padding-block: 12px;
-}
 .cline__name a,
 .line__name a {
   display: inline-block;
@@ -2715,21 +2768,6 @@
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.look__size {
-  grid-column: 1 / -1;
-  margin-top: 0.4rem;
-}
-.look__size select {
-  min-height: 34px;
-  padding: 0.3rem 1.7rem 0.3rem 0.6rem;
-  border: 1px solid var(--ink-14);
-  border-radius: 6px;
-  background: var(--surface);
-  color: var(--ink);
-  font: inherit;
-  font-size: var(--fs-sm);
-  cursor: pointer;
-}
 
 .look__foot {
   display: flex;
@@ -2834,13 +2872,9 @@
     min-height: 30px;
     padding-block: 4px;
   }
-  .pdp__sizes-guide {
-    min-height: 30px;
-    padding-block: 4px;
-  }
-  .hero__tick {
-    min-height: 30px;
-    min-width: 30px;
+  .hero__step {
+    width: 38px;
+    height: 38px;
   }
 }
 
@@ -2994,6 +3028,10 @@
   color: var(--ink-60);
 }
 .pdp__tax a {
+  /* Padded to a 24px target — as bare inline text it came to 16px, and this
+     is the only route to the shipping terms from here. */
+  display: inline-block;
+  padding-block: 4px;
   color: var(--ink-70);
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -3057,66 +3095,6 @@
   text-transform: uppercase;
   color: var(--ink-60);
 }
-.pdp__chosen {
-  margin-left: 0.5rem;
-  letter-spacing: 0.04em;
-  text-transform: none;
-  color: var(--ink);
-}
-
-.pdp__sizes-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.7rem;
-}
-.pdp__sizes-guide {
-  font-size: 0.82rem;
-  color: var(--ink-70);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.pdp__sizes-guide:hover {
-  color: var(--ink);
-}
-.pdp__size-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-/* Variant controls take the reference's pill, sized to the same control
-   height as the quantity stepper beside them. */
-.sizebtn {
-  min-height: 44px;
-  padding: 0.6rem 1.15rem;
-  border: 1px solid var(--ink-14);
-  border-radius: 999px;
-  background: transparent;
-  font-size: 0.87rem;
-  letter-spacing: 0.02em;
-  color: var(--ink-70);
-  transition: border-color 0.3s var(--ease), color 0.3s var(--ease),
-    background-color 0.3s var(--ease);
-}
-.sizebtn:hover {
-  border-color: var(--ink);
-  color: var(--ink);
-}
-.sizebtn.is-on {
-  border-color: var(--ink);
-  background: var(--ink);
-  color: var(--bone-base);
-}
-.pdp__sizes.has-error .sizebtn {
-  border-color: var(--rouge);
-}
-.pdp__size-error {
-  margin-top: 0.55rem;
-  font-size: 0.82rem;
-  color: var(--rouge);
-}
-
 .pdp__colour {
   display: grid;
   gap: 0.55rem;
@@ -3420,7 +3398,12 @@
   position: relative;
   display: block;
   width: 100%;
-  aspect-ratio: 1 / 1.5;
+  /* The reference runs 1:1.5, which at this column width came to 792px — the
+     photograph filled the screen and pushed the buy controls under the fold.
+     A shallower crop and a ceiling keep it balanced against the panel beside
+     it without changing the layout. */
+  aspect-ratio: 1 / 1.18;
+  max-height: 640px;
   overflow: hidden;
   border-radius: 20px;
   background: var(--tone, var(--sand));
@@ -3477,6 +3460,7 @@
 .gal__thumb {
   position: relative;
   aspect-ratio: 1;
+  max-height: 118px;
   overflow: hidden;
   border-radius: 20px;
   background: var(--tone, var(--sand));
@@ -3584,4 +3568,15 @@
     grid-template-columns: 92px minmax(0, 1fr);
     gap: 0.75rem;
   }
+}
+
+/* The reference closes on a plain left-aligned serif heading over the grid —
+   no eyebrow, no display-scale type. */
+.pdp .section-head__title {
+  font-size: clamp(1.35rem, 2.1vw, 1.65rem);
+  font-weight: 400;
+  letter-spacing: 0.005em;
+}
+.pdp .section-head {
+  margin-bottom: clamp(1.1rem, 2.2vw, 1.7rem);
 }

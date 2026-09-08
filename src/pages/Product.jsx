@@ -16,7 +16,7 @@ import NotFound from './NotFound.jsx';
    the left and a single column of information on the right, running
 
      share · title · price · tax note · SKU · rating · stock bar
-     variant pills · quantity + add · buy it now
+     colourway · quantity + add · buy it now
      four bordered trust badges · a stack of hairline accordions
 
    and closing on a four-across "You may also like" grid. The reference's
@@ -228,18 +228,14 @@ export default function Product() {
   const product = bySlug(slug);
 
   const { addToCart, toggleWishlist, isSaved, pushViewed, viewedItems } = useStore();
-  const [size, setSize] = useState(null);
   const [qty, setQty] = useState(1);
-  const [sizeError, setSizeError] = useState(false);
   /* The reference opens on Description and keeps one panel open at a time. */
   const [openPanel, setOpenPanel] = useState('description');
 
   useEffect(() => {
     if (product) {
       pushViewed(product.slug);
-      setSize(product.sizes && product.sizes.length === 1 ? product.sizes[0] : null);
       setQty(1);
-      setSizeError(false);
       setOpenPanel('description');
     }
   }, [product, pushViewed]);
@@ -251,17 +247,11 @@ export default function Product() {
 
   const category = categoryBySlug(product.category);
   const saved = isSaved(product.slug);
-  const needsSize = Boolean(product.sizes && product.sizes.length > 1);
   const lowStock = product.stock <= STOCK_SCALE;
   const stockPct = Math.max(6, Math.min(100, (product.stock / STOCK_SCALE) * 100));
 
   const commit = (thenGo) => {
-    if (needsSize && !size) {
-      setSizeError(true);
-      document.getElementById('size-picker')?.scrollIntoView({ block: 'center' });
-      return;
-    }
-    addToCart(product, { size, qty, open: !thenGo });
+    addToCart(product, { qty, open: !thenGo });
     if (thenGo) navigate('/checkout');
   };
 
@@ -338,44 +328,6 @@ export default function Product() {
                 </span>
               ) : null}
             </div>
-
-            {product.sizes && !needsSize ? (
-              <div className="pdp__colour">
-                <p className="pdp__label">Size</p>
-                <span className="pdp__swatch">{product.sizes[0]}</span>
-              </div>
-            ) : null}
-
-            {needsSize ? (
-              <div className={`pdp__sizes ${sizeError ? 'has-error' : ''}`} id="size-picker">
-                <div className="pdp__sizes-head">
-                  <p className="pdp__label">
-                    Size{size ? <span className="pdp__chosen">{size}</span> : null}
-                  </p>
-                  <Link to="/atelier#sizing" className="pdp__sizes-guide">
-                    Size guide
-                  </Link>
-                </div>
-                <div className="pdp__size-row" role="radiogroup" aria-label="Size">
-                  {product.sizes.map((s) => (
-                    <button
-                      type="button"
-                      key={s}
-                      role="radio"
-                      aria-checked={size === s}
-                      className={`sizebtn ${size === s ? 'is-on' : ''}`}
-                      onClick={() => {
-                        setSize(s);
-                        setSizeError(false);
-                      }}
-                    >
-                      {s}
-                    </button>
-                  ))}
-                </div>
-                {sizeError ? <p className="pdp__size-error">Choose a size to continue.</p> : null}
-              </div>
-            ) : null}
 
             <div className="pdp__colour">
               <p className="pdp__label">Colour</p>
@@ -507,7 +459,7 @@ export default function Product() {
 
       <section className="section">
         <div className="shell">
-          <SectionHead eyebrow="Goes with" title="You may also like" />
+          <SectionHead title="You may also like" />
           <ProductGrid products={related} cols={4} label="You may also like" />
         </div>
       </section>
@@ -515,7 +467,7 @@ export default function Product() {
       {alsoViewed.length > 0 ? (
         <section className="section-tight">
           <div className="shell">
-            <SectionHead eyebrow="Your trail" title="Recently viewed" />
+            <SectionHead title="Recently viewed" />
             <ProductGrid products={alsoViewed} cols={4} label="Recently viewed" />
           </div>
         </section>

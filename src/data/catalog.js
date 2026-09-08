@@ -754,6 +754,69 @@ function seeded(str, n) {
   return Math.abs(h) % n;
 }
 
+
+/* --- colour families ------------------------------------------------------ */
+
+/* Every piece carries a specific colourway ("Crimson & Gold", "Rose Madder"),
+   which is right on a product page and useless as a filter — thirty-two names
+   for thirty-two pieces. So the swatch is bucketed into a family a shopper
+   would actually pick from. Derived from the hex rather than hand-tagged, so
+   a new piece files itself. */
+function toHsl(hex) {
+  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  const d = max - min;
+  if (!d) return [0, 0, l];
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h;
+  if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+  else if (max === g) h = (b - r) / d + 2;
+  else h = (r - g) / d + 4;
+  return [h * 60, s, l];
+}
+
+export function colourFamily(hex) {
+  const [h, s, l] = toHsl(hex);
+  /* Near-neutrals first: a very dark or very pale colour reads by its
+     lightness, not its hue — a navy this dark is still "black" on a shelf. */
+  if (l <= 0.22 && s < 0.15) return 'Black';
+  if (l <= 0.1) return 'Black';
+  if (l >= 0.78 && s < 0.5 && !(h >= 300 || h < 18)) return 'Ivory & Cream';
+  if (l >= 0.84 && s < 0.5) return 'Ivory & Cream';
+  if (s < 0.12) return 'Grey';
+  if (h >= 300 && h < 336) return 'Rose & Pink';
+  /* Every true red in the range sits between 347 and 360; a terracotta is up
+     at 14, so the boundary is tight rather than generous — otherwise a burnt
+     orange files itself next to a deep maroon. A pale red is a pink. */
+  if (h >= 336 || h < 8) return l >= 0.62 ? 'Rose & Pink' : 'Red & Maroon';
+  if (h < 36) {
+    if (l >= 0.72) return 'Rose & Pink'; // blush, not brick
+    return l < 0.4 ? 'Brown & Mocha' : 'Rust & Terracotta';
+  }
+  if (h < 57) return l < 0.3 ? 'Brown & Mocha' : 'Gold & Ochre';
+  if (h < 175) return 'Green & Olive';
+  if (h < 255) return 'Blue & Teal';
+  return 'Purple & Plum';
+}
+
+/* Listed warm-to-cool rather than alphabetically, so the swatches in the rail
+   read as a spectrum instead of a shuffled set. */
+const COLOUR_ORDER = [
+  'Ivory & Cream',
+  'Gold & Ochre',
+  'Rust & Terracotta',
+  'Brown & Mocha',
+  'Red & Maroon',
+  'Rose & Pink',
+  'Purple & Plum',
+  'Blue & Teal',
+  'Green & Olive',
+  'Grey',
+  'Black',
+];
+
 export const PRODUCTS = RAW.map((p, i) => {
   const stock = p.limited ? 1 + seeded(p.slug, 2) : 3 + seeded(p.slug, 14);
   return {
@@ -770,6 +833,7 @@ export const PRODUCTS = RAW.map((p, i) => {
     onOffer: Boolean(p.compareAt),
     discount: p.compareAt ? Math.round(((p.compareAt - p.price) / p.compareAt) * 100) : 0,
     /* used by the "Newest" sort — a later index means an earlier arrival */
+    colourFamily: colourFamily(p.swatch),
     addedAt: RAW.length - i,
   };
 });
@@ -777,6 +841,21 @@ export const PRODUCTS = RAW.map((p, i) => {
 /* Facet values, derived rather than hand-listed so they can never drift out of
    sync with the products actually on sale. */
 export const FABRICS = [...new Set(PRODUCTS.map((p) => p.fabric).filter(Boolean))].sort();
+
+/** The families actually present, each with a swatch to draw the dot with. */
+export const COLOURS = COLOUR_ORDER.filter((name) =>
+  PRODUCTS.some((p) => p.colourFamily === name),
+).map((name) => ({
+  name,
+  /* The mid-lightness member represents the family — the palest or darkest
+     piece would misdescribe it. */
+  swatch: PRODUCTS.filter((p) => p.colourFamily === name)
+    .map((p) => p.swatch)
+    .sort((a, b) => toHsl(a)[2] - toHsl(b)[2])[
+    Math.floor(PRODUCTS.filter((p) => p.colourFamily === name).length / 2)
+  ],
+}));
+
 
 /* --- lookups -------------------------------------------------------------- */
 

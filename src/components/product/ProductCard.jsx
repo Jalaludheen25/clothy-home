@@ -98,11 +98,7 @@ function ProductCardBase({ product, index = 0, priority = false, size = 'md' }) 
           <button
             type="button"
             className="card__quick-btn"
-            onClick={() =>
-              addToCart(product, {
-                size: product.sizes ? product.sizes[Math.min(2, product.sizes.length - 1)] : null,
-              })
-            }
+            onClick={() => addToCart(product)}
             disabled={!product.inStock}
           >
             {product.inStock ? 'Add to bag' : 'Sold out'}

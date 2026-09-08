@@ -123,28 +123,16 @@ const TABS = [
   { id: 'Workwear', label: 'Office Wear' },
 ];
 
-/** A piece the shopper has to size before the look can go in the bag. */
-const needsSize = (product) => Boolean(product.sizes && product.sizes.length > 1);
-
 function LookCard({ look, index }) {
   const { addToCart, toast } = useStore();
   const [ref, inView] = useInView({ threshold: 0.1 });
-  const [sizes, setSizes] = useState({});
 
   const total = look.pieces.reduce((sum, piece) => sum + piece.product.price, 0);
-  const missing = look.pieces.filter((piece) => needsSize(piece.product) && !sizes[piece.product.slug]);
 
-  /* The bag has no way to change a size after the fact, so a look carrying a
-     stitched piece asks for it here rather than guessing an M on the
-     shopper's behalf. Everything else is one tap. */
+  /* Genuinely one tap now that nothing in the buying flow carries a size. */
   const addLook = () => {
-    if (missing.length > 0) {
-      toast(`Choose a size for ${missing[0].product.name}`, 'error');
-      return;
-    }
     look.pieces.forEach((piece, i) => {
       addToCart(piece.product, {
-        size: sizes[piece.product.slug] || (piece.product.sizes ? piece.product.sizes[0] : null),
         silent: true,
         // One drawer, opened once the last piece is in.
         open: i === look.pieces.length - 1,
@@ -186,22 +174,6 @@ function LookCard({ look, index }) {
                 {piece.product.name}
               </Link>
               <span className="look__price num">{formatINR(piece.product.price)}</span>
-              {needsSize(piece.product) ? (
-                <label className="look__size">
-                  <span className="sr-only">Size for {piece.product.name}</span>
-                  <select
-                    value={sizes[piece.product.slug] || ''}
-                    onChange={(e) => setSizes((s) => ({ ...s, [piece.product.slug]: e.target.value }))}
-                  >
-                    <option value="">Size</option>
-                    {piece.product.sizes.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              ) : null}
             </li>
           ))}
         </ul>

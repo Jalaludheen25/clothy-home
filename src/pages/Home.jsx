@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   CATEGORIES,
@@ -29,17 +29,88 @@ import { useDarkHeader } from '../hooks/useHeaderTone.js';
    Home
    ========================================================================== */
 
-/* Hero frames are chosen for how the headline sits on them as much as for the
-   picture: the type is bottom-left, so anything bright there is out, however
-   good the photograph. */
-/* `focus` is the object-position for the full-bleed crop: a frame that is
-   composed for portrait needs telling where its subject actually is, or the
-   hero cuts the person off at the ankles. */
+/* Every full-bleed-worthy photograph in the library rather than a picked
+   three. `tone` is the frame's own average colour, held behind it while it
+   loads, and `focus` is the object-position for the crop — both read off the
+   pixels rather than guessed, so a portrait is not cut off at the ankles.
+   Jewellery and fabric macros are left out: the range is cloth, and a
+   magnified weave cannot carry a headline.
+
+   Only a short window of frames is mounted. All forty sit inside the
+   viewport, so `loading="lazy"` would not have saved a single request. */
 const HERO_SLIDES = [
-  { image: IMG.sareeRoseCopperWall, kicker: 'Autumn / Winter', tone: '#4a1418', focus: '62% 12%' },
-  { image: IMG.sareeBanarasiGold, kicker: 'The Zari Edit', tone: '#8d7444', focus: '58% 38%' },
-  { image: IMG.editorialRouge, kicker: 'Bridal 2026', tone: '#4a2222', focus: '55% 40%' },
+  { image: IMG.sareeMaroonDrape, kicker: 'The Saree Edit', tone: '#665d56', focus: '55% 28%' },
+  { image: IMG.sareeIvoryRed, kicker: 'The Saree Edit', tone: '#312f2a', focus: '55% 28%' },
+  { image: IMG.editorialMist, kicker: 'Autumn / Winter', tone: '#97a3a2', focus: '55% 58%' },
+  { image: IMG.sareeAmethyst, kicker: 'The Saree Edit', tone: '#413134', focus: '55% 18%' },
+  { image: IMG.sareeNoir, kicker: 'The Saree Edit', tone: '#121516', focus: '55% 18%' },
+  { image: IMG.sareeCreamGold, kicker: 'The Saree Edit', tone: '#7d6550', focus: '55% 58%' },
+  { image: IMG.sareeBanarasiGold, kicker: 'The Saree Edit', tone: '#916645', focus: '55% 18%' },
+  { image: IMG.sareeCrimsonZari, kicker: 'The Saree Edit', tone: '#ae7a6c', focus: '55% 58%' },
+  { image: IMG.sareeMagentaWall, kicker: 'The Saree Edit', tone: '#784b3c', focus: '55% 48%' },
+  { image: IMG.sareeCopperSilk, kicker: 'The Saree Edit', tone: '#5c3826', focus: '55% 18%' },
+  { image: IMG.sareeMossVeil, kicker: 'The Saree Edit', tone: '#4a392b', focus: '55% 18%' },
+  { image: IMG.editorialRouge, kicker: 'Autumn / Winter', tone: '#4a291e', focus: '55% 18%' },
+  { image: IMG.sareeTissuePearl, kicker: 'The Saree Edit', tone: '#7a6f6d', focus: '55% 28%' },
+  { image: IMG.sareeApricot, kicker: 'The Saree Edit', tone: '#b8a8a5', focus: '55% 58%' },
+  { image: IMG.editorialLightRay, kicker: 'Autumn / Winter', tone: '#5c3a2e', focus: '55% 58%' },
+  { image: IMG.suitTeal, kicker: 'Kurta & Sets', tone: '#c7b6b2', focus: '55% 48%' },
+  { image: IMG.suitSage, kicker: 'Kurta & Sets', tone: '#cbb5ad', focus: '55% 38%' },
+  { image: IMG.suitChikanCream, kicker: 'Kurta & Sets', tone: '#c8a99a', focus: '55% 18%' },
+  { image: IMG.suitIvoryEmbroider, kicker: 'Kurta & Sets', tone: '#c8a28e', focus: '55% 58%' },
+  { image: IMG.suitTerracotta, kicker: 'Kurta & Sets', tone: '#ac6a4d', focus: '55% 58%' },
+  { image: IMG.suitOliveVelvet, kicker: 'Kurta & Sets', tone: '#6b6656', focus: '55% 28%' },
+  { image: IMG.suitRoseVelvet, kicker: 'Kurta & Sets', tone: '#715768', focus: '55% 18%' },
+  { image: IMG.suitMustard, kicker: 'Kurta & Sets', tone: '#5b4131', focus: '55% 18%' },
+  { image: IMG.suitMocha, kicker: 'Kurta & Sets', tone: '#cdaa8a', focus: '55% 48%' },
+  { image: IMG.suitLavender, kicker: 'Kurta & Sets', tone: '#c1b7bb', focus: '55% 18%' },
+  { image: IMG.gownBlush, kicker: 'Occasion Wear', tone: '#dccac2', focus: '55% 48%' },
+  { image: IMG.dressIvoryGarden, kicker: 'Occasion Wear', tone: '#6b7255', focus: '55% 18%' },
+  { image: IMG.heroArchKanjivaram, kicker: 'Handloom, By Hand', tone: '#830f18', focus: '55% 18%' },
+  { image: IMG.sareeRoseCopperWall, kicker: 'The Saree Edit', tone: '#651716', focus: '55% 18%' },
+  { image: IMG.sareeGreenGoldPortrait, kicker: 'The Saree Edit', tone: '#453226', focus: '55% 18%' },
+  { image: IMG.sareeOrangeBanarasiPortrait, kicker: 'The Saree Edit', tone: '#824f36', focus: '55% 18%' },
+  { image: IMG.sareePinkMintTissue, kicker: 'The Saree Edit', tone: '#807170', focus: '55% 58%' },
+  { image: IMG.sareeBlueDoorway, kicker: 'The Saree Edit', tone: '#453a37', focus: '55% 18%' },
+  { image: IMG.sareeBlushPortrait, kicker: 'The Saree Edit', tone: '#412d22', focus: '55% 18%' },
+  { image: IMG.lehengaMaroonBrocade, kicker: 'Bridal 2026', tone: '#857f83', focus: '55% 58%' },
+  { image: IMG.sareeTealKanjivaram, kicker: 'The Saree Edit', tone: '#636d6f', focus: '55% 58%' },
+  { image: IMG.sareeOchreCheck, kicker: 'The Saree Edit', tone: '#361e15', focus: '55% 18%' },
+  { image: IMG.sareeOliveGoldWall, kicker: 'The Saree Edit', tone: '#777569', focus: '55% 58%' },
+  { image: IMG.sareeMagentaRedBackdrop, kicker: 'The Saree Edit', tone: '#662727', focus: '55% 58%' },
+  { image: IMG.bridalIvoryNight, kicker: 'Bridal 2026', tone: '#373322', focus: '55% 18%' },
 ];
+
+/* The headline needs a dark ground behind it. These frames were measured by
+   rendering each one, hiding the type, and sampling only the pixels the
+   glyphs actually cover — the first group is bright at the foot, the second
+   came in under 4:1 on the headline itself even though its foot is dark. Both
+   take a deeper scrim rather than being dropped from the rotation. */
+const BRIGHT_FOOT = new Set([
+  'suitTeal',
+  'suitSage',
+  'suitChikanCream',
+  'suitIvoryEmbroider',
+  'suitMocha',
+  'suitLavender',
+  'gownBlush',
+  'editorialMist',
+  'sareeApricot',
+  'lehengaMaroonBrocade',
+  // marginal on the headline, not at the foot
+  'sareeCrimsonZari',
+  'sareeCopperSilk',
+  'sareeOrangeBanarasiPortrait',
+  'sareePinkMintTissue',
+  'sareeTealKanjivaram',
+  'sareeOliveGoldWall',
+  'sareeMagentaRedBackdrop',
+  'sareeIvoryRed',
+]);
+
+/* Frames kept mounted either side of the current one: enough to cross-fade
+   out of, and to have the next photograph decoded before it is shown. */
+const WINDOW = 1;
 
 function Hero() {
   /* The outgoing frame is held at full opacity underneath while the incoming
@@ -49,48 +120,76 @@ function Hero() {
   const [progressRef, progress] = useScrollProgress({ mode: 'exit' });
   const timer = useRef(0);
 
+  const index = slide.index;
+
+  /* Bumped by a manual step so the dwell timer below restarts. Without it the
+     autoplay tick stayed on its original schedule and could advance again a
+     fraction of a second after someone pressed the arrow. */
+  const [nudge, setNudge] = useState(0);
+
+  const go = useCallback((next) => {
+    setSlide((s) => ({
+      prev: s.index,
+      index: (next + HERO_SLIDES.length) % HERO_SLIDES.length,
+    }));
+    setNudge((n) => n + 1);
+  }, []);
+
   useEffect(() => {
     timer.current = window.setInterval(() => {
       setSlide((s) => ({ prev: s.index, index: (s.index + 1) % HERO_SLIDES.length }));
     }, 6200);
     return () => window.clearInterval(timer.current);
-  }, []);
+  }, [nudge]);
 
-  const index = slide.index;
+  /* Which frames are in the DOM at all — forty mounted at once would fetch
+     forty full-bleed photographs on first paint. */
+  const mounted = useMemo(() => {
+    const keep = new Set([slide.prev]);
+    for (let d = -WINDOW; d <= WINDOW; d += 1) {
+      keep.add((index + d + HERO_SLIDES.length) % HERO_SLIDES.length);
+    }
+    return keep;
+  }, [index, slide.prev]);
+
+  const item = HERO_SLIDES[index];
+  const deepScrim = [...BRIGHT_FOOT].some((name) => IMG[name] === item.image);
 
   return (
     <section className="hero" ref={progressRef} aria-label="Clothy Home">
       <div className="hero__media">
-        {HERO_SLIDES.map((item, i) => (
-          <div
-            className={`hero__slide ${i === index ? 'is-on' : ''} ${
-              i === slide.prev && i !== index ? 'is-out' : ''
-            }`}
-            key={item.kicker}
-            style={{
-              '--tone': item.tone,
-              // The image drifts up and dims as the page scrolls past it.
-              transform: `translate3d(0, ${progress * 16}%, 0) scale(${1 + progress * 0.14})`,
-            }}
-          >
-            <img
-              src={src(item.image, 1800, 1.28)}
-              srcSet={srcSet(item.image, 1.28, [900, 1280, 1800, 2400])}
-              sizes="100vw"
-              alt=""
-              style={{ objectPosition: item.focus }}
-              loading={i === 0 ? 'eager' : 'lazy'}
-              fetchpriority={i === 0 ? 'high' : 'low'}
-              decoding="async"
-            />
-          </div>
-        ))}
-        <div className="hero__wash" aria-hidden="true" />
+        {HERO_SLIDES.map((frame, i) =>
+          mounted.has(i) ? (
+            <div
+              className={`hero__slide ${i === index ? 'is-on' : ''} ${
+                i === slide.prev && i !== index ? 'is-out' : ''
+              }`}
+              key={i}
+              style={{
+                '--tone': frame.tone,
+                // The image drifts up and dims as the page scrolls past it.
+                transform: `translate3d(0, ${progress * 16}%, 0) scale(${1 + progress * 0.14})`,
+              }}
+            >
+              <img
+                src={src(frame.image, 1800, 1.28)}
+                srcSet={srcSet(frame.image, 1.28, [900, 1280, 1800, 2400])}
+                sizes="100vw"
+                alt=""
+                style={{ objectPosition: frame.focus }}
+                loading={i === 0 ? 'eager' : 'lazy'}
+                fetchpriority={i === 0 ? 'high' : 'low'}
+                decoding="async"
+              />
+            </div>
+          ) : null,
+        )}
+        <div className={`hero__wash ${deepScrim ? 'is-deep' : ''}`} aria-hidden="true" />
       </div>
 
       <div className="hero__body shell" style={{ opacity: 1 - progress * 1.5 }}>
         <p className="hero__kicker eyebrow">
-          <span key={HERO_SLIDES[index].kicker}>{HERO_SLIDES[index].kicker}</span>
+          <span key={item.kicker + index}>{item.kicker}</span>
         </p>
         <h1 className="hero__title display display-hero">
           <span className="hero__line">
@@ -123,18 +222,58 @@ function Hero() {
         </div>
       </div>
 
-      <div className="hero__rail" aria-hidden="true">
-        {HERO_SLIDES.map((item, i) => (
-          <button
-            type="button"
-            key={item.kicker}
-            className={`hero__tick ${i === index ? 'is-on' : ''}`}
-            onClick={() => setSlide((s) => ({ prev: s.index, index: i }))}
-            tabIndex={-1}
-          >
-            <i />
-          </button>
-        ))}
+      {/* A dash per frame read well at three and would be eight hundred pixels
+          of them at forty, so the rail became a counter with a position line
+          and a step either side of it. */}
+      <div className="hero__nav">
+        <button
+          type="button"
+          className="hero__step"
+          onClick={() => go(index - 1)}
+          aria-label="Previous frame"
+        >
+          <svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true">
+            <path
+              d="M6 10.5V1.8M2.2 5.6 6 1.8l3.8 3.8"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+
+        <p className="hero__count num" aria-live="polite">
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <span className="hero__count-of" aria-hidden="true">
+            /
+          </span>
+          <span className="sr-only">of</span>
+          <span>{HERO_SLIDES.length}</span>
+        </p>
+
+        <span className="hero__track" aria-hidden="true">
+          <span style={{ height: `${((index + 1) / HERO_SLIDES.length) * 100}%` }} />
+        </span>
+
+        <button
+          type="button"
+          className="hero__step"
+          onClick={() => go(index + 1)}
+          aria-label="Next frame"
+        >
+          <svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true">
+            <path
+              d="M6 1.5v8.7M2.2 6.4 6 10.2l3.8-3.8"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
       </div>
 
       <span className="hero__scroll" aria-hidden="true">

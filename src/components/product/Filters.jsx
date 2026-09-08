@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   CATEGORIES,
+  COLOURS,
   FABRICS,
   OCCASIONS,
   PRICE_BANDS,
@@ -17,6 +18,7 @@ import { useEscape, useMediaQuery, useScrollLock } from '../../hooks/useMotion.j
 
 export const EMPTY_FILTERS = {
   category: [],
+  colour: [],
   fabric: [],
   occasion: [],
   price: [],
@@ -26,6 +28,7 @@ export const EMPTY_FILTERS = {
 export function applyFilters(products, filters, sort = 'featured') {
   const out = products.filter((p) => {
     if (filters.category.length && !filters.category.includes(p.category)) return false;
+    if (filters.colour.length && !filters.colour.includes(p.colourFamily)) return false;
     if (filters.fabric.length && !filters.fabric.includes(p.fabric)) return false;
     if (filters.occasion.length && !(p.occasion || []).some((o) => filters.occasion.includes(o)))
       return false;
@@ -88,6 +91,13 @@ function Group({ title, options, selected, onToggle, columns = false }) {
                       <path d="M1 4l2.6 2.6L9 1" fill="none" stroke="currentColor" strokeWidth="1.5" />
                     </svg>
                   </span>
+                  {opt.swatch ? (
+                    <span
+                      className="check__swatch"
+                      style={{ background: opt.swatch }}
+                      aria-hidden="true"
+                    />
+                  ) : null}
                   <span className="check__label">{opt.label}</span>
                   {opt.count != null ? <span className="check__count num">{opt.count}</span> : null}
                 </label>
@@ -144,6 +154,7 @@ export function FilterRail({
     };
     return {
       category: tally((p) => p.category),
+      colour: tally((p) => p.colourFamily),
       fabric: tally((p) => p.fabric),
       occasion: tally((p) => p.occasion),
       price: new Map(PRICE_BANDS.map((b) => [b.id, pool.filter(b.test).length])),
@@ -204,6 +215,18 @@ export function FilterRail({
             }))}
             selected={filters.price}
             onToggle={toggle('price')}
+          />
+
+          <Group
+            title="Colour"
+            options={COLOURS.filter((c) => (counts.colour.get(c.name) || 0) > 0).map((c) => ({
+              value: c.name,
+              label: c.name,
+              swatch: c.swatch,
+              count: counts.colour.get(c.name),
+            }))}
+            selected={filters.colour}
+            onToggle={toggle('colour')}
           />
 
           <Group
@@ -275,6 +298,7 @@ export function ActiveChips({ filters, setFilters }) {
     push('category', v, CATEGORIES.find((c) => c.slug === v)?.name ?? v),
   );
   filters.price.forEach((v) => push('price', v, PRICE_BANDS.find((b) => b.id === v)?.label ?? v));
+  filters.colour.forEach((v) => push('colour', v, v));
   filters.fabric.forEach((v) => push('fabric', v, v));
   filters.occasion.forEach((v) => push('occasion', v, v));
   filters.only.forEach((v) =>
