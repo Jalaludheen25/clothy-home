@@ -234,7 +234,7 @@ body.has-cursor button {
   border-bottom: 1px solid transparent;
 }
 .header.is-scrolled {
-  background: var(--maroon);
+  background: var(--maroon-soft);
   backdrop-filter: blur(16px) saturate(1.2);
   border-bottom-color: rgba(247, 243, 236, 0.14);
 }

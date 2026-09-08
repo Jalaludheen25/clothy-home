@@ -13,6 +13,17 @@ export const PHONE_HREF = 'tel:+917510187678';
 export const EMAIL = 'theclothyhome@gmail.com';
 export const EMAIL_HREF = 'mailto:theclothyhome@gmail.com';
 
+/* wa.me wants the number bare — no plus, no spaces. */
+export const WHATSAPP = '+91 751 018 7678';
+export const WHATSAPP_HREF = 'https://wa.me/917510187678';
+
+/** The studio, as it appears on the atelier page. */
+export const ADDRESS = [
+  'Clothy Home Studio',
+  '12 Kutchery Road, Mylapore',
+  'Chennai 600004, Tamil Nadu',
+];
+
 export const SOCIAL = [
   {
     id: 'instagram',
@@ -31,4 +42,5 @@ export const SOCIAL = [
        profile, so it is what belongs in a link rather than a maps query. */
     href: 'https://share.google/gYd9zcWKCxZcRB4Cu',
   },
+  { id: 'whatsapp', label: 'WhatsApp', href: 'https://wa.me/917510187678' },
 ];

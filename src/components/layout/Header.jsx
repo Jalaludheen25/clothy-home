@@ -6,6 +6,7 @@ import { useStore } from '../../context/StoreContext.jsx';
 import { useEscape, useScrollLock } from '../../hooks/useMotion.js';
 import { useLenis } from '../../hooks/useLenis.jsx';
 import { Logo } from '../ui/Logo.jsx';
+import { WHATSAPP, WHATSAPP_HREF } from '../../data/contact.js';
 
 /* ==========================================================================
    Header
@@ -27,6 +28,9 @@ function Glyph({ name }) {
     ),
     user: <path d="M3.5 17c0-3.3 2.7-5.2 6-5.2s6 1.9 6 5.2M9.5 9.4a3.6 3.6 0 1 0 0-7.2 3.6 3.6 0 0 0 0 7.2Z" />,
     bag: <path d="M4 6h11l1 11H3L4 6ZM7 6V4.7a2.5 2.5 0 0 1 5 0V6" />,
+    whatsapp: (
+      <path d="M2.6 16.4l1.05-3.8a6.6 6.6 0 1 1 2.5 2.42L2.6 16.4ZM7.1 6.5c-.3 0-.55.1-.75.35-.25.3-.6.85-.35 1.7.25.85.85 1.6 1.5 2.2.7.6 1.6 1.05 2.3 1.15.6.1 1.1-.2 1.35-.55.2-.3.2-.6.15-.75l-1.2-.6c-.15.2-.4.5-.5.55-.1.05-.25.05-.4-.05a4.6 4.6 0 0 1-1.9-1.95c-.1-.2-.05-.35.05-.45l.5-.5-.6-1.2a1 1 0 0 0-.15-.05Z" />
+    ),
   };
   return (
     <svg viewBox="0 0 19 19" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.15" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -150,6 +154,16 @@ export default function Header() {
           </div>
 
           <div className="header__cluster header__cluster--end" onMouseEnter={closePanel}>
+            <a
+              href={WHATSAPP_HREF}
+              className="header__icon header__icon--whatsapp"
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label={`Message us on WhatsApp, ${WHATSAPP}`}
+              title={`WhatsApp ${WHATSAPP}`}
+            >
+              <Glyph name="whatsapp" />
+            </a>
             <button type="button" className="header__icon" onClick={() => setSearchOpen(true)} aria-label="Search">
               <Glyph name="search" />
               <span className="header__icon-label">Search</span>

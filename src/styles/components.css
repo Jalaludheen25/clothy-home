@@ -878,8 +878,8 @@ body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .logo__im
 /* Standalone text controls — links in a sentence are exempt, these are not. */
 .link-line,
 .crumbs a,
-.footer__col a,
-.footer__legal a,
+.foot__list a,
+.foot__legal a,
 .cline__acts button,
 .account__signout,
 .summary__back,

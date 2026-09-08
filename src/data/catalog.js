@@ -817,13 +817,61 @@ const COLOUR_ORDER = [
   'Black',
 ];
 
+/* --- the fourth gallery image --------------------------------------------- */
+
+/* The product page shows four thumbnails; the catalogue photographs three
+   views. The fourth is a close-up of cloth in the piece's own colour family,
+   picked from the texture library so the crop reads as the same fabric rather
+   than as some other garment. Two pieces in one family can land on the same
+   macro — a colour-matched weave close-up is not a portrait, and a fabric is
+   genuinely the same fabric — but never on one already in their own three.
+
+   Derived here rather than typed into 32 arrays, so it cannot drift. */
+const DETAIL_BY_COLOUR = {
+  'Ivory & Cream': ['silkIvoryFold', 'fabricIvoryFold', 'silkChampagneFold', 'fabricCreamFold'],
+  'Gold & Ochre': ['fabricWovenGold', 'silkAmberDrape', 'fabricZariBorder'],
+  'Rust & Terracotta': ['silkOrangeGlow', 'velvetRoseCopper', 'silkAmberDrape'],
+  'Brown & Mocha': ['craftLinenSleeve', 'fabricWovenGold'],
+  'Red & Maroon': ['silkCrimson', 'velvetRedCurtain', 'fabricBandhaniRed', 'velvetWinePleat'],
+  'Rose & Pink': ['silkRoseDrape', 'fabricRoseSilk', 'velvetRoseCopper'],
+  'Purple & Plum': ['fabricBrocadePlum', 'velvetWinePleat'],
+  'Blue & Teal': ['velvetDarkTeal', 'fabricNavyDrape'],
+  'Green & Olive': ['silkSageDrape', 'velvetEmerald'],
+  Grey: ['fabricIvoryFold', 'craftLinenSleeve'],
+  Black: ['velvetNoir', 'fabricNoirSilk'],
+};
+
+/* Six pieces — mostly the unstitched cloths, which are already photographed
+   as three fabric macros — use their whole colour pool inside their own three.
+   These neutral crops stand in, so every piece gets a fourth thumbnail. */
+const DETAIL_FALLBACK = [
+  'craftHandFabric',
+  'craftLinenSleeve',
+  'fabricIvoryFold',
+  'silkChampagneFold',
+  'fabricBrocadeStack',
+  'craftPlinth',
+];
+
+function detailShot(family, slug, already) {
+  const pick = (keys) => keys.map((k) => IMG[k]).filter((url) => url && !already.includes(url));
+  const pool = pick(DETAIL_BY_COLOUR[family] || []);
+  const from = pool.length ? pool : pick(DETAIL_FALLBACK);
+  if (!from.length) return null;
+  // Seeded off the slug so the choice is stable across renders and reloads.
+  return from[seeded(slug, from.length)];
+}
+
 export const PRODUCTS = RAW.map((p, i) => {
   const stock = p.limited ? 1 + seeded(p.slug, 2) : 3 + seeded(p.slug, 14);
+  const family = colourFamily(p.swatch);
+  const shots = p.images.filter(Boolean);
+  const fourth = shots.length < 4 ? detailShot(family, p.slug, shots) : null;
   return {
     id: `CH-${String(1001 + i)}`,
     ...p,
     currency: 'INR',
-    images: p.images.filter(Boolean),
+    images: fourth ? [...shots, fourth] : shots,
     sizes: p.unstitched ? ['Unstitched length'] : SIZES[p.category] || null,
     stock,
     inStock: stock > 0,
@@ -833,7 +881,7 @@ export const PRODUCTS = RAW.map((p, i) => {
     onOffer: Boolean(p.compareAt),
     discount: p.compareAt ? Math.round(((p.compareAt - p.price) / p.compareAt) * 100) : 0,
     /* used by the "Newest" sort — a later index means an earlier arrival */
-    colourFamily: colourFamily(p.swatch),
+    colourFamily: family,
     addedAt: RAW.length - i,
   };
 });

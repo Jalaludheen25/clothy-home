@@ -41,6 +41,9 @@
   /* Sampled from the supplied logo artwork. */
   --maroon: #450b17;
   --maroon-lit: #6d2030;
+  /* The header's ground. Lighter than --maroon so the bar reads as a colour
+     rather than a black band, and still 8.56:1 under bone type. */
+  --maroon-soft: #7a2a39;
   --rouge: var(--maroon);
   --jade: #2f4c42;
 
