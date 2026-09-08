@@ -22,7 +22,7 @@ import { EMAIL, EMAIL_HREF, PHONE, PHONE_HREF } from '../data/contact.js';
 const STAGES = [
   { key: 'placed', label: 'Order placed', note: 'We have it, and payment cleared.' },
   { key: 'atelier', label: 'In the atelier', note: 'Checked, pressed and wrapped in muslin.' },
-  { key: 'dispatched', label: 'Dispatched', note: 'Handed to our courier in Chennai.' },
+  { key: 'dispatched', label: 'Dispatched', note: 'Handed to our courier in Kozhikode.' },
   { key: 'transit', label: 'In transit', note: 'Moving toward your city.' },
   { key: 'delivered', label: 'Delivered', note: 'Signed for at the address.' },
 ];

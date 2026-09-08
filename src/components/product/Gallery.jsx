@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { src, srcSet } from '../../data/images.js';
 import { useEscape, useMediaQuery, useScrollLock } from '../../hooks/useMotion.js';
@@ -16,10 +16,19 @@ const ZOOM = 2.35;
 
 function Lightbox({ images, index, onClose, onStep, alt }) {
   const [pan, setPan] = useState({ x: 50, y: 50 });
+  /* Magnification is a decision, not a side effect of the pointer being in
+     the window. It used to scale to 1.9x on hover, which meant an image was
+     never once seen whole: you clicked to open it, and the cursor was already
+     over the stage. Click to go in, click to come back out. */
+  const [zoomed, setZoomed] = useState(false);
   useScrollLock(true);
   useEscape(onClose);
 
+  // Stepping to another image starts it fitted again.
+  useEffect(() => setZoomed(false), [index]);
+
   const onMove = (e) => {
+    if (!zoomed) return;
     const rect = e.currentTarget.getBoundingClientRect();
     setPan({
       x: ((e.clientX - rect.left) / rect.width) * 100,
@@ -46,14 +55,21 @@ function Lightbox({ images, index, onClose, onStep, alt }) {
         </svg>
       </button>
 
-      <div className="lightbox__stage" onMouseMove={onMove} onMouseLeave={() => setPan({ x: 50, y: 50 })}>
+      <button
+        type="button"
+        className={`lightbox__stage ${zoomed ? 'is-zoomed' : ''}`}
+        onClick={() => setZoomed((z) => !z)}
+        onMouseMove={onMove}
+        onMouseLeave={() => setPan({ x: 50, y: 50 })}
+        aria-label={zoomed ? 'Zoom out' : 'Zoom in'}
+      >
         <img
           src={src(images[index], 2000)}
           alt={alt}
           style={{ transformOrigin: `${pan.x}% ${pan.y}%` }}
           draggable="false"
         />
-      </div>
+      </button>
 
       <button
         type="button"
@@ -120,8 +136,8 @@ export default function Gallery({ images, alt, tone }) {
             <img
               key={image}
               className={i === index ? 'is-on' : ''}
-              src={src(image, 1200, 1.5)}
-              srcSet={srcSet(image, 1.5, [640, 900, 1280, 1800])}
+              src={src(image, 1200, 1.25)}
+              srcSet={srcSet(image, 1.25, [640, 900, 1280, 1800])}
               sizes="(max-width: 999px) 92vw, 42vw"
               alt={i === index ? alt : ''}
               aria-hidden={i !== index}

@@ -38,47 +38,49 @@ import { useDarkHeader } from '../hooks/useHeaderTone.js';
 
    Only a short window of frames is mounted. All forty sit inside the
    viewport, so `loading="lazy"` would not have saved a single request. */
+const HERO_FOCUS = '50% 28%';
+
 const HERO_SLIDES = [
-  { image: IMG.sareeMaroonDrape, kicker: 'The Saree Edit', tone: '#665d56', focus: '55% 28%' },
-  { image: IMG.sareeIvoryRed, kicker: 'The Saree Edit', tone: '#312f2a', focus: '55% 28%' },
-  { image: IMG.editorialMist, kicker: 'Autumn / Winter', tone: '#97a3a2', focus: '55% 58%' },
-  { image: IMG.sareeAmethyst, kicker: 'The Saree Edit', tone: '#413134', focus: '55% 18%' },
-  { image: IMG.sareeNoir, kicker: 'The Saree Edit', tone: '#121516', focus: '55% 18%' },
-  { image: IMG.sareeCreamGold, kicker: 'The Saree Edit', tone: '#7d6550', focus: '55% 58%' },
-  { image: IMG.sareeBanarasiGold, kicker: 'The Saree Edit', tone: '#916645', focus: '55% 18%' },
-  { image: IMG.sareeCrimsonZari, kicker: 'The Saree Edit', tone: '#ae7a6c', focus: '55% 58%' },
-  { image: IMG.sareeMagentaWall, kicker: 'The Saree Edit', tone: '#784b3c', focus: '55% 48%' },
-  { image: IMG.sareeCopperSilk, kicker: 'The Saree Edit', tone: '#5c3826', focus: '55% 18%' },
-  { image: IMG.sareeMossVeil, kicker: 'The Saree Edit', tone: '#4a392b', focus: '55% 18%' },
-  { image: IMG.editorialRouge, kicker: 'Autumn / Winter', tone: '#4a291e', focus: '55% 18%' },
-  { image: IMG.sareeTissuePearl, kicker: 'The Saree Edit', tone: '#7a6f6d', focus: '55% 28%' },
-  { image: IMG.sareeApricot, kicker: 'The Saree Edit', tone: '#b8a8a5', focus: '55% 58%' },
-  { image: IMG.editorialLightRay, kicker: 'Autumn / Winter', tone: '#5c3a2e', focus: '55% 58%' },
-  { image: IMG.suitTeal, kicker: 'Kurta & Sets', tone: '#c7b6b2', focus: '55% 48%' },
-  { image: IMG.suitSage, kicker: 'Kurta & Sets', tone: '#cbb5ad', focus: '55% 38%' },
-  { image: IMG.suitChikanCream, kicker: 'Kurta & Sets', tone: '#c8a99a', focus: '55% 18%' },
-  { image: IMG.suitIvoryEmbroider, kicker: 'Kurta & Sets', tone: '#c8a28e', focus: '55% 58%' },
-  { image: IMG.suitTerracotta, kicker: 'Kurta & Sets', tone: '#ac6a4d', focus: '55% 58%' },
-  { image: IMG.suitOliveVelvet, kicker: 'Kurta & Sets', tone: '#6b6656', focus: '55% 28%' },
-  { image: IMG.suitRoseVelvet, kicker: 'Kurta & Sets', tone: '#715768', focus: '55% 18%' },
-  { image: IMG.suitMustard, kicker: 'Kurta & Sets', tone: '#5b4131', focus: '55% 18%' },
-  { image: IMG.suitMocha, kicker: 'Kurta & Sets', tone: '#cdaa8a', focus: '55% 48%' },
-  { image: IMG.suitLavender, kicker: 'Kurta & Sets', tone: '#c1b7bb', focus: '55% 18%' },
-  { image: IMG.gownBlush, kicker: 'Occasion Wear', tone: '#dccac2', focus: '55% 48%' },
-  { image: IMG.dressIvoryGarden, kicker: 'Occasion Wear', tone: '#6b7255', focus: '55% 18%' },
-  { image: IMG.heroArchKanjivaram, kicker: 'Handloom, By Hand', tone: '#830f18', focus: '55% 18%' },
-  { image: IMG.sareeRoseCopperWall, kicker: 'The Saree Edit', tone: '#651716', focus: '55% 18%' },
-  { image: IMG.sareeGreenGoldPortrait, kicker: 'The Saree Edit', tone: '#453226', focus: '55% 18%' },
-  { image: IMG.sareeOrangeBanarasiPortrait, kicker: 'The Saree Edit', tone: '#824f36', focus: '55% 18%' },
-  { image: IMG.sareePinkMintTissue, kicker: 'The Saree Edit', tone: '#807170', focus: '55% 58%' },
-  { image: IMG.sareeBlueDoorway, kicker: 'The Saree Edit', tone: '#453a37', focus: '55% 18%' },
-  { image: IMG.sareeBlushPortrait, kicker: 'The Saree Edit', tone: '#412d22', focus: '55% 18%' },
-  { image: IMG.lehengaMaroonBrocade, kicker: 'Bridal 2026', tone: '#857f83', focus: '55% 58%' },
-  { image: IMG.sareeTealKanjivaram, kicker: 'The Saree Edit', tone: '#636d6f', focus: '55% 58%' },
-  { image: IMG.sareeOchreCheck, kicker: 'The Saree Edit', tone: '#361e15', focus: '55% 18%' },
-  { image: IMG.sareeOliveGoldWall, kicker: 'The Saree Edit', tone: '#777569', focus: '55% 58%' },
-  { image: IMG.sareeMagentaRedBackdrop, kicker: 'The Saree Edit', tone: '#662727', focus: '55% 58%' },
-  { image: IMG.bridalIvoryNight, kicker: 'Bridal 2026', tone: '#373322', focus: '55% 18%' },
+  { image: IMG.sareeMaroonDrape, kicker: 'The Saree Edit', tone: '#665d56', focus: HERO_FOCUS },
+  { image: IMG.sareeIvoryRed, kicker: 'The Saree Edit', tone: '#312f2a', focus: HERO_FOCUS },
+  { image: IMG.editorialMist, kicker: 'Autumn / Winter', tone: '#97a3a2', focus: HERO_FOCUS },
+  { image: IMG.sareeAmethyst, kicker: 'The Saree Edit', tone: '#413134', focus: HERO_FOCUS },
+  { image: IMG.sareeNoir, kicker: 'The Saree Edit', tone: '#121516', focus: HERO_FOCUS },
+  { image: IMG.sareeCreamGold, kicker: 'The Saree Edit', tone: '#7d6550', focus: HERO_FOCUS },
+  { image: IMG.sareeBanarasiGold, kicker: 'The Saree Edit', tone: '#916645', focus: HERO_FOCUS },
+  { image: IMG.sareeCrimsonZari, kicker: 'The Saree Edit', tone: '#ae7a6c', focus: HERO_FOCUS },
+  { image: IMG.sareeMagentaWall, kicker: 'The Saree Edit', tone: '#784b3c', focus: HERO_FOCUS },
+  { image: IMG.sareeCopperSilk, kicker: 'The Saree Edit', tone: '#5c3826', focus: HERO_FOCUS },
+  { image: IMG.sareeMossVeil, kicker: 'The Saree Edit', tone: '#4a392b', focus: HERO_FOCUS },
+  { image: IMG.editorialRouge, kicker: 'Autumn / Winter', tone: '#4a291e', focus: HERO_FOCUS },
+  { image: IMG.sareeTissuePearl, kicker: 'The Saree Edit', tone: '#7a6f6d', focus: HERO_FOCUS },
+  { image: IMG.sareeApricot, kicker: 'The Saree Edit', tone: '#b8a8a5', focus: HERO_FOCUS },
+  { image: IMG.editorialLightRay, kicker: 'Autumn / Winter', tone: '#5c3a2e', focus: HERO_FOCUS },
+  { image: IMG.suitTeal, kicker: 'Kurta & Sets', tone: '#c7b6b2', focus: HERO_FOCUS },
+  { image: IMG.suitSage, kicker: 'Kurta & Sets', tone: '#cbb5ad', focus: HERO_FOCUS },
+  { image: IMG.suitChikanCream, kicker: 'Kurta & Sets', tone: '#c8a99a', focus: HERO_FOCUS },
+  { image: IMG.suitIvoryEmbroider, kicker: 'Kurta & Sets', tone: '#c8a28e', focus: HERO_FOCUS },
+  { image: IMG.suitTerracotta, kicker: 'Kurta & Sets', tone: '#ac6a4d', focus: HERO_FOCUS },
+  { image: IMG.suitOliveVelvet, kicker: 'Kurta & Sets', tone: '#6b6656', focus: HERO_FOCUS },
+  { image: IMG.suitRoseVelvet, kicker: 'Kurta & Sets', tone: '#715768', focus: HERO_FOCUS },
+  { image: IMG.suitMustard, kicker: 'Kurta & Sets', tone: '#5b4131', focus: HERO_FOCUS },
+  { image: IMG.suitMocha, kicker: 'Kurta & Sets', tone: '#cdaa8a', focus: HERO_FOCUS },
+  { image: IMG.suitLavender, kicker: 'Kurta & Sets', tone: '#c1b7bb', focus: HERO_FOCUS },
+  { image: IMG.gownBlush, kicker: 'Occasion Wear', tone: '#dccac2', focus: HERO_FOCUS },
+  { image: IMG.dressIvoryGarden, kicker: 'Occasion Wear', tone: '#6b7255', focus: HERO_FOCUS },
+  { image: IMG.heroArchKanjivaram, kicker: 'Handloom, By Hand', tone: '#830f18', focus: HERO_FOCUS },
+  { image: IMG.sareeRoseCopperWall, kicker: 'The Saree Edit', tone: '#651716', focus: HERO_FOCUS },
+  { image: IMG.sareeGreenGoldPortrait, kicker: 'The Saree Edit', tone: '#453226', focus: HERO_FOCUS },
+  { image: IMG.sareeOrangeBanarasiPortrait, kicker: 'The Saree Edit', tone: '#824f36', focus: HERO_FOCUS },
+  { image: IMG.sareePinkMintTissue, kicker: 'The Saree Edit', tone: '#807170', focus: HERO_FOCUS },
+  { image: IMG.sareeBlueDoorway, kicker: 'The Saree Edit', tone: '#453a37', focus: HERO_FOCUS },
+  { image: IMG.sareeBlushPortrait, kicker: 'The Saree Edit', tone: '#412d22', focus: HERO_FOCUS },
+  { image: IMG.lehengaMaroonBrocade, kicker: 'Bridal 2026', tone: '#857f83', focus: HERO_FOCUS },
+  { image: IMG.sareeTealKanjivaram, kicker: 'The Saree Edit', tone: '#636d6f', focus: HERO_FOCUS },
+  { image: IMG.sareeOchreCheck, kicker: 'The Saree Edit', tone: '#361e15', focus: HERO_FOCUS },
+  { image: IMG.sareeOliveGoldWall, kicker: 'The Saree Edit', tone: '#777569', focus: HERO_FOCUS },
+  { image: IMG.sareeMagentaRedBackdrop, kicker: 'The Saree Edit', tone: '#662727', focus: HERO_FOCUS },
+  { image: IMG.bridalIvoryNight, kicker: 'Bridal 2026', tone: '#373322', focus: HERO_FOCUS },
 ];
 
 /* The headline needs a dark ground behind it. These frames were measured by
@@ -341,8 +343,8 @@ function Feature() {
           style={{ transform: `scale(${1.14 - progress * 0.14})` }}
         >
           <img
-            src={src(IMG.silkAmberDrape, 2000, 0.62)}
-            srcSet={srcSet(IMG.silkAmberDrape, 0.62, [900, 1400, 2000])}
+            src={src(IMG.silkAmberDrape, 2000, 0.57)}
+            srcSet={srcSet(IMG.silkAmberDrape, 0.57, [900, 1400, 2000])}
             sizes="100vw"
             alt=""
             loading="lazy"

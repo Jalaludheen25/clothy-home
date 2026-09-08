@@ -43,8 +43,8 @@ export default function Collection() {
           style={{ transform: `translate3d(0, ${progress * 14}%, 0) scale(${1.1 + progress * 0.1})` }}
         >
           <img
-            src={src(collection.hero, 1800, 0.78)}
-            srcSet={srcSet(collection.hero, 0.78, [900, 1400, 1800, 2400])}
+            src={src(collection.hero, 1800, 0.58)}
+            srcSet={srcSet(collection.hero, 0.58, [900, 1400, 1800, 2400])}
             sizes="100vw"
             alt=""
             style={{ objectPosition: collection.focus }}

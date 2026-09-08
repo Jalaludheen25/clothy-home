@@ -441,7 +441,7 @@ export default function Product() {
                 open={openPanel === 'customer'}
                 onToggle={() => toggle('customer')}
               >
-                <p>Our Chennai studio answers on WhatsApp and by phone, 10am–7pm IST.</p>
+                <p>Our Kozhikode studio answers on WhatsApp and by phone, 10am–7pm IST.</p>
                 <p>
                   <a href={PHONE_HREF} className="pdp__contact">
                     {PHONE}

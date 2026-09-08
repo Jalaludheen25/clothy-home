@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import { CATEGORIES, COLLECTIONS } from '../../data/catalog.js';
 import {
   ADDRESS,
+  CITY,
   EMAIL,
   EMAIL_HREF,
   PHONE,
   PHONE_HREF,
   SOCIAL,
+  WEBSITE,
+  WEBSITE_HREF,
   WHATSAPP,
   WHATSAPP_HREF,
 } from '../../data/contact.js';
@@ -106,6 +109,14 @@ function ContactMark({ id }) {
       </svg>
     );
   }
+  if (id === 'globe') {
+    return (
+      <svg {...common}>
+        <circle cx="8" cy="8" r="5.9" />
+        <path d="M2.3 8h11.4M8 2.1c1.5 1.6 2.3 3.6 2.3 5.9S9.5 12.3 8 13.9c-1.5-1.6-2.3-3.6-2.3-5.9S6.5 3.7 8 2.1Z" />
+      </svg>
+    );
+  }
   return (
     <svg {...common}>
       <path d="M2.4 13.8l.85-3.1A5.4 5.4 0 1 1 5.4 12.6L2.4 13.8Z" />
@@ -116,7 +127,7 @@ function ContactMark({ id }) {
 /* The blurb is clamped to two lines with the rest behind a toggle, exactly as
    the reference does — the paragraph is long enough that it would otherwise
    set the height of the whole band. */
-const BLURB = `Clothy Home is a small house in Chennai selling handloom sarees, kurta sets
+const BLURB = `Clothy Home is a small house in Kozhikode selling handloom sarees, kurta sets
 and dress cloth by the metre. Everything is made in runs short enough that we know roughly
 where each piece went, across seven workshops we have bought from for years. We publish the
 town and, where they permit it, the workshop — because you should be able to check. Nothing
@@ -216,6 +227,15 @@ export default function Footer() {
               <ContactMark id="phone" />
               {PHONE}
             </a>
+            <a
+              href={WEBSITE_HREF}
+              className="foot__contact-row"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              <ContactMark id="globe" />
+              {WEBSITE}
+            </a>
             <a href={EMAIL_HREF} className="foot__contact-row">
               <ContactMark id="mail" />
               {EMAIL}
@@ -265,6 +285,15 @@ export default function Footer() {
             <a href={PHONE_HREF} className="foot__line">
               <ContactMark id="phone" />
               {PHONE}
+            </a>
+            <a
+              href={WEBSITE_HREF}
+              className="foot__line"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              <ContactMark id="globe" />
+              {WEBSITE}
             </a>
             <a href={EMAIL_HREF} className="foot__line">
               <ContactMark id="mail" />
@@ -329,7 +358,7 @@ export default function Footer() {
 
       <div className="foot__base">
         <div className="shell foot__baseinner">
-          <p>© {new Date().getFullYear()} Clothy Home, Chennai. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Clothyhome LLP, {CITY}. All rights reserved.</p>
           <ul className="foot__legal">
             <li>
               <Link to="/atelier#terms">Terms</Link>

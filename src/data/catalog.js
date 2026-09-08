@@ -15,7 +15,7 @@ export const CATEGORIES = [
     group: 'Cloth',
     tagline: 'Six yards, woven by hand',
     blurb:
-      'Kanjivaram, Banarasi, Chanderi and Tussar — woven on pit looms in Kanchipuram, Varanasi and Bhagalpur, then finished in our Chennai atelier.',
+      'Kanjivaram, Banarasi, Chanderi and Tussar — woven on pit looms in Kanchipuram, Varanasi and Bhagalpur, then finished in our Kozhikode atelier.',
     hero: IMG.heroArchKanjivaram,
     heroFocus: '62% 14%',
     plate: IMG.silkCrimson,

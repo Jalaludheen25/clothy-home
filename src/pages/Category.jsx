@@ -57,8 +57,8 @@ export default function Category() {
         <div className="cathero__media">
           <div className="cathero__img" style={{ transform: `translate3d(0, ${progress * 12}%, 0) scale(${1.08 + progress * 0.08})` }}>
             <img
-              src={src(category.hero, 1800, 0.72)}
-              srcSet={srcSet(category.hero, 0.72, [900, 1400, 1800, 2400])}
+              src={src(category.hero, 1800, 0.58)}
+              srcSet={srcSet(category.hero, 0.58, [900, 1400, 1800, 2400])}
               sizes="100vw"
               alt=""
               style={{ objectPosition: category.heroFocus }}

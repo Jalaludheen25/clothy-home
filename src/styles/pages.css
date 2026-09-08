@@ -1039,14 +1039,16 @@
 /* --- lightbox ------------------------------------------------------------- */
 
 .lightbox {
+  --lb-pad: clamp(1rem, 4vw, 3rem);
   position: fixed;
   inset: 0;
   z-index: var(--z-overlay);
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr);
   align-items: center;
   gap: 1rem;
-  padding: clamp(1rem, 4vw, 3rem);
+  padding: var(--lb-pad);
   background: rgba(12, 10, 8, 0.985);
   backdrop-filter: blur(10px);
   color: var(--bone-base);
@@ -1061,30 +1063,46 @@
   }
 }
 .lightbox__stage {
-  height: 100%;
+  width: 100%;
+  min-height: 0;
+  min-width: 0;
   display: grid;
   place-items: center;
   overflow: hidden;
   cursor: zoom-in;
 }
+.lightbox__stage.is-zoomed {
+  cursor: zoom-out;
+}
+/* The height cap is in viewport units on purpose. Against the stage it was a
+   percentage of a row whose size depended on this image — circular, so the
+   browser fell back to the intrinsic height and painted a 3000px photograph
+   1848px tall inside an 804px stage, clipped by the overflow. That was the
+   "opened image is over-fitted". Viewport units are definite, so both
+   constraints bind and the picture always fits. */
 .lightbox__stage img {
+  width: auto;
+  height: auto;
   max-width: 100%;
-  max-height: 100%;
+  max-height: calc(100dvh - var(--lb-pad) * 2);
   object-fit: contain;
   transition: transform 0.45s var(--ease);
   animation: lbImg 0.55s var(--ease) both;
 }
-.lightbox__stage:hover img {
+/* Only once asked. On hover this meant the photograph was never seen whole. */
+.lightbox__stage.is-zoomed img {
   transform: scale(1.9);
 }
+/* Opacity only. This used to animate transform as well, and with fill-mode
+   `both` its final `transform: none` stayed applied — a running animation
+   out-ranks a normal declaration, so the zoom rule above could never take
+   effect no matter what triggered it. */
 @keyframes lbImg {
   from {
     opacity: 0;
-    transform: scale(0.97);
   }
   to {
     opacity: 1;
-    transform: none;
   }
 }
 .lightbox__close {

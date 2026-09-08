@@ -11,7 +11,7 @@ import {
 } from '../components/ui/Primitives.jsx';
 import { src, srcSet } from '../data/images.js';
 import { useDarkHeader } from '../hooks/useHeaderTone.js';
-import { EMAIL, EMAIL_HREF } from '../data/contact.js';
+import { ADDRESS_LINE, EMAIL, EMAIL_HREF } from '../data/contact.js';
 
 /* ==========================================================================
    Atelier — the about / help page
@@ -85,8 +85,8 @@ export default function Atelier() {
           style={{ transform: `translate3d(0, ${progress * 13}%, 0) scale(${1.1 + progress * 0.09})` }}
         >
           <img
-            src={src(IMG.craftHandFabric, 1800, 0.7)}
-            srcSet={srcSet(IMG.craftHandFabric, 0.7, [900, 1400, 1800, 2400])}
+            src={src(IMG.craftHandFabric, 1800, 0.58)}
+            srcSet={srcSet(IMG.craftHandFabric, 0.58, [900, 1400, 1800, 2400])}
             sizes="100vw"
             alt=""
             loading="eager"
@@ -104,7 +104,7 @@ export default function Atelier() {
             delay={60}
           />
           <Reveal as="p" className="lead ahero__blurb" delay={200}>
-            Chennai, since 1998. Seven workshops, twenty-seven families, and a stubborn
+            Kozhikode, since 1998. Seven workshops, twenty-seven families, and a stubborn
             refusal to call anything handloom that isn&rsquo;t.
           </Reveal>
         </div>
@@ -119,7 +119,7 @@ export default function Atelier() {
             <RevealText
               as="h2"
               className="display d1 astory__title"
-              text="One saree, sold badly, in Mylapore."
+              text="One saree, sold badly, in Narippatta."
               delay={70}
             />
             <Reveal as="div" className="astory__prose" delay={180}>
@@ -239,7 +239,7 @@ export default function Atelier() {
             <Accordion title="Shipping & returns" id="shipping">
               <p>
                 Insured, tracked delivery is complimentary within India on orders over ₹15,000 and
-                ₹350 below that. Express is ₹900 and white-glove hand delivery in Chennai, Mumbai,
+                ₹350 below that. Express is ₹900 and white-glove hand delivery in Kozhikode, Kochi,
                 Delhi and Bengaluru is ₹2,400.
               </p>
               <p>
@@ -306,8 +306,8 @@ export default function Atelier() {
             </Reveal>
             <RevealText as="h2" className="display d2" text="The studio, by appointment." delay={70} />
             <Reveal as="p" className="lead" delay={170}>
-              12 Kutchery Road, Mylapore, Chennai 600004. Tuesday to Saturday, 11am–6pm. We will
-              have the kettle on and the archive open.
+              {ADDRESS_LINE}. Tuesday to Saturday, 11am–6pm. We will have the kettle on and
+              the archive open.
             </Reveal>
           </div>
           <Reveal delay={230}>
