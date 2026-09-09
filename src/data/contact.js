@@ -6,14 +6,15 @@
    duplicated across all of those before, which is how a number gets changed
    in three of them.
 
-   Taken from the company card: the Kozhikode warehouse, the landline and the
-   published address. The Instagram handle is not printed on the card — it is
-   only in the QR block — so the profile link stands as it was.
+   The address and website come from the company card; the contact number is
+   the one we were given for both calls and WhatsApp. The Instagram handle is
+   not printed on the card — it is only in the QR block — so the profile link
+   stands as it was.
    ========================================================================== */
 
-export const PHONE = '+91 97451 23677';
+export const PHONE = '+91 75101 87678';
 /** Digits only, for the tel: href — spaces in a tel URI are not portable. */
-export const PHONE_HREF = 'tel:+919745123677';
+export const PHONE_HREF = 'tel:+917510187678';
 
 export const EMAIL = 'theclothyhome@gmail.com';
 export const EMAIL_HREF = 'mailto:theclothyhome@gmail.com';
@@ -23,8 +24,8 @@ export const WEBSITE = 'www.clothyhome.com';
 export const WEBSITE_HREF = 'https://www.clothyhome.com';
 
 /* wa.me wants the number bare — no plus, no spaces. */
-export const WHATSAPP = '+91 97451 23677';
-export const WHATSAPP_HREF = 'https://wa.me/919745123677';
+export const WHATSAPP = '+91 75101 87678';
+export const WHATSAPP_HREF = 'https://wa.me/917510187678';
 
 /** The registered warehouse, as printed. */
 export const ADDRESS = [
