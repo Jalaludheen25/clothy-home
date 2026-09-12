@@ -2643,7 +2643,7 @@
   /* Vertical drags still scroll the page; sideways ones are the carousel's. */
   touch-action: pan-y;
   height: calc(var(--spot-w) * 1.7778);
-  perspective: 1600px;
+  perspective: calc(var(--spot-w) * 5.4);
   transform-style: preserve-3d;
 }
 .spot__track:focus-visible {

@@ -244,13 +244,13 @@ export default function ShopTheLook() {
                       className="spot__media"
                       draggable={false}
                       src={src(product.images[0], 640, 1.777)}
-                      /* The card runs from 179px on a small phone to 460px on
-                         a wide desktop, so at 2x the set has to reach 900.
+                      /* The card runs from 179px on a small phone to 560px on
+                         a wide desktop, so at 2x the set has to reach 1120.
                          The hint tracks the CSS sum loosely and always from
                          above — over-fetching costs bytes, under-fetching
                          costs a soft photograph, and this is the hero. */
-                      srcSet={srcSet(product.images[0], 1.777, [360, 480, 640, 900, 1200])}
-                      sizes="(max-width: 620px) 66vw, (max-width: 1500px) 31vw, 460px"
+                      srcSet={srcSet(product.images[0], 1.777, [360, 480, 640, 900, 1200, 1500])}
+                      sizes="(max-width: 620px) 72vw, (max-width: 1500px) 34vw, 560px"
                       alt={product.name}
                       loading={Math.abs(offset) <= 2 ? 'eager' : 'lazy'}
                       decoding="async"
