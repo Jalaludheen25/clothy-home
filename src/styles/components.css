@@ -255,13 +255,13 @@
    `--card-min` is the target card width. The `.grid--N` classes now cap the
    count rather than set it, so a rail meant to hold four never runs to six. */
 .grid {
-  --card-min: 222px;
+  --card-min: 240px;
   /* An upper bound as well as a lower one. With a `1fr` maximum the cards
      stretch to fill whatever is left until another column fits, which put a
      289px card on a 1280 screen and a 226px card on a 1600 one. Capping the
      track holds the spread to roughly a fifth and parks the remainder at the
      end of the row instead of inside every card. */
-  --card-max: 272px;
+  --card-max: 291px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--card-min), var(--card-max)));
   justify-content: start;
@@ -271,8 +271,8 @@
    floor here would pin the count to a fraction of the container and bring
    back exactly the stretching this replaced. */
 .grid--2 { --card-min: 420px; }
-.grid--3 { --card-min: 222px; }
-.grid--4 { --card-min: 222px; }
+.grid--3 { --card-min: 240px; }
+.grid--4 { --card-min: 240px; }
 
 /* Below the point where two 240px cards plus a gap fit, hold two columns and
    let them shrink — one enormous card per row reads as a bug. */
@@ -559,9 +559,11 @@
   width: max-content;
 }
 .rail__cell {
-  /* Matched to the grid's card target so a rail and a grid on the same page
-     show the same size of card. */
-  width: clamp(190px, 19vw, 258px);
+  /* The same width as a grid card, so a rail and a grid on one page show the
+     same size of card. 20vw used to shrink it to 256px at 1280 while the grid
+     held at 291 — the cap has to be the normal case, not the ceiling. Only
+     below ~370px does it give way, so a phone still sees the next card peek. */
+  width: clamp(240px, 78vw, 291px);
   scroll-snap-align: start;
 }
 

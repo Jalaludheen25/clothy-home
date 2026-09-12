@@ -35,7 +35,8 @@ function ProductCardBase({ product, index = 0, priority = false, size = 'md' }) 
   const [hovered, setHovered] = useState(false);
   const saved = isSaved(product.slug);
 
-  const ratio = 1.3;
+  /* 4:5, matching the reference's product media. */
+  const ratio = 1.25;
   const width = size === 'lg' ? 1100 : 760;
   const [front, back] = product.images;
 
