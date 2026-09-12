@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   CATEGORIES,
@@ -6,12 +6,6 @@ import {
   PRODUCTS,
   inCollection,
 } from '../data/catalog.js';
-import IMG, { src, srcSet } from '../data/images.js';
-import {
-  useInView,
-  useParallax,
-  useScrollProgress,
-} from '../hooks/useMotion.js';
 import {
   Figure,
   LinkLine,
@@ -23,266 +17,107 @@ import {
 } from '../components/ui/Primitives.jsx';
 import { ProductGrid, ProductRail } from '../components/product/ProductCard.jsx';
 import ShopTheLook from '../components/home/ShopTheLook.jsx';
-import { useDarkHeader } from '../hooks/useHeaderTone.js';
+import PanelHero from '../components/ui/PanelHero.jsx';
 
 /* ==========================================================================
    Home
    ========================================================================== */
 
-/* Every full-bleed-worthy photograph in the library rather than a picked
-   three. `tone` is the frame's own average colour, held behind it while it
-   loads, and `focus` is the object-position for the crop — both read off the
-   pixels rather than guessed, so a portrait is not cut off at the ankles.
-   Jewellery and fabric macros are left out: the range is cloth, and a
-   magnified weave cannot carry a headline.
-
-   Only a short window of frames is mounted. All forty sit inside the
-   viewport, so `loading="lazy"` would not have saved a single request. */
-const HERO_FOCUS = '50% 28%';
-
-const HERO_SLIDES = [
-  { image: IMG.sareeMaroonDrape, kicker: 'The Saree Edit', tone: '#665d56', focus: HERO_FOCUS },
-  { image: IMG.sareeIvoryRed, kicker: 'The Saree Edit', tone: '#312f2a', focus: HERO_FOCUS },
-  { image: IMG.editorialMist, kicker: 'Autumn / Winter', tone: '#97a3a2', focus: HERO_FOCUS },
-  { image: IMG.sareeAmethyst, kicker: 'The Saree Edit', tone: '#413134', focus: HERO_FOCUS },
-  { image: IMG.sareeNoir, kicker: 'The Saree Edit', tone: '#121516', focus: HERO_FOCUS },
-  { image: IMG.sareeCreamGold, kicker: 'The Saree Edit', tone: '#7d6550', focus: HERO_FOCUS },
-  { image: IMG.sareeBanarasiGold, kicker: 'The Saree Edit', tone: '#916645', focus: HERO_FOCUS },
-  { image: IMG.sareeCrimsonZari, kicker: 'The Saree Edit', tone: '#ae7a6c', focus: HERO_FOCUS },
-  { image: IMG.sareeMagentaWall, kicker: 'The Saree Edit', tone: '#784b3c', focus: HERO_FOCUS },
-  { image: IMG.sareeCopperSilk, kicker: 'The Saree Edit', tone: '#5c3826', focus: HERO_FOCUS },
-  { image: IMG.sareeMossVeil, kicker: 'The Saree Edit', tone: '#4a392b', focus: HERO_FOCUS },
-  { image: IMG.editorialRouge, kicker: 'Autumn / Winter', tone: '#4a291e', focus: HERO_FOCUS },
-  { image: IMG.sareeTissuePearl, kicker: 'The Saree Edit', tone: '#7a6f6d', focus: HERO_FOCUS },
-  { image: IMG.sareeApricot, kicker: 'The Saree Edit', tone: '#b8a8a5', focus: HERO_FOCUS },
-  { image: IMG.editorialLightRay, kicker: 'Autumn / Winter', tone: '#5c3a2e', focus: HERO_FOCUS },
-  { image: IMG.suitTeal, kicker: 'Kurta & Sets', tone: '#c7b6b2', focus: HERO_FOCUS },
-  { image: IMG.suitSage, kicker: 'Kurta & Sets', tone: '#cbb5ad', focus: HERO_FOCUS },
-  { image: IMG.suitChikanCream, kicker: 'Kurta & Sets', tone: '#c8a99a', focus: HERO_FOCUS },
-  { image: IMG.suitIvoryEmbroider, kicker: 'Kurta & Sets', tone: '#c8a28e', focus: HERO_FOCUS },
-  { image: IMG.suitTerracotta, kicker: 'Kurta & Sets', tone: '#ac6a4d', focus: HERO_FOCUS },
-  { image: IMG.suitOliveVelvet, kicker: 'Kurta & Sets', tone: '#6b6656', focus: HERO_FOCUS },
-  { image: IMG.suitRoseVelvet, kicker: 'Kurta & Sets', tone: '#715768', focus: HERO_FOCUS },
-  { image: IMG.suitMustard, kicker: 'Kurta & Sets', tone: '#5b4131', focus: HERO_FOCUS },
-  { image: IMG.suitMocha, kicker: 'Kurta & Sets', tone: '#cdaa8a', focus: HERO_FOCUS },
-  { image: IMG.suitLavender, kicker: 'Kurta & Sets', tone: '#c1b7bb', focus: HERO_FOCUS },
-  { image: IMG.gownBlush, kicker: 'Occasion Wear', tone: '#dccac2', focus: HERO_FOCUS },
-  { image: IMG.dressIvoryGarden, kicker: 'Occasion Wear', tone: '#6b7255', focus: HERO_FOCUS },
-  { image: IMG.heroArchKanjivaram, kicker: 'Handloom, By Hand', tone: '#830f18', focus: HERO_FOCUS },
-  { image: IMG.sareeRoseCopperWall, kicker: 'The Saree Edit', tone: '#651716', focus: HERO_FOCUS },
-  { image: IMG.sareeGreenGoldPortrait, kicker: 'The Saree Edit', tone: '#453226', focus: HERO_FOCUS },
-  { image: IMG.sareeOrangeBanarasiPortrait, kicker: 'The Saree Edit', tone: '#824f36', focus: HERO_FOCUS },
-  { image: IMG.sareePinkMintTissue, kicker: 'The Saree Edit', tone: '#807170', focus: HERO_FOCUS },
-  { image: IMG.sareeBlueDoorway, kicker: 'The Saree Edit', tone: '#453a37', focus: HERO_FOCUS },
-  { image: IMG.sareeBlushPortrait, kicker: 'The Saree Edit', tone: '#412d22', focus: HERO_FOCUS },
-  { image: IMG.lehengaMaroonBrocade, kicker: 'Bridal 2026', tone: '#857f83', focus: HERO_FOCUS },
-  { image: IMG.sareeTealKanjivaram, kicker: 'The Saree Edit', tone: '#636d6f', focus: HERO_FOCUS },
-  { image: IMG.sareeOchreCheck, kicker: 'The Saree Edit', tone: '#361e15', focus: HERO_FOCUS },
-  { image: IMG.sareeOliveGoldWall, kicker: 'The Saree Edit', tone: '#777569', focus: HERO_FOCUS },
-  { image: IMG.sareeMagentaRedBackdrop, kicker: 'The Saree Edit', tone: '#662727', focus: HERO_FOCUS },
-  { image: IMG.bridalIvoryNight, kicker: 'Bridal 2026', tone: '#373322', focus: HERO_FOCUS },
+/* Five destinations, not five decorations. Each card names where it goes,
+   and its photographs come from the pieces that actually live there — so the
+   label and the pictures can never drift apart. */
+const HERO_CARDS = [
+  {
+    kicker: 'The house',
+    title: 'Sarees',
+    line: 'Six yards, woven by hand.',
+    cta: { label: 'Shop sarees', to: '/category/sarees' },
+    from: { type: 'category', slug: 'sarees' },
+  },
+  {
+    kicker: 'Just off the loom',
+    title: 'New Arrivals',
+    line: 'The most recent forty days.',
+    cta: { label: 'See what is new', to: '/collection/new-arrivals' },
+    from: { type: 'collection', slug: 'new-arrivals' },
+  },
+  {
+    kicker: 'For the long days',
+    title: 'Bridal & Ceremony',
+    line: 'Korvai borders and real zari.',
+    cta: { label: 'Explore bridal', to: '/collection/bridal' },
+    from: { type: 'collection', slug: 'bridal' },
+  },
+  {
+    kicker: 'By the metre',
+    title: 'Churidar & Fabric',
+    line: 'Stitched sets and cloth uncut.',
+    cta: { label: 'Shop the cloth', to: '/category/churidar' },
+    from: { type: 'category', slug: 'churidar' },
+  },
+  {
+    kicker: 'Most asked for',
+    title: 'Best Sellers',
+    line: 'Reordered more than once.',
+    cta: { label: 'See the favourites', to: '/collection/best-sellers' },
+    from: { type: 'collection', slug: 'best-sellers' },
+  },
 ];
 
-/* The headline needs a dark ground behind it. These frames were measured by
-   rendering each one, hiding the type, and sampling only the pixels the
-   glyphs actually cover — the first group is bright at the foot, the second
-   came in under 4:1 on the headline itself even though its foot is dark. Both
-   take a deeper scrim rather than being dropped from the rotation. */
-const BRIGHT_FOOT = new Set([
-  'suitTeal',
-  'suitSage',
-  'suitChikanCream',
-  'suitIvoryEmbroider',
-  'suitMocha',
-  'suitLavender',
-  'gownBlush',
-  'editorialMist',
-  'sareeApricot',
-  'lehengaMaroonBrocade',
-  // marginal on the headline, not at the foot
-  'sareeCrimsonZari',
-  'sareeCopperSilk',
-  'sareeOrangeBanarasiPortrait',
-  'sareePinkMintTissue',
-  'sareeTealKanjivaram',
-  'sareeOliveGoldWall',
-  'sareeMagentaRedBackdrop',
-  'sareeIvoryRed',
-]);
-
-/* Frames kept mounted either side of the current one: enough to cross-fade
-   out of, and to have the next photograph decoded before it is shown. */
-const WINDOW = 1;
-
 function Hero() {
-  /* The outgoing frame is held at full opacity underneath while the incoming
-     one fades in above it. Cross-fading both at once double-exposes the two
-     photographs and turns the middle of the transition to mud. */
-  const [slide, setSlide] = useState({ index: 0, prev: 0 });
-  const [progressRef, progress] = useScrollProgress({ mode: 'exit' });
-  const timer = useRef(0);
+  const cards = useMemo(() => {
+    /* The five destinations overlap — a new arrival is also a saree, a best
+       seller is usually both — so taking the first few pieces of each pool
+       independently put the same photograph on two cards at once. Claim as
+       we go: each card takes pieces no earlier card has used, and only falls
+       back to a shared one if its pool is exhausted. */
+    const taken = new Set();
+    return HERO_CARDS.map((card) => {
+      const pool =
+        card.from.type === 'category'
+          ? PRODUCTS.filter((product) => product.category === card.from.slug)
+          : inCollection(card.from.slug);
 
-  const index = slide.index;
+      const mine = [];
+      for (const product of pool) {
+        if (mine.length >= 6) break;
+        if (taken.has(product.slug)) continue;
+        taken.add(product.slug);
+        mine.push(product);
+      }
+      /* A small collection can run dry once the cards before it have taken
+         their share; better a repeat than an empty card. */
+      if (!mine.length) mine.push(...pool.slice(0, 3));
 
-  /* Bumped by a manual step so the dwell timer below restarts. Without it the
-     autoplay tick stayed on its original schedule and could advance again a
-     fraction of a second after someone pressed the arrow. */
-  const [nudge, setNudge] = useState(0);
-
-  const go = useCallback((next) => {
-    setSlide((s) => ({
-      prev: s.index,
-      index: (next + HERO_SLIDES.length) % HERO_SLIDES.length,
-    }));
-    setNudge((n) => n + 1);
+      return { ...card, images: mine.map((product) => product.images[0]) };
+    });
   }, []);
 
-  useEffect(() => {
-    timer.current = window.setInterval(() => {
-      setSlide((s) => ({ prev: s.index, index: (s.index + 1) % HERO_SLIDES.length }));
-    }, 6200);
-    return () => window.clearInterval(timer.current);
-  }, [nudge]);
-
-  /* Which frames are in the DOM at all — forty mounted at once would fetch
-     forty full-bleed photographs on first paint. */
-  const mounted = useMemo(() => {
-    const keep = new Set([slide.prev]);
-    for (let d = -WINDOW; d <= WINDOW; d += 1) {
-      keep.add((index + d + HERO_SLIDES.length) % HERO_SLIDES.length);
-    }
-    return keep;
-  }, [index, slide.prev]);
-
-  const item = HERO_SLIDES[index];
-  const deepScrim = [...BRIGHT_FOOT].some((name) => IMG[name] === item.image);
-
   return (
-    <section className="hero" ref={progressRef} aria-label="Clothy Home">
-      <div className="hero__media">
-        {HERO_SLIDES.map((frame, i) =>
-          mounted.has(i) ? (
-            <div
-              className={`hero__slide ${i === index ? 'is-on' : ''} ${
-                i === slide.prev && i !== index ? 'is-out' : ''
-              }`}
-              key={i}
-              style={{
-                '--tone': frame.tone,
-                // The image drifts up and dims as the page scrolls past it.
-                transform: `translate3d(0, ${progress * 16}%, 0) scale(${1 + progress * 0.14})`,
-              }}
-            >
-              <img
-                src={src(frame.image, 1800, 1.28)}
-                srcSet={srcSet(frame.image, 1.28, [900, 1280, 1800, 2400])}
-                sizes="100vw"
-                alt=""
-                style={{ objectPosition: frame.focus }}
-                loading={i === 0 ? 'eager' : 'lazy'}
-                fetchpriority={i === 0 ? 'high' : 'low'}
-                decoding="async"
+    <PanelHero
+      panels={cards}
+      masthead={
+        <>
+          <p className="phero__eyebrow eyebrow">Handloom, by hand</p>
+          <h1 className="phero__title">
+            Woven <em className="serif-italic">slowly,</em> worn for a lifetime.
+          </h1>
+          <Link to="/shop" className="phero__all">
+            All pieces
+            <svg viewBox="0 0 18 8" width="17" height="8" aria-hidden="true">
+              <path
+                d="M0 4h16M12.6 1 16 4l-3.4 3"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
-            </div>
-          ) : null,
-        )}
-        <div className={`hero__wash ${deepScrim ? 'is-deep' : ''}`} aria-hidden="true" />
-      </div>
-
-      <div className="hero__body shell" style={{ opacity: 1 - progress * 1.5 }}>
-        <p className="hero__kicker eyebrow">
-          <span key={item.kicker + index}>{item.kicker}</span>
-        </p>
-        <h1 className="hero__title display display-hero">
-          <span className="hero__line">
-            <span>Woven</span>
-          </span>
-          <span className="hero__line">
-            <em className="serif-italic">slowly,</em>
-          </span>
-          <span className="hero__line">
-            <span>worn for</span>
-          </span>
-          <span className="hero__line">
-            <span>a lifetime.</span>
-          </span>
-        </h1>
-
-        <div className="hero__foot">
-          <p className="hero__blurb">
-            Handloom sarees, kurta sets and dress cloth by the metre — made in small
-            runs across seven Indian workshops.
-          </p>
-          <div className="hero__actions">
-            <MagneticButton to="/shop" variant="bone" size="lg">
-              Shop Now
-            </MagneticButton>
-            <MagneticButton to="/collection/new-arrivals" variant="ghost" size="lg" className="hero__ghost">
-              New arrivals
-            </MagneticButton>
-          </div>
-        </div>
-      </div>
-
-      {/* A dash per frame read well at three and would be eight hundred pixels
-          of them at forty, so the rail became a counter with a position line
-          and a step either side of it. */}
-      <div className="hero__nav">
-        <button
-          type="button"
-          className="hero__step"
-          onClick={() => go(index - 1)}
-          aria-label="Previous frame"
-        >
-          <svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true">
-            <path
-              d="M6 10.5V1.8M2.2 5.6 6 1.8l3.8 3.8"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-
-        <p className="hero__count num" aria-live="polite">
-          <span>{String(index + 1).padStart(2, '0')}</span>
-          <span className="hero__count-of" aria-hidden="true">
-            /
-          </span>
-          <span className="sr-only">of</span>
-          <span>{HERO_SLIDES.length}</span>
-        </p>
-
-        <span className="hero__track" aria-hidden="true">
-          <span style={{ height: `${((index + 1) / HERO_SLIDES.length) * 100}%` }} />
-        </span>
-
-        <button
-          type="button"
-          className="hero__step"
-          onClick={() => go(index + 1)}
-          aria-label="Next frame"
-        >
-          <svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true">
-            <path
-              d="M6 1.5v8.7M2.2 6.4 6 10.2l3.8-3.8"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-      </div>
-
-      <span className="hero__scroll" aria-hidden="true">
-        <em>Scroll</em>
-        <i />
-      </span>
-    </section>
+            </svg>
+          </Link>
+        </>
+      }
+    />
   );
 }
 
@@ -325,117 +160,6 @@ function CategoryWall() {
             </Reveal>
           ))}
 
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Feature() {
-  const [ref, progress] = useScrollProgress();
-  const inner = useParallax(0.12);
-
-  return (
-    <section className="feature on-ink" ref={ref}>
-      <div className="feature__media">
-        <div
-          className="feature__img"
-          style={{ transform: `scale(${1.14 - progress * 0.14})` }}
-        >
-          <img
-            src={src(IMG.silkAmberDrape, 2000, 0.57)}
-            srcSet={srcSet(IMG.silkAmberDrape, 0.57, [900, 1400, 2000])}
-            sizes="100vw"
-            alt=""
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-        <span className="feature__scrim" aria-hidden="true" />
-      </div>
-
-      <div className="feature__body shell" ref={inner}>
-        <Reveal as="p" className="eyebrow">
-          Collection 02
-        </Reveal>
-        <RevealText as="h2" className="display d1 feature__title" text="Zari & Gold" delay={70} />
-        <Reveal as="p" className="lead feature__blurb" delay={200}>
-          Real zari is silver, drawn to a hair, gilded and wound onto silk. It costs what it
-          costs because it is, quite literally, precious metal woven into cloth.
-        </Reveal>
-        <Reveal delay={280}>
-          <MagneticButton to="/collection/zari-and-gold" variant="bone" size="lg">
-            See the edit
-          </MagneticButton>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
-function Editorial() {
-  const [ref, inView] = useInView({ threshold: 0.2 });
-  const drift = useParallax(0.1);
-
-  return (
-    <section className={`editorial section ${inView ? 'is-in' : ''}`} ref={ref}>
-      <div className="shell editorial__grid">
-        <div className="editorial__stack">
-          <div className="editorial__plate editorial__plate--tall" ref={drift}>
-            <Figure
-              image={IMG.sareeMagentaWall}
-              alt="A magenta mashru silk saree against a brick wall"
-              ratio={1.42}
-              width={900}
-              sizes="(max-width: 900px) 88vw, 38vw"
-              tone="#8c2f5a"
-            />
-          </div>
-          <div className="editorial__plate editorial__plate--wide">
-            <Figure
-              image={IMG.sareeOchreCheck}
-              alt="A checked silk saree, in shadow"
-              ratio={0.74}
-              width={900}
-              sizes="(max-width: 900px) 60vw, 27vw"
-              tone="#d3b48b"
-            />
-          </div>
-        </div>
-
-        <div className="editorial__text">
-          <Reveal as="p" className="eyebrow">
-            From the journal
-          </Reveal>
-          <RevealText
-            as="h2"
-            className="display d2 editorial__title"
-            text="The six yards argument"
-            delay={70}
-          />
-          <Reveal as="div" className="editorial__prose" delay={180}>
-            <p>
-              A saree has no size. It is the only major garment left that fits a body by
-              being folded rather than cut — which is why one bought at twenty still works
-              at sixty, and why it moves between generations without alteration.
-            </p>
-            <p>
-              We think that is the most modern thing about it. Not nostalgia; engineering.
-            </p>
-          </Reveal>
-          <Reveal delay={280}>
-            <LinkLine to="/category/sarees">Read the sarees</LinkLine>
-          </Reveal>
-
-          <Reveal className="editorial__quote" delay={340}>
-            <blockquote>
-              <p className="serif-italic">
-                “I stopped counting the wears at about two hundred. The silk has only got
-                better.”
-              </p>
-              <cite>Meera R. — Bengaluru, on the Tamra Katan</cite>
-            </blockquote>
-          </Reveal>
         </div>
       </div>
     </section>
@@ -503,7 +227,6 @@ function OfferBand() {
 }
 
 export default function Home() {
-  useDarkHeader();
 
   const newArrivals = inCollection('new-arrivals').slice(0, 8);
   const best = [...PRODUCTS]
@@ -541,8 +264,6 @@ export default function Home() {
       </section>
 
       <CategoryWall />
-      <Feature />
-      <Editorial />
 
       <section className="section">
         <div className="shell">

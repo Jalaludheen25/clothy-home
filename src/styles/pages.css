@@ -1,37 +1,3 @@
-/* ==========================================================================
-   Pages
-   ========================================================================== */
-
-/* --- home: hero ----------------------------------------------------------- */
-
-.hero {
-  position: relative;
-  height: 100svh;
-  min-height: 620px;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-  color: var(--bone);
-}
-
-.hero__media {
-  position: absolute;
-  inset: 0;
-  /* An explicit z-index (not auto) so this element forms a stacking context:
-     the slides and the wash order themselves inside it, and none of them can
-     out-rank .hero__body above. */
-  z-index: 0;
-  background: var(--ink);
-}
-.hero__slide {
-  position: absolute;
-  inset: -8% 0 -8%;
-  opacity: 0;
-  z-index: 0;
-  transition: opacity 1.5s var(--ease);
-  will-change: transform, opacity;
-  background: var(--tone);
-}
 /* The frame being replaced stays solid underneath, with no transition, so the
    incoming one fades over a photograph rather than over the page. */
 .hero__slide.is-out {
@@ -42,60 +8,21 @@
 .hero__slide.is-on {
   opacity: 1;
   z-index: 2;
-}
-.hero__slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  animation: heroDrift 14s var(--ease) infinite alternate;
-}
-@keyframes heroDrift {
+}@keyframes heroDrift {
   from {
     transform: scale(1);
   }
   to {
     transform: scale(1.07);
   }
-}
-.hero__wash {
-  position: absolute;
-  inset: 0;
-  /* Must out-rank the slides, which carry a z-index of their own so the
-     outgoing frame can sit under the incoming one during a crossfade. */
-  z-index: 3;
-  background:
-    linear-gradient(180deg, rgba(20, 17, 13, 0.58) 0%, rgba(20, 17, 13, 0) 26%),
-    linear-gradient(0deg, rgba(20, 17, 13, 0.88) 0%, rgba(20, 17, 13, 0.4) 44%, rgba(20, 17, 13, 0.06) 78%),
-    linear-gradient(96deg, rgba(20, 17, 13, 0.66) 0%, rgba(20, 17, 13, 0.3) 32%, transparent 62%);
-  transition: opacity 0.6s var(--ease);
-}
-/* Pale frames — an ivory suit against a white wall — need more under the
+}/* Pale frames — an ivory suit against a white wall — need more under the
    headline than a dark drape does. */
 .hero__wash.is-deep {
   background:
     linear-gradient(180deg, rgba(20, 17, 13, 0.62) 0%, rgba(20, 17, 13, 0) 26%),
     linear-gradient(0deg, rgba(20, 17, 13, 0.94) 0%, rgba(20, 17, 13, 0.66) 44%, rgba(20, 17, 13, 0.22) 82%),
     linear-gradient(96deg, rgba(20, 17, 13, 0.78) 0%, rgba(20, 17, 13, 0.46) 34%, rgba(20, 17, 13, 0.08) 68%);
-}
-
-.hero__body {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  padding-bottom: clamp(2.4rem, 6vh, 5rem);
-  padding-top: calc(var(--header-h) + 3.5rem);
-}
-
-.hero__kicker {
-  color: var(--brass-pale);
-  margin-bottom: clamp(1rem, 2.4vh, 1.9rem);
-  overflow: hidden;
-}
-.hero__kicker span {
-  display: inline-block;
-  animation: kickIn 0.8s var(--ease) both;
-}
-@keyframes kickIn {
+}@keyframes kickIn {
   from {
     opacity: 0;
     transform: translateY(110%);
@@ -104,12 +31,7 @@
     opacity: 1;
     transform: none;
   }
-}
-
-.hero__title {
-  max-width: 15ch;
-}
-.hero__line {
+}.hero__line {
   display: block;
   overflow: hidden;
   padding-bottom: 0.04em;
@@ -138,30 +60,7 @@
   to {
     transform: none;
   }
-}
-
-.hero__foot {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: clamp(1.3rem, 2.6vh, 2rem);
-  max-width: 42ch;
-  animation: fadeUp 1s 0.85s var(--ease) both;
-}
-.hero__blurb {
-  font-size: var(--fs-lead);
-  color: rgba(247, 243, 236, 0.82);
-  line-height: 1.55;
-}
-.hero__actions {
-  display: flex;
-  align-items: center;
-  gap: clamp(0.6rem, 1.4vw, 1.3rem);
-}
-.hero__title {
-  margin-bottom: clamp(1.4rem, 3.4vh, 2.6rem);
-}
-.hero__ghost .btn {
+}.hero__ghost .btn {
   color: rgba(247, 243, 236, 0.82);
 }
 .hero__ghost .btn:hover {
@@ -176,90 +75,7 @@
     opacity: 1;
     transform: none;
   }
-}
-
-.hero__nav {
-  position: absolute;
-  right: var(--gut);
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.65rem;
-  color: rgba(247, 243, 236, 0.72);
-}
-.hero__step {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid rgba(247, 243, 236, 0.28);
-  border-radius: 50%;
-  color: inherit;
-  transition: border-color 0.35s var(--ease), background-color 0.35s var(--ease),
-    color 0.35s var(--ease);
-}
-.hero__step:hover {
-  border-color: rgba(247, 243, 236, 0.7);
-  background: rgba(247, 243, 236, 0.12);
-  color: var(--bone-base);
-}
-.hero__count {
-  display: flex;
-  align-items: baseline;
-  gap: 0.22rem;
-  font-size: var(--fs-micro);
-  letter-spacing: 0.14em;
-  font-variant-numeric: tabular-nums;
-}
-.hero__count-of {
-  opacity: 0.5;
-}
-.hero__track {
-  display: block;
-  width: 1px;
-  height: 74px;
-  background: rgba(247, 243, 236, 0.26);
-  overflow: hidden;
-}
-.hero__track span {
-  display: block;
-  width: 100%;
-  background: var(--brass-lit);
-  transition: height 0.6s var(--ease);
-}
-
-.hero__scroll {
-  position: absolute;
-  left: var(--gut);
-  bottom: clamp(1rem, 3vh, 2rem);
-  z-index: 2;
-  display: none;
-  align-items: center;
-  gap: 0.7rem;
-  font-size: var(--fs-micro);
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: rgba(247, 243, 236, 0.5);
-}
-.hero__scroll i {
-  display: block;
-  width: 42px;
-  height: 1px;
-  background: rgba(247, 243, 236, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-.hero__scroll i::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--brass-lit);
-  animation: scrollCue 2.2s var(--ease-in-out) infinite;
-}
-@keyframes scrollCue {
+}@keyframes scrollCue {
   0% {
     transform: translateX(-100%);
   }
@@ -268,23 +84,8 @@
     transform: translateX(100%);
   }
 }
-@media (min-width: 1100px) {
-  .hero__scroll {
-    display: flex;
-  }
-  .hero__body {
-    padding-bottom: clamp(3.6rem, 8vh, 6rem);
-  }
-}
-@media (max-width: 700px) {
-  /* The counter would sit on top of the headline at this width. */
-  .hero__nav {
-    display: none;
-  }
-  .hero__actions {
-    width: 100%;
-  }
-}
+@media (min-width: 1100px) {}
+@media (max-width: 700px) {}
 
 .band-marquee {
   padding-block: clamp(1.3rem, 2.6vw, 2.1rem);
@@ -372,63 +173,7 @@
   .tileC__arrow {
     display: none;
   }
-}
-
-/* --- home: full-bleed feature -------------------------------------------- */
-
-.feature {
-  position: relative;
-  min-height: min(88vh, 820px);
-  display: grid;
-  align-items: center;
-  overflow: hidden;
-  padding-block: clamp(4rem, 10vw, 8rem);
-}
-.feature__media {
-  position: absolute;
-  inset: 0;
-}
-.feature__img {
-  height: 100%;
-  will-change: transform;
-}
-.feature__img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.feature__scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(92deg, rgba(20, 17, 13, 0.9) 8%, rgba(20, 17, 13, 0.52) 48%, rgba(20, 17, 13, 0.24) 100%);
-}
-.feature__body {
-  position: relative;
-  z-index: 2;
-  max-width: 42rem;
-}
-.feature__title {
-  margin-block: 1.2rem 1.5rem;
-}
-.feature__blurb {
-  max-width: 44ch;
-  margin-bottom: 2.1rem;
-}
-
-/* --- home: editorial ------------------------------------------------------ */
-
-.editorial__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  gap: clamp(2rem, 6vw, 6rem);
-  align-items: center;
-}
-.editorial__stack {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-}
-.editorial__plate--tall {
+}.editorial__plate--tall {
   grid-column: 1 / 5;
   grid-row: 1;
 }
@@ -439,43 +184,7 @@
   margin-bottom: clamp(-3rem, -5vw, -2rem);
   z-index: 2;
   box-shadow: -20px 20px 60px rgba(20, 17, 13, 0.13);
-}
-.editorial__title {
-  margin-block: 1.2rem 1.4rem;
-}
-.editorial__prose {
-  display: grid;
-  gap: 1rem;
-  max-width: 46ch;
-  color: var(--ink-70);
-  font-size: var(--fs-lead);
-  line-height: 1.62;
-  margin-bottom: 1.8rem;
-}
-.editorial__quote {
-  margin-top: clamp(2rem, 4vw, 3.2rem);
-  padding-top: clamp(1.4rem, 3vw, 2.2rem);
-  border-top: 1px solid var(--line);
-}
-.editorial__quote blockquote p {
-  font-size: clamp(1.15rem, 1.9vw, 1.6rem);
-  line-height: 1.42;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  max-width: 34ch;
-}
-.editorial__quote cite {
-  display: block;
-  margin-top: 0.9rem;
-  font-style: normal;
-  font-size: var(--fs-sm);
-  color: var(--ink-60);
-}
-@media (max-width: 900px) {
-  .editorial__grid {
-    grid-template-columns: 1fr;
-  }
-  .editorial__plate--wide {
+}@media (max-width: 900px) {  .editorial__plate--wide {
     margin-bottom: 0;
   }
 }
@@ -2854,8 +2563,8 @@
 }
 .stl__grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(10px, 1.4vw, 18px);
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: clamp(10px, 1.2vw, 16px);
   align-items: start;
   max-width: 1680px;
   margin-inline: auto;
@@ -3084,12 +2793,7 @@
   .cline__acts button {
     min-height: 30px;
     padding-block: 4px;
-  }
-  .hero__step {
-    width: 38px;
-    height: 38px;
-  }
-}
+  }}
 
 /* ==========================================================================
    Product detail
@@ -3792,4 +3496,302 @@
 }
 .pdp .section-head {
   margin-bottom: clamp(1.1rem, 2.2vw, 1.7rem);
+}
+
+/* ==========================================================================
+   Panel hero — five destination cards
+   --------------------------------------------------------------------------
+   A slim masthead over a row of portrait cards, each carrying its own label,
+   title, line and call to action set on the photograph.
+
+   The copy sits on a gradient rather than a plate: a plate would read as a
+   caption box stuck to a picture, where a gradient lets the photograph run
+   to the bottom edge and still gives the type a ground. The gradient is
+   heavier than it looks necessary on a dark frame because it also has to
+   hold against a pale one — the cards cycle, so every card has to work over
+   every photograph it might show.
+   ========================================================================== */
+
+.phero {
+  display: grid;
+  gap: clamp(1.1rem, 2.2vw, 1.9rem);
+  max-width: 1920px;
+  margin-inline: auto;
+  padding: calc(var(--header-h) + clamp(1rem, 2.4vw, 2rem)) var(--gut)
+    clamp(2rem, 4vw, 3.2rem);
+}
+
+/* --- masthead ------------------------------------------------------------- */
+
+.phero__masthead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.5rem clamp(1rem, 3vw, 2.5rem);
+  padding-bottom: clamp(0.7rem, 1.4vw, 1.1rem);
+  border-bottom: 1px solid var(--ink-08);
+}
+.phero__eyebrow {
+  grid-column: 1 / -1;
+  margin-bottom: 0.55rem;
+}
+.phero__title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.75rem, 3.4vw, 2.9rem);
+  line-height: 1.08;
+  letter-spacing: -0.012em;
+  max-width: 22ch;
+  margin: 0;
+}
+.phero__title em {
+  font-style: italic;
+  color: var(--brass-ink);
+}
+
+/* A quiet third route out, for anyone who wants the whole range rather than
+   one of the five. */
+.phero__all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 30px;
+  padding-block: 4px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-70);
+  white-space: nowrap;
+  transition: color 0.3s var(--ease), gap 0.35s var(--ease);
+}
+.phero__all:hover {
+  color: var(--ink);
+  gap: 0.8rem;
+}
+
+/* --- the row -------------------------------------------------------------- */
+
+.phero__panels {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(0.4rem, 0.7vw, 0.7rem);
+  /* Out to within a hair of the edge — the gutter is there for text, not for
+     a band of photographs. */
+  margin-inline: calc((var(--gut) - 0.75rem) * -1);
+}
+
+.phero__panel {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1.66;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--sand);
+  isolation: isolate;
+}
+
+.phero__frames {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+/* Every frame is stacked; the live one fades up over the one it replaces,
+   which is held solid underneath with no transition of its own. Fading both
+   at once puts them at half opacity together and double-exposes the pair. */
+.phero__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 28%;
+  opacity: 0;
+  z-index: 0;
+  transition: opacity 1.1s var(--ease), transform 1.6s var(--ease);
+}
+.phero__img.is-out {
+  opacity: 1;
+  z-index: 1;
+  transition: none;
+}
+.phero__img.is-on {
+  opacity: 1;
+  z-index: 2;
+}
+.phero__panel--card:hover .phero__img.is-on {
+  transform: scale(1.035);
+}
+
+/* --- the overlay ---------------------------------------------------------- */
+
+.phero__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background:
+    linear-gradient(
+      0deg,
+      rgba(16, 12, 10, 0.86) 0%,
+      rgba(16, 12, 10, 0.62) 26%,
+      rgba(16, 12, 10, 0.22) 52%,
+      rgba(16, 12, 10, 0.04) 74%,
+      transparent 100%
+    ),
+    linear-gradient(180deg, rgba(16, 12, 10, 0.28) 0%, transparent 34%);
+  transition: opacity 0.45s var(--ease);
+}
+.phero__panel--card:hover .phero__veil {
+  opacity: 0.92;
+}
+
+.phero__copy {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 4;
+  display: grid;
+  gap: 0.3rem;
+  padding: clamp(0.95rem, 1.5vw, 1.5rem);
+  color: var(--bone-base);
+}
+
+.phero__kicker {
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: rgba(247, 243, 236, 0.82);
+}
+.phero__cardtitle {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.12rem, 1.5vw, 1.42rem);
+  line-height: 1.14;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+.phero__line {
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: rgba(247, 243, 236, 0.84);
+}
+
+/* Not a filled button: a rule that draws itself across on hover. A solid pill
+   on every one of five cards would fight the photographs. */
+.phero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  margin-top: 0.55rem;
+  padding-block: 0.42rem;
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--bone-base);
+  border-bottom: 1px solid rgba(247, 243, 236, 0.42);
+  transition: border-color 0.35s var(--ease), gap 0.35s var(--ease);
+}
+.phero__panel--card:hover .phero__cta {
+  border-bottom-color: var(--bone-base);
+  gap: 0.75rem;
+}
+.phero__cta svg {
+  flex: none;
+  transition: transform 0.35s var(--ease);
+}
+.phero__panel--card:hover .phero__cta svg {
+  transform: translateX(2px);
+}
+
+.phero__panel--card:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phero__img,
+  .phero__veil,
+  .phero__cta,
+  .phero__cta svg {
+    transition: none;
+  }
+  .phero__panel--card:hover .phero__img.is-on {
+    transform: none;
+  }
+}
+
+/* --- narrower ------------------------------------------------------------- */
+
+/* Every card is a destination now, so none of them may be hidden — the row
+   wraps instead of dropping members. */
+/* Fewer columns means wider cards, and at the same 1:1.66 crop a three-up
+   row came out 641px tall and a two-up row 722px — the hero swallowed the
+   screen. The crop gets shallower as the cards get wider, and the row itself
+   is capped so a card cannot stretch past a sensible width. */
+@media (max-width: 1300px) {
+  .phero__panels {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    max-width: 1160px;
+    margin-inline: 0;
+    justify-self: center;
+  }
+  .phero__panel { aspect-ratio: 1 / 1.46; }
+}
+
+@media (max-width: 1000px) {
+  .phero__masthead {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 0.9rem;
+  }
+}
+
+/* One row, swiped. */
+@media (max-width: 1000px) {
+  .phero { padding-inline: 0; }
+  .phero__masthead { margin-inline: var(--gut); }
+  .phero__panels {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    /* A share of the screen, but never wider than a card wants to be. */
+    grid-auto-columns: min(78%, 320px);
+    gap: 0.6rem;
+    /* Undo the centring cap from the wider breakpoint, or the row
+       shrink-wraps and every card collapses. */
+    width: auto;
+    max-width: none;
+    justify-self: stretch;
+    margin-inline: 0;
+    padding-inline: var(--gut);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .phero__panels::-webkit-scrollbar { display: none; }
+  .phero__panel {
+    scroll-snap-align: center;
+    aspect-ratio: 1 / 1.34;
+  }
+}
+
+
+/* --- collection variant --------------------------------------------------- */
+
+.phero--collection .phero__masthead {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+.phero--collection .phero__blurb {
+  font-size: var(--fs-lead);
+  color: var(--ink-70);
+  max-width: 46ch;
+  margin: 0;
+}
+.phero--collection .crumbs {
+  margin: 0;
 }

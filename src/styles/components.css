@@ -245,34 +245,43 @@
 
 /* --- product card --------------------------------------------------------- */
 
+/* The column count follows the available width instead of being fixed per
+   breakpoint. A fixed count stretches its cards to fill whatever screen it is
+   given, so a 1920 monitor showed the same twelve products as a 1366 laptop,
+   only larger — which is what "some screens show more or less of the site"
+   was. With auto-fill the card keeps its size and the screen decides how many
+   fit: five across at 1440, six at 1920, two on a phone.
+
+   `--card-min` is the target card width. The `.grid--N` classes now cap the
+   count rather than set it, so a rail meant to hold four never runs to six. */
 .grid {
+  --card-min: 222px;
+  /* An upper bound as well as a lower one. With a `1fr` maximum the cards
+     stretch to fill whatever is left until another column fits, which put a
+     289px card on a 1280 screen and a 226px card on a 1600 one. Capping the
+     track holds the spread to roughly a fifth and parks the remainder at the
+     end of the row instead of inside every card. */
+  --card-max: 272px;
   display: grid;
-  gap: clamp(1.1rem, 2.2vw, 2.1rem) clamp(0.8rem, 1.6vw, 1.5rem);
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), var(--card-max)));
+  justify-content: start;
+  gap: clamp(1rem, 1.9vw, 1.7rem) clamp(0.7rem, 1.3vw, 1.2rem);
 }
-.grid--2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.grid--3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-.grid--4 {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-@media (max-width: 1180px) {
-  .grid--4 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-@media (max-width: 880px) {
-  .grid--3,
-  .grid--4 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (max-width: 460px) {
+/* The modifiers set the target width, not the column count — a percentage
+   floor here would pin the count to a fraction of the container and bring
+   back exactly the stretching this replaced. */
+.grid--2 { --card-min: 420px; }
+.grid--3 { --card-min: 222px; }
+.grid--4 { --card-min: 222px; }
+
+/* Below the point where two 240px cards plus a gap fit, hold two columns and
+   let them shrink — one enormous card per row reads as a bug. */
+@media (max-width: 560px) {
+  .grid,
   .grid--2,
   .grid--3,
   .grid--4 {
+    --card-min: 0px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem 0.7rem;
   }
@@ -550,7 +559,9 @@
   width: max-content;
 }
 .rail__cell {
-  width: clamp(215px, 23vw, 330px);
+  /* Matched to the grid's card target so a rail and a grid on the same page
+     show the same size of card. */
+  width: clamp(190px, 19vw, 258px);
   scroll-snap-align: start;
 }
 
