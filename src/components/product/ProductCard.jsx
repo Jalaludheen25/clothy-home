@@ -59,7 +59,7 @@ function ProductCardBase({ product, index = 0, priority = false, size = 'md' }) 
             className="card__img card__img--front"
             src={src(front, width, ratio)}
             srcSet={srcSet(front, ratio, [420, 640, 900, 1280])}
-            sizes="(max-width: 640px) 46vw, (max-width: 1100px) 32vw, 24vw"
+            sizes="(max-width: 640px) 78vw, 291px"
             alt={product.name}
             loading={priority ? 'eager' : 'lazy'}
             decoding="async"
@@ -69,7 +69,7 @@ function ProductCardBase({ product, index = 0, priority = false, size = 'md' }) 
               className="card__img card__img--back"
               src={src(back, width, ratio)}
               srcSet={srcSet(back, ratio, [420, 640, 900])}
-              sizes="(max-width: 640px) 46vw, (max-width: 1100px) 32vw, 24vw"
+              sizes="(max-width: 640px) 78vw, 291px"
               alt=""
               aria-hidden="true"
               loading="lazy"

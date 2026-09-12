@@ -18,6 +18,7 @@ import {
 import { ProductGrid, ProductRail } from '../components/product/ProductCard.jsx';
 import ShopTheLook from '../components/home/ShopTheLook.jsx';
 import PanelHero from '../components/ui/PanelHero.jsx';
+import { useDarkHeader } from '../hooks/useHeaderTone.js';
 
 /* ==========================================================================
    Home
@@ -99,9 +100,9 @@ function Hero() {
       masthead={
         <>
           <p className="phero__eyebrow eyebrow">Handloom, by hand</p>
-          <h1 className="phero__title">
+          <h2 className="phero__title">
             Woven <em className="serif-italic">slowly,</em> worn for a lifetime.
-          </h1>
+          </h2>
           <Link to="/shop" className="phero__all">
             All pieces
             <svg viewBox="0 0 18 8" width="17" height="8" aria-hidden="true">
@@ -184,9 +185,9 @@ function CollectionStrip() {
                 <Figure
                   image={c.hero}
                   alt={c.name}
-                  ratio={1.28}
+                  ratio={1.25}
                   width={760}
-                  sizes="(max-width: 700px) 68vw, 25vw"
+                  sizes="(max-width: 700px) 78vw, 291px"
                   className="tileS__fig"
                 />
                 <span className="tileS__meta">
@@ -227,6 +228,7 @@ function OfferBand() {
 }
 
 export default function Home() {
+  useDarkHeader();
 
   const newArrivals = inCollection('new-arrivals').slice(0, 8);
   const best = [...PRODUCTS]
@@ -236,9 +238,9 @@ export default function Home() {
 
   return (
     <>
-      <Hero />
-
       <ShopTheLook />
+
+      <Hero />
 
       <Marquee
         className="band-marquee"

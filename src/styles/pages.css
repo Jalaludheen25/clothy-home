@@ -207,7 +207,10 @@
   width: max-content;
 }
 .strip__cell {
-  width: clamp(230px, 24vw, 340px);
+  /* The same card width as the grids and the rails. 24vw drifted it from 230
+     to 340px across the resolutions people actually use, which is the one
+     thing the card sizing was meant to stop. */
+  width: clamp(240px, 78vw, 291px);
   scroll-snap-align: start;
 }
 
@@ -2488,39 +2491,122 @@
 
 
 /* ==========================================================================
-   Shop the Look — spotlight carousel
+   Shop the Look — the homepage hero
    --------------------------------------------------------------------------
-   Measured off the reference at 1440px: a 260x462 centre card (9:16, the
-   vertical video ratio) at 20px radius, neighbours at 0.858 scale and 0.9
-   opacity turned slightly away, the pair beyond them at 0.727 and 0.6, and
-   44px round nav buttons either side of the track.
+   The coverflow geometry is still the reference's, measured at 1440px: a 9:16
+   card at 20px radius, neighbours at 0.858 scale and 0.9 opacity turned
+   slightly away, the pair beyond at 0.727 and 0.6, and round nav buttons
+   either side of the track.
+
+   What changed when it became the hero is the scale and the ground. A card is
+   no longer a fixed 260px — it is sized from whichever axis runs out first, so
+   it fills the fold on a laptop without pushing the controls off the bottom of
+   a short one. And it sits on ink rather than bone, lit from behind by the
+   colour of whichever piece is centred, because a photograph carries further
+   out of the dark than it does off a white page.
    ========================================================================== */
 
 .spot {
-  --spot-w: 260px;
-  padding-block: clamp(2.2rem, 4.5vw, 3.6rem);
+  position: relative;
+  isolation: isolate;
+  /* The fan is wider than its middle card and reaches past the screen edge on
+     a phone. Clip rather than hide: clip takes no scroll container and leaves
+     the vertical axis alone, so the cards keep their shadows. */
+  overflow-x: clip;
+
+  /* A 9:16 card sized from whichever axis runs out first — the viewport's
+     height on a laptop, its width on a tablet. Driven by width alone it
+     overruns a 768px-tall screen; by height alone the fan is wider than a
+     narrow window and the outer cards are cut in half. The 36vw term is what
+     keeps the far pair fully on screen, since the fan's half-width works out
+     at 1.32 times the card. */
+  --spot-w: min(calc(clamp(280px, 100vh - 320px, 1000px) / 1.7778), 34vw, 560px);
+
+  padding-top: calc(var(--header-h) + clamp(0.9rem, 2.4vh, 2rem));
+  padding-bottom: clamp(1.4rem, 3.4vh, 2.8rem);
 }
+
+/* --- the ground ----------------------------------------------------------- */
+
+.spot__ground {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(74% 58% at 12% 92%, rgba(125, 92, 51, 0.3) 0%, transparent 68%),
+    radial-gradient(62% 52% at 92% 6%, rgba(125, 92, 51, 0.17) 0%, transparent 70%),
+    linear-gradient(180deg, #0c0a08 0%, #17130e 44%, #0a0908 100%);
+}
+
+/* Print grain. Without it a large flat gradient bands visibly on an 8-bit
+   screen, and the whole panel reads as a rendering rather than a photograph. */
+.spot__ground::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  opacity: 0.055;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* The piece on screen, as ambient light. A solid colour behind a fixed mask
+   rather than a gradient of that colour, because a background-color animates
+   between two values and a gradient does not — this has to cross-fade as the
+   carousel turns, or the ground jumps on every card. */
+.spot__glow {
+  position: absolute;
+  inset: -8% -6% 8%;
+  z-index: -1;
+  background-color: var(--spot-glow, #7a2a39);
+  opacity: 0.4;
+  -webkit-mask-image: radial-gradient(54% 50% at 50% 46%, #000 0%, transparent 72%);
+  mask-image: radial-gradient(54% 50% at 50% 46%, #000 0%, transparent 72%);
+  transition: background-color 1.3s var(--ease);
+  pointer-events: none;
+}
+
+/* --- masthead ------------------------------------------------------------- */
 
 .spot__header {
   text-align: center;
   padding-inline: var(--gut);
-  margin-bottom: clamp(1.2rem, 2.4vw, 2rem);
+  margin-bottom: clamp(0.9rem, 2.2vh, 1.8rem);
+}
+.spot__eyebrow {
+  color: var(--brass-lit);
+  margin-bottom: 0.5rem;
 }
 .spot__title {
   font-family: var(--serif);
   font-weight: 300;
-  font-size: clamp(1.6rem, 3vw, 2.1rem);
-  letter-spacing: 0.01em;
-  line-height: 1.15;
+  font-size: clamp(2rem, 4.4vw, 3.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  color: var(--bone-base);
 }
+.spot__title em {
+  font-style: italic;
+  color: var(--brass-lit);
+}
+.spot__line {
+  max-width: 50ch;
+  margin: 0.55rem auto 0;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: rgba(247, 243, 236, 0.66);
+}
+
+/* --- the stage ------------------------------------------------------------ */
 
 .spot__stage {
   position: relative;
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
   align-items: center;
   gap: clamp(0.5rem, 2vw, 1.6rem);
-  max-width: 1335px;
+  max-width: calc(var(--spot-w) * 2.65 + clamp(150px, 12vw, 230px));
   margin-inline: auto;
   padding-inline: var(--gut);
 }
@@ -2528,31 +2614,40 @@
 .spot__nav {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--ink-14);
+  /* Above the fan. The neighbouring cards reach right across both buttons on
+     a narrow screen, which left the carousel with no visible control. */
+  position: relative;
+  z-index: 6;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(247, 243, 236, 0.24);
   border-radius: 50%;
-  background: var(--bone-base);
-  color: var(--ink-70);
+  background: rgba(247, 243, 236, 0.07);
+  backdrop-filter: blur(10px);
+  color: rgba(247, 243, 236, 0.84);
   transition: color 0.3s var(--ease), border-color 0.3s var(--ease),
     background-color 0.3s var(--ease);
 }
 .spot__nav:hover {
-  color: var(--bone-base);
-  border-color: var(--ink);
-  background: var(--ink);
+  /* --ink-base and --bone-base are the two tokens that never invert, so they
+     are the safe pair to name inside a scope that swaps everything else. */
+  color: var(--ink-base);
+  border-color: var(--bone-base);
+  background: var(--bone-base);
 }
 
 /* The cards are stacked on one spot and moved out from it, so the middle one
    can sit above its neighbours whichever way the ring has turned. */
 .spot__track {
   position: relative;
-  height: calc(var(--spot-w) * 1.777);
-  perspective: 1400px;
+  /* Vertical drags still scroll the page; sideways ones are the carousel's. */
+  touch-action: pan-y;
+  height: calc(var(--spot-w) * 1.7778);
+  perspective: 1600px;
   transform-style: preserve-3d;
 }
 .spot__track:focus-visible {
-  outline: 2px solid var(--brass);
+  outline: 2px solid var(--brass-lit);
   outline-offset: 12px;
   border-radius: 4px;
 }
@@ -2564,10 +2659,14 @@
   width: var(--spot-w);
   aspect-ratio: 9 / 16;
   margin: 0;
-  border-radius: 20px;
+  border-radius: clamp(14px, 1.4vw, 22px);
   overflow: hidden;
-  background: var(--tone, var(--sand));
-  box-shadow: 0 18px 44px rgba(20, 17, 13, 0.16);
+  background: var(--tone, #1c1813);
+  /* Deep enough to lift off ink, with a hairline so the card has an edge even
+     where the photograph runs dark to its own border. */
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.62);
+  outline: 1px solid rgba(247, 243, 236, 0.09);
+  outline-offset: -1px;
   transform: translate(-50%, -50%) translateX(calc(var(--shift, 0) * var(--spot-w)))
     scale(var(--spot-scale, 1)) rotateY(var(--spot-turn, 0deg));
   transition: transform 0.62s var(--ease), opacity 0.62s var(--ease);
@@ -2629,20 +2728,37 @@
   display: block;
 }
 
+/* The photograph has to hold white type along its bottom edge whatever it is
+   a photograph of, so the plate sits on a gradient as well as its own blur. */
+.spot__card.is-center .spot__cardbtn::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 46%;
+  background: linear-gradient(
+    0deg,
+    rgba(8, 6, 5, 0.72) 0%,
+    rgba(8, 6, 5, 0.28) 48%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
 /* --- the product plate ---------------------------------------------------- */
 
 .spot__chip {
   position: absolute;
-  left: 10px;
-  right: 10px;
-  bottom: 10px;
+  left: clamp(10px, 1.1vw, 16px);
+  right: clamp(10px, 1.1vw, 16px);
+  bottom: clamp(10px, 1.1vw, 16px);
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.5rem;
-  border-radius: 12px;
-  background: rgba(20, 17, 13, 0.72);
-  backdrop-filter: blur(10px);
+  gap: 0.65rem;
+  padding: 0.55rem;
+  border-radius: 14px;
+  background: rgba(14, 11, 9, 0.62);
+  backdrop-filter: blur(14px) saturate(1.2);
+  border: 1px solid rgba(247, 243, 236, 0.14);
   color: var(--bone-base);
   animation: spotChip 0.5s var(--ease) both;
 }
@@ -2652,18 +2768,18 @@
 }
 .spot__chipimg {
   flex: none;
-  width: 38px;
-  height: 38px;
-  border-radius: 8px;
+  width: clamp(38px, 3.2vw, 46px);
+  height: clamp(38px, 3.2vw, 46px);
+  border-radius: 9px;
   object-fit: cover;
 }
 .spot__chiptext {
   display: grid;
-  gap: 0.1rem;
+  gap: 0.14rem;
   min-width: 0;
 }
 .spot__chipname {
-  font-size: 0.78rem;
+  font-size: clamp(0.78rem, 0.95vw, 0.92rem);
   line-height: 1.25;
   /* One line: a long saree name would otherwise push the plate up the card. */
   overflow: hidden;
@@ -2671,41 +2787,111 @@
   white-space: nowrap;
 }
 .spot__chipprice {
-  font-size: 0.8rem;
+  font-size: clamp(0.8rem, 1vw, 0.96rem);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
+/* --- controls under the stage --------------------------------------------- */
+
+.spot__foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.8rem, 2vw, 1.5rem);
+  margin-top: clamp(0.9rem, 2.2vh, 1.6rem);
+  padding-inline: var(--gut);
+}
+
+/* Nine pieces is more than a person will click through one at a time, so each
+   one gets a mark that goes straight to it. */
+.spot__ticks {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.spot__tick {
+  display: grid;
+  place-items: center;
+  /* 24px of hit area around a 2px mark — WCAG 2.5.8 measures the target, not
+     the ink. */
+  width: 26px;
+  height: 24px;
+}
+.spot__tick::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(247, 243, 236, 0.26);
+  transition: background-color 0.4s var(--ease), transform 0.4s var(--ease);
+}
+.spot__tick:hover::before {
+  background: rgba(247, 243, 236, 0.55);
+}
+.spot__tick.is-on::before {
+  background: var(--bone-base);
+  transform: scaleY(2);
+}
+.spot__tick:focus-visible {
+  outline: 2px solid var(--brass-lit);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
 .spot__count {
-  margin-top: clamp(1rem, 2vw, 1.5rem);
-  text-align: center;
   font-size: var(--fs-micro);
   letter-spacing: 0.2em;
-  color: var(--ink-60);
+  color: rgba(247, 243, 236, 0.56);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spot__card { transition: none; }
+  .spot__card,
+  .spot__glow,
+  .spot__tick::before {
+    transition: none;
+  }
   .spot__chip { animation: none; }
+}
+
+/* A short window — most laptops are 768px tall — has no height to spare for a
+   masthead above a 9:16 card. At 62vh the card came out at 268px there, barely
+   past the 260px it was before it became the hero. The type steps down, the
+   line stands down, and the picture takes what they free. */
+@media (min-width: 621px) and (max-height: 820px) {
+  .spot {
+    --spot-w: min(calc(clamp(280px, 100vh - 236px, 1000px) / 1.7778), 34vw, 560px);
+  }
+  .spot__title {
+    font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+  }
+  .spot__line {
+    display: none;
+  }
+  .spot__header {
+    margin-bottom: clamp(0.5rem, 1.4vh, 0.9rem);
+  }
 }
 
 /* --- narrower ------------------------------------------------------------- */
 
-@media (max-width: 900px) {
-  .spot { --spot-w: 218px; }
-}
-
+/* Below this the far pair is hidden, so the fan no longer has to fit five
+   cards across and the card may take a much larger share of the width. */
 @media (max-width: 620px) {
-  .spot { --spot-w: min(62vw, 240px); }
+  .spot {
+    --spot-w: min(calc(clamp(240px, 100vh - 250px, 800px) / 1.7778), 72vw, 360px);
+  }
   .spot__stage {
-    grid-template-columns: 38px minmax(0, 1fr) 38px;
+    grid-template-columns: 40px minmax(0, 1fr) 40px;
     gap: 0.3rem;
     padding-inline: 0.6rem;
   }
   .spot__nav {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
   }
   /* The turn reads as a smudge at this size, so the neighbours simply sit
      back rather than rotating. */
@@ -2718,6 +2904,24 @@
     opacity: 0;
     pointer-events: none;
   }
+  /* Nine marks plus a counter will not sit on one line at this width. */
+  .spot__foot {
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+}
+
+/* A short landscape window — a phone turned sideways — has no room for a
+   masthead above a 9:16 card, so the copy stands down and the picture stays. */
+@media (max-height: 520px) and (orientation: landscape) {
+  .spot__line { display: none; }
+  .spot__title { font-size: clamp(1.4rem, 3vw, 2rem); }
+}
+
+/* The destination cards are a row of ways in, not the top of the page, so
+   below the hero they drop the header offset the hero is carrying. */
+.spot + .phero {
+  padding-top: clamp(2.2rem, 5vw, 3.6rem);
 }
 
 /* ==========================================================================

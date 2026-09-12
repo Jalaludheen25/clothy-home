@@ -6,6 +6,15 @@ import IMG from './images.js';
    One flat product list plus the taxonomies the storefront reads from. Every
    product carries enough detail to render a full editorial product page
    (weave, provenance, dimensions, care) without a second lookup.
+
+   One optional field is worth knowing about: give a product
+
+     video: '/media/anahi.mp4'
+
+   and Shop the Look plays it in place of the still, with images[0] as the
+   poster. Nothing else reads it, and no product carries one yet — the
+   carousel is built for video and shows photographs because there are no
+   files to play. Vertical, 9:16, muted and short is the shape it wants.
    ========================================================================== */
 
 export const CATEGORIES = [
@@ -55,7 +64,7 @@ export const COLLECTIONS = [
     name: 'Zari & Gold',
     kicker: 'The metal edit',
     blurb:
-      'Real zari on silk, and gold over sterling. Pieces that catch a lamp from across a room.',
+      'Real zari on silk — silver drawn into wire, gilded, and wound onto the weft. Cloth that catches a lamp from across a room.',
     hero: IMG.silkAmberDrape,
   },
   {
@@ -63,7 +72,7 @@ export const COLLECTIONS = [
     name: 'The Quiet Everyday',
     kicker: 'Worn on a Tuesday',
     blurb:
-      'Mulmul, cotton-silk, and a chain you never take off. Luxury that does not announce itself.',
+      'Mulmul and cotton-silk, cut for a Tuesday. Luxury that does not announce itself.',
     hero: IMG.sareePinkMintTissue,
     focus: '58% 42%',
   },
@@ -762,7 +771,7 @@ function seeded(str, n) {
    for thirty-two pieces. So the swatch is bucketed into a family a shopper
    would actually pick from. Derived from the hex rather than hand-tagged, so
    a new piece files itself. */
-function toHsl(hex) {
+export function toHsl(hex) {
   const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
