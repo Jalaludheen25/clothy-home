@@ -458,7 +458,7 @@ export default function Product() {
       </div>
 
       <section className="section">
-        <div className="shell">
+        <div className="shell pdp__shell">
           <SectionHead title="You may also like" />
           <ProductGrid products={related} cols={4} label="You may also like" />
         </div>
@@ -466,7 +466,7 @@ export default function Product() {
 
       {alsoViewed.length > 0 ? (
         <section className="section-tight">
-          <div className="shell">
+          <div className="shell pdp__shell">
             <SectionHead title="Recently viewed" />
             <ProductGrid products={alsoViewed} cols={4} label="Recently viewed" />
           </div>

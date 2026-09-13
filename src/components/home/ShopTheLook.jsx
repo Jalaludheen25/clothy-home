@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { PRODUCTS, formatINR, inCollection, toHsl } from '../../data/catalog.js';
 import { src, srcSet } from '../../data/images.js';
 import { prefersReducedMotion } from '../../hooks/useMotion.js';
+import { MagneticButton } from '../ui/Primitives.jsx';
 
 /* ==========================================================================
    Shop the Look — the homepage hero
@@ -148,14 +149,28 @@ export default function ShopTheLook() {
       style={{ '--spot-glow': glow(cards[active].swatch) }}
     >
       <div className="spot__ground" aria-hidden="true" />
+      <div className="spot__weave" aria-hidden="true" />
       <div className="spot__glow" aria-hidden="true" />
+      <div className="spot__arch" aria-hidden="true" />
 
       <header className="spot__header">
-        <p className="spot__eyebrow eyebrow">As worn</p>
+        <p className="spot__eyebrow eyebrow">Handwoven in India</p>
         <h1 className="spot__title" id="spot-title">
-          Shop the <em>Look</em>
+          Silk, <em>worn well</em>
         </h1>
-        <p className="spot__line">Photographed as they are worn.</p>
+        {/* The looms named here are the catalogue's own — the saree category
+            copy says the same — so the hero promises nothing the shop does not. */}
+        <p className="spot__line">
+          From the looms of Kanchipuram, Varanasi and Bhagalpur, finished in Kozhikode.
+        </p>
+        <div className="spot__actions">
+          <MagneticButton to="/shop" variant="bone" size="md">
+            Shop Now
+          </MagneticButton>
+          <MagneticButton to="/collection/new-arrivals" variant="line" size="md">
+            New Arrivals
+          </MagneticButton>
+        </div>
       </header>
 
       <div

@@ -254,6 +254,13 @@ body.has-cursor button {
   align-items: center;
   gap: 1rem;
   height: var(--header-h);
+  /* Capped to the same container as the page, so the nav lines up with the
+     headings below it. The bar ran to the window edges while content stopped
+     at 1680, which put the nav 120px to the left of everything at 1920. The
+     ground stays on .header, so the maroon is still full-bleed. */
+  max-width: 1680px;
+  margin-inline: auto;
+  width: 100%;
   padding-inline: var(--gut);
 }
 
@@ -395,6 +402,9 @@ body.has-cursor button {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: clamp(2rem, 5vw, 5rem);
+  /* Same container as the bar above it and the page below it. */
+  max-width: 1680px;
+  margin-inline: auto;
   padding: clamp(2rem, 3.6vw, 3.4rem) var(--gut) clamp(2.4rem, 4vw, 3.6rem);
   opacity: 0;
   transform: translateY(-12px);
@@ -1088,6 +1098,15 @@ body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open)::before {
 }
 body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .header__bar {
   position: relative;
+}
+
+/* The scrim is for heroes that open on a photograph, where a pale sky can sit
+   right under the bar. The homepage hero opens on its own dark maroon ground,
+   so the scrim adds nothing there — and it reaches 120px below the bar, where
+   on a short laptop and a phone it greyed the ivory Shop Now button sitting
+   inside it. */
+body:has(.spot) .header:not(.is-scrolled):not(.is-open)::before {
+  display: none;
 }
 body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .header__link,
 body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .header__icon {
