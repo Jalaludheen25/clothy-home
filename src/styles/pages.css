@@ -2520,7 +2520,17 @@
      lotus — scales with the window, so the subtraction does both. A flat
      470px left the hero 15px taller than a 900px screen and 54px taller than
      a 1080px one, which dropped the wave's lotus off the bottom. */
-  --spot-w: min(calc(clamp(250px, 100vh - (350px + 17vh), 900px) / var(--spot-ratio)), 34vw, 560px);
+  /* Eight pixels of slack are kept in the subtraction: measured without it,
+     four desktop sizes fitted with 0-6px to spare, one system font away from
+     the wave dropping off the bottom.
+
+     The subtraction came down by about fifty pixels when the masthead's
+     spacing was tightened, and the card took all of it. 38vw rather than 34vw
+     lets a portrait tablet — bound by width, with a lot of height to spare —
+     have a bigger card too: the fan still clears the screen edge by 3.7vw a
+     side. The cap rises so a 1440px-tall screen is not left with a small fan
+     in a large hero. */
+  --spot-w: min(calc(clamp(250px, 100vh - (258px + 20.5vh), 1000px) / var(--spot-ratio)), 38vw, 640px);
   /* The side space the fan leaves: half the hero, less the far card's outer
      edge — 1.22 card-widths out, with a margin — and a little air. The line
      art is sized into this, so however wide the fan runs, the drawings shrink
@@ -2543,8 +2553,8 @@
   justify-content: center;
   min-height: 100vh;
   min-height: 100svh;
-  padding-top: calc(var(--header-h) + clamp(0.6rem, 1.6vh, 1.4rem));
-  padding-bottom: calc(var(--wave-h) * 0.72);
+  padding-top: calc(var(--header-h) + clamp(0.4rem, 1vh, 1rem));
+  padding-bottom: calc(var(--wave-h) * 0.68);
   color: var(--cream);
   background: var(--wine);
 }
@@ -2607,7 +2617,7 @@
   z-index: -2;
   background:
     radial-gradient(52% 30% at 50% 24%, rgba(24, 3, 8, 0.38) 0%, transparent 78%),
-    radial-gradient(34% 36% at 50% 60%, rgba(236, 184, 112, 0.1) 0%, transparent 72%),
+    radial-gradient(40% 42% at 50% 60%, rgba(236, 184, 112, 0.16) 0%, transparent 72%),
     linear-gradient(180deg, rgba(20, 2, 6, 0.5) 0%, transparent 16%),
     radial-gradient(140% 105% at 50% 45%, transparent 55%, rgba(10, 1, 4, 0.6) 100%);
 }
@@ -2706,13 +2716,13 @@
   position: relative;
   text-align: center;
   padding-inline: var(--gut);
-  margin-bottom: clamp(1rem, 2.6vh, 2rem);
+  margin-bottom: clamp(0.8rem, 2vh, 1.5rem);
 }
 .spot__lotus {
   display: block;
-  width: clamp(28px, 2.4vw, 36px);
+  width: clamp(24px, 2vw, 30px);
   height: auto;
-  margin: 0 auto clamp(0.5rem, 1.3vh, 0.9rem);
+  margin: 0 auto clamp(0.3rem, 0.8vh, 0.6rem);
 }
 /* The eyebrow between two gold rules that fade out toward the edges. */
 .spot__eyebrow {
@@ -2721,7 +2731,7 @@
   justify-content: center;
   gap: clamp(0.8rem, 1.6vw, 1.3rem);
   color: var(--gold);
-  margin-bottom: clamp(0.4rem, 1.1vh, 0.75rem);
+  margin-bottom: clamp(0.3rem, 0.8vh, 0.6rem);
 }
 .spot__eyebrow::before,
 .spot__eyebrow::after {
@@ -2737,7 +2747,7 @@
 .spot__title {
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(2.3rem, 5.2vw, 4.6rem);
+  font-size: clamp(2.2rem, 4.6vw, 4.1rem);
   line-height: 1.05;
   letter-spacing: -0.012em;
   color: var(--cream);
@@ -2758,7 +2768,7 @@
 }
 .spot__line {
   max-width: 40em;
-  margin: clamp(0.45rem, 1.1vh, 0.8rem) auto 0;
+  margin: clamp(0.35rem, 0.8vh, 0.6rem) auto 0;
   font-family: var(--serif);
   font-size: clamp(1rem, 1.2vw, 1.16rem);
   line-height: 1.45;
@@ -2774,10 +2784,13 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.8rem;
-  margin-top: clamp(0.9rem, 2.2vh, 1.5rem);
+  margin-top: clamp(0.7rem, 1.6vh, 1.1rem);
 }
+/* A little less padding than the site's medium button: still 45px tall, well
+   over a comfortable tap, and the four pixels go to the card. */
 .spot__actions .btn {
   min-width: 11.5rem;
+  padding-block: 0.84rem;
 }
 .spot__actions .btn--bone {
   background: linear-gradient(180deg, #f3d9a2 0%, #d6ab63 55%, #b98c45 100%);
@@ -2868,15 +2881,22 @@
   box-shadow: 0 0 0 1px rgba(214, 172, 98, 0.85), 0 26px 60px rgba(8, 1, 3, 0.6);
   transform: translate(-50%, -50%) translateX(calc(var(--shift, 0) * var(--spot-w)))
     scale(var(--spot-scale, 1));
-  transition: transform 0.62s var(--ease), opacity 0.62s var(--ease), filter 0.62s var(--ease);
+  transition: transform 0.62s var(--ease), opacity 0.62s var(--ease), filter 0.62s var(--ease),
+    box-shadow 0.62s var(--ease);
   will-change: transform, opacity;
 }
 
+/* The piece in the middle is the one on offer, so it is set apart: a heavier
+   gold frame, a soft gold halo, and a deeper shadow lifting it off the silk. */
 .spot__card.is-center {
   --spot-scale: 1;
   z-index: 5;
   opacity: 1;
   filter: none;
+  box-shadow:
+    0 0 0 1.5px rgba(214, 172, 98, 1),
+    0 0 44px rgba(214, 169, 95, 0.28),
+    0 34px 80px rgba(8, 1, 3, 0.66);
 }
 /* The mock's side cards are not see-through; they are in shadow. Dimmed by
    brightness, then, not opacity — opacity would let the silk show through a
@@ -2986,7 +3006,7 @@
   align-items: center;
   justify-content: center;
   gap: clamp(0.8rem, 2vw, 1.4rem);
-  margin-top: clamp(1rem, 2.4vh, 1.8rem);
+  margin-top: clamp(0.8rem, 1.8vh, 1.4rem);
   padding-inline: var(--gut);
 }
 .spot__foot::before,
@@ -3065,7 +3085,7 @@
    the wave flattens. */
 @media (min-width: 621px) and (max-height: 820px) {
   .spot {
-    --spot-w: min(calc(clamp(250px, 100vh - 300px, 900px) / var(--spot-ratio)), 34vw, 560px);
+    --spot-w: min(calc(clamp(250px, 100vh - 260px, 900px) / var(--spot-ratio)), 38vw, 640px);
     --wave-h: clamp(70px, 10vh, 90px);
   }
   .spot__header {
@@ -3073,8 +3093,8 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 0.6rem clamp(1.2rem, 2.6vw, 2.4rem);
-    margin-bottom: clamp(0.5rem, 1.4vh, 0.9rem);
+    gap: 0.5rem clamp(1.2rem, 2.6vw, 2.4rem);
+    margin-bottom: clamp(0.4rem, 1vh, 0.7rem);
   }
   .spot__lotus,
   .spot__line {
@@ -3109,15 +3129,26 @@
   }
 }
 
+/* A portrait tablet is bound by its width while 200-300px of height goes
+   unused above and below the fan. Letting the far pair run a little off the
+   screen edges — as the neighbours already do on a phone — lets the card use
+   that height instead: about 18% of each outer card is cut, and the fan stays
+   centred and symmetrical. */
+@media (orientation: portrait) and (min-width: 621px) and (max-width: 1099px) {
+  .spot {
+    --spot-w: min(calc(clamp(250px, 100vh - (258px + 20.5vh), 1000px) / var(--spot-ratio)), 46vw, 460px);
+  }
+}
+
 /* --- phones ---------------------------------------------------------------- */
 
 /* The far pair is hidden, so the card may take a much larger share of the
    width, and the near pair is meant to bleed off the edges. */
 @media (max-width: 620px) {
   .spot {
-    --spot-w: min(calc(clamp(220px, 100vh - 420px, 700px) / var(--spot-ratio)), 72vw, 340px);
+    --spot-w: min(calc(clamp(220px, 100vh - 400px, 700px) / var(--spot-ratio)), 76vw, 360px);
     --wave-h: clamp(72px, 10vh, 92px);
-    padding-top: calc(var(--header-h) + clamp(0.9rem, 2.2vh, 1.4rem));
+    padding-top: calc(var(--header-h) + clamp(0.6rem, 1.6vh, 1.1rem));
   }
   .spot__stage {
     grid-template-columns: 42px minmax(0, 1fr) 42px;
@@ -3182,7 +3213,7 @@
    fits on one line. */
 @media (max-width: 380px) {
   .spot {
-    --spot-w: min(calc(clamp(200px, 100vh - 356px, 700px) / var(--spot-ratio)), 72vw, 340px);
+    --spot-w: min(calc(clamp(180px, 100vh - 310px, 700px) / var(--spot-ratio)), 76vw, 360px);
   }
   .spot__line,
   .spot__lotus {
