@@ -321,13 +321,15 @@ export function GoldWave({ className = '' }) {
           <stop offset="0.84" stopColor="#c99a52" stopOpacity="0.75" />
           <stop offset="1" stopColor="#d4a95f" stopOpacity="0" />
         </linearGradient>
-        {/* The hem under the wave runs the hero's ombré — rani pink, gold,
-            royal violet — the way a sari border changes colour along its
-            length. */}
+        {/* The hem under the wave: burgundy at either end brightening to gold at
+            the centre, where the lotus sits — the way zari is heaviest at the
+            middle of a border. */}
         <linearGradient id={fill} x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#c21f6a" stopOpacity="0.36" />
-          <stop offset="0.5" stopColor="#d99443" stopOpacity="0.24" />
-          <stop offset="1" stopColor="#6d3fb0" stopOpacity="0.36" />
+          <stop offset="0" stopColor="#7a1026" stopOpacity="0.42" />
+          <stop offset="0.32" stopColor="#7a1026" stopOpacity="0.3" />
+          <stop offset="0.5" stopColor="#e3b25e" stopOpacity="0.46" />
+          <stop offset="0.68" stopColor="#7a1026" stopOpacity="0.3" />
+          <stop offset="1" stopColor="#7a1026" stopOpacity="0.42" />
         </linearGradient>
       </defs>
       <path d="M0 14C300 14 430 64 600 64C770 64 900 14 1200 14V100H0Z" fill={`url(#${fill})`} />

@@ -9,7 +9,8 @@ import { FloralSprig, GoldWave, LeafSprig, Lotus, Mandala, Peacock } from './Her
 /* ==========================================================================
    Shop the Look — the homepage hero
    --------------------------------------------------------------------------
-   Built to a reference mock: draped maroon silk, gold botanical line art at
+   Built to a reference mock, then dressed in red velvet: deep crimson and
+   burgundy with a pressed jaal at the edges, gold botanical line art at
    the edges, a lotus over a ruled eyebrow, a serif title with a gilded
    italic, a fan of gold-framed cards, and a gold wave with a lotus at its
    lowest point closing the whole thing off.
@@ -48,15 +49,18 @@ const SILK = {
   '--silk-tall': `url("${src(IMG.silkCrimson, 900, 1.8)}")`,
 };
 
-/* A swatch is the cloth's own colour, and those run from #efe4d4 to #141216.
-   Used raw as a light, the first would wash the screen out and the second
-   would not show at all. Keep the hue — that is the part that belongs to the
-   piece — and pull saturation and lightness into a band that reads on silk. */
+/* The light behind the fan still answers to the piece in the middle, but it
+   stays inside the velvet's palette: a dark saree lights it deep crimson, a
+   pale one lights it gold, and everything between runs along that single
+   warm line. Taking the swatch's own hue put violet and teal light on red
+   velvet, which is exactly what a red-and-gold room should never have. */
 function glow(hex) {
-  const [h, s, l] = toHsl(hex);
-  const sat = Math.round(Math.min(0.7, Math.max(0.36, s)) * 100);
-  const lit = Math.round(Math.min(0.54, Math.max(0.36, l)) * 100);
-  return `hsl(${Math.round(h)} ${sat}% ${lit}%)`;
+  const [, , l] = toHsl(hex);
+  const t = Math.min(1, Math.max(0, (l - 0.1) / 0.75));
+  const hue = Math.round((352 + 48 * t) % 360);
+  const sat = Math.round(62 + 8 * t);
+  const lit = Math.round(34 + 18 * t);
+  return `hsl(${hue} ${sat}% ${lit}%)`;
 }
 
 /* How far a slot sits from the middle, as a share of a full-size card.
@@ -176,16 +180,19 @@ export default function ShopTheLook() {
       aria-labelledby="spot-title"
       style={{ '--spot-glow': glow(cards[active].swatch), ...SILK }}
     >
-      {/* The ground, back to front: maroon, the silk's folds, jewel-toned
-          light drifting across it, the piece's own light, a sheen crossing
-          the fabric, then shade that keeps the type legible. */}
+      {/* The ground, back to front: burgundy, the drape's folds, the velvet's
+          crush and pile, a jaal pressed into it at the edges, warm light
+          drifting across, the piece's own light, a sheen, then shade that
+          keeps the type legible. */}
       <div className="spot__ground" aria-hidden="true" />
       <div className="spot__silk" aria-hidden="true" />
+      <div className="spot__velvet" aria-hidden="true" />
+      <div className="spot__jaal" aria-hidden="true" />
       <div className="spot__aura" aria-hidden="true">
-        <span className="spot__hue spot__hue--rani" />
-        <span className="spot__hue spot__hue--saffron" />
-        <span className="spot__hue spot__hue--marigold" />
-        <span className="spot__hue spot__hue--violet" />
+        <span className="spot__hue spot__hue--crimson" />
+        <span className="spot__hue spot__hue--gold" />
+        <span className="spot__hue spot__hue--ember" />
+        <span className="spot__hue spot__hue--wine" />
       </div>
       <div className="spot__glow" aria-hidden="true" />
       <div className="spot__sheen" aria-hidden="true" />
