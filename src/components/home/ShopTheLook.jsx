@@ -106,6 +106,18 @@ export default function ShopTheLook() {
      complaint about carousels, so pointing at it or tabbing into it holds it
      still. */
   const [held, setHeld] = useState(false);
+  /* The coloured light drifts and the sheen crosses the silk continuously, so
+     both stop while the hero is scrolled out of sight — there is no reason to
+     keep compositing a banner nobody is looking at. */
+  const sectionRef = useRef(null);
+  const [inView, setInView] = useState(true);
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return undefined;
+    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   /* A finger drag across the cards. Held in refs rather than state because
      nothing on screen depends on a gesture in progress, and re-rendering nine
      cards on every pointermove would make the drag stutter. */
@@ -159,15 +171,24 @@ export default function ShopTheLook() {
 
   return (
     <section
-      className="spot on-ink"
+      ref={sectionRef}
+      className={`spot on-ink ${inView ? '' : 'is-offscreen'}`}
       aria-labelledby="spot-title"
       style={{ '--spot-glow': glow(cards[active].swatch), ...SILK }}
     >
-      {/* The ground, back to front: maroon, the silk's folds, the piece's own
-          light, then shade that keeps the type legible. */}
+      {/* The ground, back to front: maroon, the silk's folds, jewel-toned
+          light drifting across it, the piece's own light, a sheen crossing
+          the fabric, then shade that keeps the type legible. */}
       <div className="spot__ground" aria-hidden="true" />
       <div className="spot__silk" aria-hidden="true" />
+      <div className="spot__aura" aria-hidden="true">
+        <span className="spot__hue spot__hue--rani" />
+        <span className="spot__hue spot__hue--saffron" />
+        <span className="spot__hue spot__hue--marigold" />
+        <span className="spot__hue spot__hue--violet" />
+      </div>
       <div className="spot__glow" aria-hidden="true" />
+      <div className="spot__sheen" aria-hidden="true" />
       <div className="spot__shade" aria-hidden="true" />
 
       <Mandala className="spot__orn spot__orn--mandala" />

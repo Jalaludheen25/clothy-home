@@ -2574,7 +2574,7 @@
   z-index: -4;
   background:
     radial-gradient(70% 60% at 50% 58%, #8a1830 0%, transparent 72%),
-    linear-gradient(180deg, #3a0814 0%, #5e1022 42%, #520d1e 72%, #30070f 100%);
+    linear-gradient(180deg, #3a0a24 0%, #5e1022 42%, #540e1f 72%, #300710 100%);
 }
 
 /* The silk, laid over the maroon in hard light: the folds come through lit
@@ -2596,6 +2596,109 @@
   }
 }
 
+/* --- colour --------------------------------------------------------------- */
+
+/* Jewel tones as light falling on the silk rather than paint on top of it,
+   set as an ombré: warm on the left — rani pink, marigold — cooling through
+   saffron behind the fan to royal violet on the right. (Peacock teal was
+   tried in the lower corner and went grey: teal light added to a red ground
+   desaturates it. Violet carries the cool side without muddying.) Screen
+   only ever adds light, so each tone warms or cools the fold it lands on and
+   leaves the maroon underneath intact. They sit in the corners and behind the
+   fan; the masthead is kept out of their way, so the type keeps its contrast.
+
+   Each is a radial gradient that is soft all the way to its edge, so nothing
+   needs a blur filter, and the drift animates transform alone — the cheapest
+   thing a browser can animate. */
+.spot__aura {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  opacity: 0;
+  animation: spotAuraIn 1.8s var(--ease) 0.15s forwards;
+}
+.spot__hue {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  will-change: transform;
+  animation: spotDrift 26s ease-in-out infinite alternate;
+}
+.spot__hue--rani {
+  width: 64vmax;
+  height: 64vmax;
+  left: -24vmax;
+  top: -22vmax;
+  background: radial-gradient(closest-side, rgba(224, 44, 122, 0.36), rgba(224, 44, 122, 0.12) 55%, transparent);
+}
+.spot__hue--saffron {
+  width: 70vmax;
+  height: 44vmax;
+  left: calc(50% - 35vmax);
+  top: calc(58% - 22vmax);
+  background: radial-gradient(closest-side, rgba(246, 162, 64, 0.3), rgba(246, 162, 64, 0.1) 55%, transparent);
+  animation-duration: 21s;
+  animation-delay: -7s;
+}
+.spot__hue--marigold {
+  width: 58vmax;
+  height: 58vmax;
+  left: -20vmax;
+  bottom: -30vmax;
+  background: radial-gradient(closest-side, rgba(240, 140, 50, 0.3), rgba(240, 140, 50, 0.1) 55%, transparent);
+  animation-duration: 24s;
+  animation-delay: -11s;
+}
+.spot__hue--violet {
+  width: 62vmax;
+  height: 62vmax;
+  right: -26vmax;
+  top: -16vmax;
+  background: radial-gradient(closest-side, rgba(120, 70, 210, 0.38), rgba(120, 70, 210, 0.13) 55%, transparent);
+  animation-duration: 29s;
+  animation-delay: -15s;
+}
+@keyframes spotAuraIn {
+  to { opacity: 1; }
+}
+@keyframes spotDrift {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(3vmax, 2vmax, 0) scale(1.08); }
+  100% { transform: translate3d(-2vmax, 3.5vmax, 0) scale(0.95); }
+}
+
+/* A sheen: a broad, soft band of warm light that crosses the silk every
+   eleven seconds and then rests, the way a drape catches a window as it
+   moves. Soft light, so it deepens the folds as it lifts the highlights. */
+.spot__sheen {
+  position: absolute;
+  inset: -10% -60%;
+  z-index: -3;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 36%,
+    rgba(255, 226, 178, 0.1) 46%,
+    rgba(255, 238, 206, 0.2) 50%,
+    rgba(255, 226, 178, 0.1) 54%,
+    transparent 64%
+  );
+  mix-blend-mode: soft-light;
+  transform: translateX(-55%);
+  animation: spotSheen 11s cubic-bezier(0.45, 0, 0.25, 1) 1.2s infinite;
+}
+@keyframes spotSheen {
+  0% { transform: translateX(-55%); }
+  62%, 100% { transform: translateX(55%); }
+}
+
+.spot.is-offscreen .spot__hue,
+.spot.is-offscreen .spot__sheen {
+  animation-play-state: paused;
+}
+
 /* The piece on screen, as a faint colour in the light. A solid colour behind
    a fixed mask, because a background-color animates between two values and a
    gradient does not. Kept low: the mock's light is warm gold throughout, and
@@ -2604,7 +2707,11 @@
   inset: -8% -6% 8%;
   z-index: -3;
   background-color: var(--spot-glow, #7a2a39);
-  opacity: 0.16;
+  /* Screen, so the fan is lit in the colour of the piece in the middle, and
+     that light changes as the carousel turns — the most direct way the hero
+     answers to what is on it. */
+  mix-blend-mode: screen;
+  opacity: 0.3;
   -webkit-mask-image: radial-gradient(54% 50% at 50% 56%, #000 0%, transparent 72%);
   mask-image: radial-gradient(54% 50% at 50% 56%, #000 0%, transparent 72%);
   transition: background-color 1.3s var(--ease);
@@ -3071,6 +3178,18 @@
   .spot__glow,
   .spot__tick::before {
     transition: none;
+  }
+  /* The colour stays, still; only the drift and the sheen stop. */
+  .spot__aura {
+    animation: none;
+    opacity: 1;
+  }
+  .spot__hue,
+  .spot__sheen {
+    animation: none;
+  }
+  .spot__sheen {
+    display: none;
   }
   .spot__chip {
     animation: none;
