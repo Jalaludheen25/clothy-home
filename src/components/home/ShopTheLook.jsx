@@ -1,42 +1,57 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PRODUCTS, formatINR, inCollection, toHsl } from '../../data/catalog.js';
-import { src, srcSet } from '../../data/images.js';
+import IMG, { src, srcSet } from '../../data/images.js';
 import { prefersReducedMotion } from '../../hooks/useMotion.js';
 import { MagneticButton } from '../ui/Primitives.jsx';
+import { FloralSprig, GoldWave, LeafSprig, Lotus, Mandala, Peacock } from './HeroOrnaments.jsx';
 
 /* ==========================================================================
    Shop the Look — the homepage hero
    --------------------------------------------------------------------------
-   The coverflow was built to the reference site's video carousel, measured
-   off it at 1440px. What carries over is the shape of the fan, which is held
-   as ratios so it survives the card being resized:
+   Built to a reference mock: draped maroon silk, gold botanical line art at
+   the edges, a lotus over a ruled eyebrow, a serif title with a gilded
+   italic, a fan of gold-framed cards, and a gold wave with a lotus at its
+   lowest point closing the whole thing off.
 
-     card        9:16, the vertical video ratio
-     neighbours  0.858 scale, 0.55 card-widths out, turned away, 0.9 opacity
-     far pair    0.727 scale, 0.96 out, turned further, 0.6 opacity
+   The fan is measured off that mock at 1280px and held as ratios, so it
+   survives the card being resized:
+
+     card        5:7 — shorter than the 9:16 video frame this used to be
+     neighbours  0.858 scale, 0.47 card-widths out, dimmed, not turned
+     far pair    0.739 scale, 0.85 out, dimmed further
      beyond      0.5 scale, parked at the middle, transparent, out of the
                  tab order — so a card blooms outward rather than appearing
                  at the edge
-     chip        a product plate — thumbnail, name, price — on the centre
-                 card only
+     plate       a lotus, the name in italic serif, the price — centre card
+                 only
 
-   What does not carry over is the size. The reference's card is a fixed
-   260px; as a hero this one is sized from the viewport in CSS, so it fills
-   the fold on a laptop without pushing the controls below it. The stylesheet
-   holds that sum.
+   The mock shows neither Shop Now nor New Arrivals, and still carries the old
+   copy; both of those are later decisions and stay. The size of the card is
+   the stylesheet's sum, not a number here.
 
    Each card takes a `video` if one is given and falls back to the
    photograph, so this is a video carousel the moment there are files to put
-   in it. The reference streams HLS from Mux; ours has no video assets, so
-   every card currently shows its still. Nothing here is copied from the
-   reference — the measurements are, the media is ours.
+   in it. No product has one yet.
    ========================================================================== */
+
+/* Height over width of a card, shared by the CSS box and the image crop so
+   the CDN is never asked for a taller frame than the card shows. */
+const RATIO = 1.4;
+
+/* The silk behind everything: a crimson drape from the catalogue's own
+   fabric shots, tinted to the house maroon in CSS. A landscape crop for wide
+   windows and a portrait one for phones, so neither is a thin slice of the
+   other blown up. */
+const SILK = {
+  '--silk-wide': `url("${src(IMG.silkCrimson, 1800, 0.62)}")`,
+  '--silk-tall': `url("${src(IMG.silkCrimson, 900, 1.8)}")`,
+};
 
 /* A swatch is the cloth's own colour, and those run from #efe4d4 to #141216.
    Used raw as a light, the first would wash the screen out and the second
    would not show at all. Keep the hue — that is the part that belongs to the
-   piece — and pull saturation and lightness into a band that reads on ink. */
+   piece — and pull saturation and lightness into a band that reads on silk. */
 function glow(hex) {
   const [h, s, l] = toHsl(hex);
   const sat = Math.round(Math.min(0.7, Math.max(0.36, s)) * 100);
@@ -45,11 +60,11 @@ function glow(hex) {
 }
 
 /* How far a slot sits from the middle, as a share of a full-size card.
-   Measured off the reference, whose neighbour centres land 0.55 card-widths
-   out and whose far pair land 0.96 — the fan overlaps heavily, which is what
-   gives it depth. Spread them further and it stops reading as one stack. */
-const STEP_NEAR = 0.55;
-const STEP_FAR = 0.96;
+   Measured off the mock: neighbour centres 0.47 card-widths out, the far pair
+   0.85. Tighter than a turned coverflow needs, because flat cards do not
+   foreshorten — spread these wider and the fan falls apart into a row. */
+const STEP_NEAR = 0.47;
+const STEP_FAR = 0.85;
 
 function state(offset) {
   if (offset === 0) return 'is-center';
@@ -146,14 +161,27 @@ export default function ShopTheLook() {
     <section
       className="spot on-ink"
       aria-labelledby="spot-title"
-      style={{ '--spot-glow': glow(cards[active].swatch) }}
+      style={{ '--spot-glow': glow(cards[active].swatch), ...SILK }}
     >
+      {/* The ground, back to front: maroon, the silk's folds, the piece's own
+          light, then shade that keeps the type legible. */}
       <div className="spot__ground" aria-hidden="true" />
-      <div className="spot__weave" aria-hidden="true" />
+      <div className="spot__silk" aria-hidden="true" />
       <div className="spot__glow" aria-hidden="true" />
-      <div className="spot__arch" aria-hidden="true" />
+      <div className="spot__shade" aria-hidden="true" />
+
+      <Mandala className="spot__orn spot__orn--mandala" />
+      <FloralSprig className="spot__orn spot__orn--floral" />
+      <LeafSprig className="spot__orn spot__orn--leaf" />
+      <Peacock className="spot__orn spot__orn--peacock" />
+
+      <div className="spot__wave" aria-hidden="true">
+        <GoldWave className="spot__wavepath" />
+        <Lotus className="spot__wavelotus" />
+      </div>
 
       <header className="spot__header">
+        <Lotus className="spot__lotus" />
         <p className="spot__eyebrow eyebrow">Handwoven in India</p>
         <h1 className="spot__title" id="spot-title">
           Silk, <em>worn well</em>
@@ -186,8 +214,8 @@ export default function ShopTheLook() {
           onClick={() => go(-1)}
           aria-label="Previous"
         >
-          <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
-            <path d="M10 2 4 8l6 6" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+            <path d="M10 2 4 8l6 6" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
 
@@ -247,7 +275,7 @@ export default function ShopTheLook() {
                       className="spot__media"
                       draggable={false}
                       src={product.video}
-                      poster={src(product.images[0], 900, 1.777)}
+                      poster={src(product.images[0], 900, RATIO)}
                       muted
                       loop
                       playsInline
@@ -258,13 +286,13 @@ export default function ShopTheLook() {
                     <img
                       className="spot__media"
                       draggable={false}
-                      src={src(product.images[0], 640, 1.777)}
-                      /* The card runs from 179px on a small phone to 560px on
-                         a wide desktop, so at 2x the set has to reach 1120.
-                         The hint tracks the CSS sum loosely and always from
-                         above — over-fetching costs bytes, under-fetching
+                      src={src(product.images[0], 640, RATIO)}
+                      /* The card runs from under 200px on a small phone to
+                         560px on a wide desktop, so at 2x the set has to reach
+                         1120. The hint tracks the CSS sum loosely and always
+                         from above — over-fetching costs bytes, under-fetching
                          costs a soft photograph, and this is the hero. */
-                      srcSet={srcSet(product.images[0], 1.777, [360, 480, 640, 900, 1200, 1500])}
+                      srcSet={srcSet(product.images[0], RATIO, [360, 480, 640, 900, 1200, 1500])}
                       sizes="(max-width: 620px) 72vw, (max-width: 1500px) 34vw, 560px"
                       alt={product.name}
                       loading={Math.abs(offset) <= 2 ? 'eager' : 'lazy'}
@@ -274,13 +302,7 @@ export default function ShopTheLook() {
 
                   {centre ? (
                     <span className="spot__chip">
-                      <img
-                        className="spot__chipimg"
-                        src={src(product.images[0], 120, 1)}
-                        alt=""
-                        loading="lazy"
-                        decoding="async"
-                      />
+                      <Lotus className="spot__chiplotus" />
                       <span className="spot__chiptext">
                         <span className="spot__chipname">{product.name}</span>
                         <span className="spot__chipprice num">{formatINR(product.price)}</span>
@@ -299,8 +321,8 @@ export default function ShopTheLook() {
           onClick={() => go(1)}
           aria-label="Next"
         >
-          <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
-            <path d="M6 2l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+            <path d="M6 2l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
       </div>
@@ -319,6 +341,8 @@ export default function ShopTheLook() {
             />
           ))}
         </div>
+        {/* The mock has dots only. The count stays for screen readers, which
+            is who the live region was for in the first place. */}
         <p className="spot__count num" aria-live="polite">
           <span className="sr-only">Showing </span>
           {active + 1} / {count}

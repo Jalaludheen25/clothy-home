@@ -1108,6 +1108,24 @@ body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .header__
 body:has(.spot) .header:not(.is-scrolled):not(.is-open)::before {
   display: none;
 }
+
+/* Over the homepage hero the bar is a band of its own, as in the reference:
+   deep wine a shade darker than the silk below, closed by a gold hairline,
+   with the active link underlined in gold rather than in the text colour. */
+body:has(.spot) .header:not(.is-scrolled):not(.is-open) {
+  background: linear-gradient(180deg, rgba(32, 4, 10, 0.92), rgba(32, 4, 10, 0.74));
+  border-bottom-color: rgba(212, 169, 95, 0.34);
+  backdrop-filter: blur(10px);
+}
+body:has(.spot) .header:not(.is-scrolled):not(.is-open) .header__link::after {
+  background: #d4a95f;
+}
+/* The mark in gold, as the mock has it. The light cut is pure white, which
+   sepia barely touches, so it comes down in brightness first and is then
+   warmed and saturated into gold. */
+body:has(.spot) .header:not(.is-scrolled):not(.is-open) .logo__img--light {
+  filter: brightness(0.8) sepia(1) saturate(2.6) hue-rotate(-6deg);
+}
 body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .header__link,
 body[data-header-tone='light'] .header:not(.is-scrolled):not(.is-open) .header__icon {
   color: rgba(247, 243, 236, 0.8);

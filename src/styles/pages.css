@@ -2493,236 +2493,310 @@
 /* ==========================================================================
    Shop the Look — the homepage hero
    --------------------------------------------------------------------------
-   The coverflow geometry is still the reference's, measured at 1440px: a 9:16
-   card at 20px radius, neighbours at 0.858 scale and 0.9 opacity turned
-   slightly away, the pair beyond at 0.727 and 0.6, and round nav buttons
-   either side of the track.
+   Built to a reference mock: draped maroon silk, gold botanical line art at
+   the edges, a lotus over a ruled eyebrow, a serif title with a gilded
+   italic, flat gold-framed cards in a close fan, gold-ringed arrows, gold
+   dots, and a gold wave with a lotus at its lowest point.
 
-   What changed when it became the hero is the scale and the ground. A card is
-   no longer a fixed 260px — it is sized from whichever axis runs out first, so
-   it fills the fold on a laptop without pushing the controls off the bottom of
-   a short one. And it sits on ink rather than bone, lit from behind by the
-   colour of whichever piece is centred, because a photograph carries further
-   out of the dark than it does off a white page.
+   The hero fills the window, as the mock does, and centres its content in
+   whatever height is left. The card is sized from whichever axis runs out
+   first — the window's height less the chrome above and below the track, or
+   its width — so the fan never pushes the dots below the fold and never runs
+   off the sides.
    ========================================================================== */
 
 .spot {
+  --gold: #d4a95f;
+  --gold-lit: #f1d69c;
+  --gold-line: rgba(214, 172, 98, 0.82);
+  --cream: #f5e9d6;
+  --wine: #2a0610;
+  --spot-ratio: 1.4;
+  /* Height budget: the chrome above and below the track is a near-constant
+     amount — header, lotus, eyebrow, title, line, buttons, dots, the wave —
+     so it is subtracted rather than taken as a share. The 34vw term keeps the
+     fan on screen: flat cards reach 1.22 card-widths either side of centre. */
+  /* Part of the chrome is fixed and part of it — the gaps, the wave, the
+     lotus — scales with the window, so the subtraction does both. A flat
+     470px left the hero 15px taller than a 900px screen and 54px taller than
+     a 1080px one, which dropped the wave's lotus off the bottom. */
+  --spot-w: min(calc(clamp(250px, 100vh - (350px + 17vh), 900px) / var(--spot-ratio)), 34vw, 560px);
+  /* The side space the fan leaves: half the hero, less the far card's outer
+     edge — 1.22 card-widths out, with a margin — and a little air. The line
+     art is sized into this, so however wide the fan runs, the drawings shrink
+     out of its way instead of landing behind the outer cards. A percentage,
+     so it resolves against the hero's own width, not the window and its
+     scrollbar. */
+  --spot-free: calc(50% - var(--spot-w) * 1.24 - 14px);
+  /* The wave runs up past the level of the dots at its ends and dips below
+     them in the middle, as in the mock, so the hero only reserves the lower
+     part of it. */
+  --wave-h: clamp(90px, 13vh, 150px);
+
   position: relative;
   isolation: isolate;
-  /* The fan is wider than its middle card and reaches past the screen edge on
-     a phone. Clip rather than hide: clip takes no scroll container and leaves
-     the vertical axis alone, so the cards keep their shadows. */
-  overflow-x: clip;
-
-  /* A 9:16 card sized from whichever axis runs out first — the viewport's
-     height on a laptop, its width on a tablet. Driven by width alone it
-     overruns a 768px-tall screen; by height alone the fan is wider than a
-     narrow window and the outer cards are cut in half. The 36vw term is what
-     keeps the far pair fully on screen, since the fan's half-width works out
-     at 1.32 times the card.
-
-     The subtraction is the chrome above and below the track — header offset,
-     masthead, buttons, marks — which comes to a near-constant amount rather
-     than a share of the window. It grew by the button row. */
-  --spot-w: min(calc(clamp(280px, 100vh - 360px, 1000px) / 1.7778), 34vw, 560px);
-
+  /* The ornaments sit half off the edges on purpose, and the peacock would
+     otherwise hang into the white section below. */
+  overflow: clip;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100svh;
   padding-top: calc(var(--header-h) + clamp(0.6rem, 1.6vh, 1.4rem));
-  padding-bottom: clamp(1.4rem, 3.4vh, 2.8rem);
-}
-
-/* A gold hairline where the hero meets the white page, brightest at the
-   centre and gone at the edges, so the change of ground reads as a seam in
-   silk rather than the bottom of a box. */
-.spot::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(201, 165, 92, 0.45) 22%,
-    rgba(233, 208, 150, 0.85) 50%,
-    rgba(201, 165, 92, 0.45) 78%,
-    transparent 100%
-  );
-  pointer-events: none;
+  padding-bottom: calc(var(--wave-h) * 0.72);
+  color: var(--cream);
+  background: var(--wine);
 }
 
 /* --- the ground ----------------------------------------------------------- */
 
-/* Deep maroon, not black. The header turns maroon the moment the page scrolls,
-   so a black hero made the top of the site two different colours; this is the
-   same wine taken down toward night. Lit the way a boutique window is: a soft
-   pool from above, a bloom of the house maroon behind the display, and the
-   corners let fall away so the eye goes to the middle. */
-.spot__ground {
+.spot__ground,
+.spot__silk,
+.spot__glow,
+.spot__shade {
   position: absolute;
   inset: 0;
-  z-index: -2;
-  background:
-    radial-gradient(130% 95% at 50% 45%, transparent 56%, rgba(6, 2, 3, 0.62) 100%),
-    radial-gradient(40% 32% at 50% 0%, rgba(233, 208, 150, 0.15) 0%, transparent 78%),
-    radial-gradient(62% 56% at 50% 54%, rgba(109, 32, 48, 0.58) 0%, transparent 72%),
-    radial-gradient(44% 20% at 50% 100%, rgba(201, 165, 92, 0.1) 0%, transparent 80%),
-    linear-gradient(180deg, #14060a 0%, #230a12 40%, #1a070d 72%, #0c0406 100%);
+  pointer-events: none;
 }
 
-/* Print grain. Without it a large flat gradient bands visibly on an 8-bit
-   screen, and the whole panel reads as a rendering rather than a photograph. */
-.spot__ground::after {
+.spot__ground {
+  z-index: -4;
+  background:
+    radial-gradient(70% 60% at 50% 58%, #8a1830 0%, transparent 72%),
+    linear-gradient(180deg, #3a0814 0%, #5e1022 42%, #520d1e 72%, #30070f 100%);
+}
+
+/* The silk, laid over the maroon in hard light: the folds come through lit
+   crimson and the shadows fall to deep wine. Luminosity was tried first and
+   drained the colour out of the folds, so the drape read mauve; compared side
+   by side with soft light and overlay, this was the one that matched the
+   mock's burgundy. */
+.spot__silk {
+  z-index: -3;
+  background-image: var(--silk-wide);
+  background-size: cover;
+  background-position: 50% 55%;
+  mix-blend-mode: hard-light;
+  opacity: 0.6;
+}
+@media (max-aspect-ratio: 4/5) {
+  .spot__silk {
+    background-image: var(--silk-tall);
+  }
+}
+
+/* The piece on screen, as a faint colour in the light. A solid colour behind
+   a fixed mask, because a background-color animates between two values and a
+   gradient does not. Kept low: the mock's light is warm gold throughout, and
+   a strong purple from a dark saree would fight it. */
+.spot__glow {
+  inset: -8% -6% 8%;
+  z-index: -3;
+  background-color: var(--spot-glow, #7a2a39);
+  opacity: 0.16;
+  -webkit-mask-image: radial-gradient(54% 50% at 50% 56%, #000 0%, transparent 72%);
+  mask-image: radial-gradient(54% 50% at 50% 56%, #000 0%, transparent 72%);
+  transition: background-color 1.3s var(--ease);
+}
+
+/* Shade, so the type reads over silk: a calm pool behind the masthead, warm
+   light behind the cards, a band under the header, and the corners let fall
+   away. */
+.spot__shade {
+  z-index: -2;
+  background:
+    radial-gradient(52% 30% at 50% 24%, rgba(24, 3, 8, 0.38) 0%, transparent 78%),
+    radial-gradient(34% 36% at 50% 60%, rgba(236, 184, 112, 0.1) 0%, transparent 72%),
+    linear-gradient(180deg, rgba(20, 2, 6, 0.5) 0%, transparent 16%),
+    radial-gradient(140% 105% at 50% 45%, transparent 55%, rgba(10, 1, 4, 0.6) 100%);
+}
+/* Print grain, so the large gradients do not band. */
+.spot__shade::after {
   content: '';
   position: absolute;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 160px 160px;
-  opacity: 0.055;
+  opacity: 0.05;
   mix-blend-mode: overlay;
-  pointer-events: none;
 }
 
-/* The piece on screen, as ambient light. A solid colour behind a fixed mask
-   rather than a gradient of that colour, because a background-color animates
-   between two values and a gradient does not — this has to cross-fade as the
-   carousel turns, or the ground jumps on every card. */
-.spot__glow {
+/* --- gold line art -------------------------------------------------------- */
+
+.spot__orn {
   position: absolute;
-  inset: -8% -6% 8%;
   z-index: -1;
-  background-color: var(--spot-glow, #7a2a39);
-  opacity: 0.32;
-  -webkit-mask-image: radial-gradient(54% 50% at 50% 46%, #000 0%, transparent 72%);
-  mask-image: radial-gradient(54% 50% at 50% 46%, #000 0%, transparent 72%);
-  transition: background-color 1.3s var(--ease);
+  height: auto;
   pointer-events: none;
 }
+/* One pixel of gold at any size: the drawings are scaled by CSS, and a
+   scaled stroke would thicken on a large screen and vanish on a small one. */
+.spot__orn path,
+.spot__orn circle,
+.spot__orn ellipse,
+.spot__wavepath .orn-line {
+  vector-effect: non-scaling-stroke;
+}
+.spot .orn-fill {
+  fill: var(--gold);
+  stroke: none;
+}
 
-/* Zari. A fine gold trellis with a bead where the threads cross, the ground a
-   Banarasi border is woven on. (A four-petal buta at the centre of each
-   diamond read as a grid of plus signs at this scale — graph paper, not
-   cloth — so it went.) It is masked out of the middle, where
-   it would fight the photographs, and shows at the edges — which on a wide
-   screen is otherwise a long stretch of plain dark on either side. */
-.spot__weave {
+/* Each drawing takes its size from the window, capped by the free space
+   beside the fan. The mandala hangs 30% off the edge, so only 70% of it
+   needs to fit. */
+.spot__orn--mandala {
+  --w: max(0px, min(clamp(230px, 22vw, 380px), calc(var(--spot-free) / 0.7)));
+  width: var(--w);
+  top: calc(var(--header-h) + 0.4rem);
+  right: calc(var(--w) * -0.3);
+  opacity: 0.5;
+}
+.spot__orn--floral {
+  width: max(0px, min(clamp(120px, 10.5vw, 190px), var(--spot-free)));
+  left: -1.5%;
+  top: 16%;
+  opacity: 0.55;
+}
+.spot__orn--leaf {
+  width: max(0px, min(clamp(96px, 8.6vw, 150px), var(--spot-free)));
+  right: -0.4%;
+  top: 46%;
+  opacity: 0.5;
+}
+.spot__orn--peacock {
+  width: max(0px, min(clamp(190px, 16vw, 300px), var(--spot-free)));
+  left: -2%;
+  bottom: calc(var(--wave-h) * 0.35);
+  opacity: 0.55;
+}
+
+/* The wave that closes the hero, with a lotus at its lowest point. */
+.spot__wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  height: var(--wave-h);
+  pointer-events: none;
+}
+.spot__wavepath {
   position: absolute;
   inset: 0;
-  z-index: -2;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg fill='none' stroke='%23c9a55c' stroke-width='.7'%3E%3Cpath d='M22 0L44 22L22 44L0 22Z'/%3E%3C/g%3E%3Cg fill='%23c9a55c'%3E%3Ccircle cx='22' cy='0' r='1.3'/%3E%3Ccircle cx='44' cy='22' r='1.3'/%3E%3Ccircle cx='22' cy='44' r='1.3'/%3E%3Ccircle cx='0' cy='22' r='1.3'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 44px 44px;
-  background-position: center top;
-  opacity: 0.11;
-  -webkit-mask-image: radial-gradient(ellipse 52% 60% at 50% 52%, transparent 0%, transparent 40%, #000 100%);
-  mask-image: radial-gradient(ellipse 52% 60% at 50% 52%, transparent 0%, transparent 40%, #000 100%);
-  pointer-events: none;
+  width: 100%;
+  height: 100%;
 }
-
-/* An arch — the shape of a jharokha — drawn in a double gold hairline around
-   the whole display, with the title under its crown. A 9999px radius on both
-   top corners is clamped by the browser to exactly half the width, so the top
-   is a true semicircle at any size. It fades out downward rather than
-   meeting the bottom of the hero in a hard corner. The outer cards are
-   allowed to break the line; they sit in front of it. */
-.spot__arch {
+/* The curve bottoms out at 64% of the wave's height; the lotus's base line
+   sits at 93% of its own, so this seats it on the curve. */
+.spot__wavelotus {
   position: absolute;
-  z-index: -1;
   left: 50%;
-  top: calc(var(--header-h) - clamp(0.4rem, 1vh, 0.8rem));
-  bottom: 0;
-  width: min(calc(var(--spot-w) * 3.05), calc(100% - 2 * var(--gut)));
-  transform: translateX(-50%);
-  border: 1px solid rgba(201, 165, 92, 0.36);
-  border-bottom: 0;
-  border-radius: 9999px 9999px 0 0;
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 42%, transparent 94%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 42%, transparent 94%);
-  pointer-events: none;
-}
-.spot__arch::before {
-  content: '';
-  position: absolute;
-  inset: 9px 9px 0;
-  border: 1px solid rgba(201, 165, 92, 0.16);
-  border-bottom: 0;
-  border-radius: 9999px 9999px 0 0;
+  top: 64%;
+  width: clamp(34px, 3vw, 46px);
+  height: auto;
+  transform: translate(-50%, -92%);
+  filter: drop-shadow(0 0 10px rgba(240, 200, 130, 0.28));
 }
 
 /* --- masthead ------------------------------------------------------------- */
 
 .spot__header {
+  position: relative;
   text-align: center;
   padding-inline: var(--gut);
-  margin-bottom: clamp(0.8rem, 2vh, 1.6rem);
+  margin-bottom: clamp(1rem, 2.6vh, 2rem);
 }
+.spot__lotus {
+  display: block;
+  width: clamp(28px, 2.4vw, 36px);
+  height: auto;
+  margin: 0 auto clamp(0.5rem, 1.3vh, 0.9rem);
+}
+/* The eyebrow between two gold rules that fade out toward the edges. */
 .spot__eyebrow {
-  color: var(--brass-lit);
-  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.8rem, 1.6vw, 1.3rem);
+  color: var(--gold);
+  margin-bottom: clamp(0.4rem, 1.1vh, 0.75rem);
+}
+.spot__eyebrow::before,
+.spot__eyebrow::after {
+  content: '';
+  flex: none;
+  width: clamp(40px, 8vw, 116px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-line));
+}
+.spot__eyebrow::after {
+  background: linear-gradient(90deg, var(--gold-line), transparent);
 }
 .spot__title {
   font-family: var(--serif);
-  font-weight: 300;
-  font-size: clamp(2rem, 4.4vw, 3.5rem);
-  line-height: 1.04;
-  letter-spacing: -0.015em;
-  color: var(--bone-base);
+  font-weight: 400;
+  font-size: clamp(2.3rem, 5.2vw, 4.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.012em;
+  color: var(--cream);
+  text-shadow: 0 2px 24px rgba(10, 1, 4, 0.45);
 }
+/* Gilded: the gold runs light to deep down the letters, as leaf does. The
+   shadow comes off here, or it shows through the clipped fill as a smudge,
+   and a little right padding stops the italic's overhang being cut. */
 .spot__title em {
   font-style: italic;
-  color: var(--brass-lit);
+  background: linear-gradient(180deg, #f8e5b2 0%, #deb36c 52%, #b3863f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  padding-right: 0.08em;
+  text-shadow: none;
 }
 .spot__line {
-  max-width: 50ch;
-  margin: 0.55rem auto 0;
-  font-size: var(--fs-sm);
-  line-height: 1.5;
-  color: rgba(247, 243, 236, 0.66);
-  /* Where the line has to break, break it into two of a length rather than a
-     full line and a stray "Kozhikode." */
+  max-width: 40em;
+  margin: clamp(0.45rem, 1.1vh, 0.8rem) auto 0;
+  font-family: var(--serif);
+  font-size: clamp(1rem, 1.2vw, 1.16rem);
+  line-height: 1.45;
+  color: rgba(245, 233, 214, 0.9);
   text-wrap: balance;
 }
-/* On a desktop the arch is wide enough at this height for the whole sentence
-   on one line, which also keeps the hero's height where the card budget
-   expects it. Narrower than this it takes two balanced lines, and the tall
-   screens that means have the room. */
-@media (min-width: 1100px) {
-  .spot__line {
-    max-width: 80ch;
-  }
-}
 
-/* Shop Now is the filled one — ivory, with the gold wipe the site's buttons
-   share — and New Arrivals is the hairline beside it, so the pair reads as a
-   first choice and a second rather than two equal shouts. Held to one width
-   so the row is symmetrical under a centred title. */
+/* Shop Now in gold leaf with wine type, New Arrivals as a gold hairline — the
+   pair reads as a first choice and a second. Held to one width so the row is
+   symmetrical under a centred title. */
 .spot__actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.75rem;
-  margin-top: clamp(0.9rem, 2vh, 1.4rem);
+  gap: 0.8rem;
+  margin-top: clamp(0.9rem, 2.2vh, 1.5rem);
 }
 .spot__actions .btn {
   min-width: 11.5rem;
 }
-/* The page ground is pure white, but pure white on maroon is a hole in the
-   picture. A warm ivory sits in the silk's own register. */
 .spot__actions .btn--bone {
-  background: #f6efe3;
-  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.32);
+  background: linear-gradient(180deg, #f3d9a2 0%, #d6ab63 55%, #b98c45 100%);
+  color: var(--wine);
+  --btn-fill: #f7e6bf;
+  box-shadow: 0 10px 30px rgba(8, 1, 3, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
-/* On ink the outline token is a 16% hairline, which disappears against a
-   photograph-lit maroon. */
+.spot__actions .btn--bone:hover {
+  color: var(--wine);
+}
 .spot__actions .btn--line {
-  border-color: rgba(247, 243, 236, 0.5);
-  color: var(--bone-base);
-  /* Light type on a dark ground reads a weight heavier than the same type
-     dark on light, so at 500 this label looked bolder than Shop Now beside
-     it. One step down puts the pair back in balance. */
+  border-color: var(--gold-line);
+  color: var(--cream);
   font-weight: 400;
+  --btn-fill: var(--gold);
 }
 .spot__actions .btn--line:hover {
-  border-color: var(--bone-base);
+  color: var(--wine);
+  border-color: var(--gold);
 }
 
 /* --- the stage ------------------------------------------------------------ */
@@ -2730,10 +2804,14 @@
 .spot__stage {
   position: relative;
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  grid-template-columns: 52px minmax(0, 1fr) 52px;
   align-items: center;
   gap: clamp(0.5rem, 2vw, 1.6rem);
-  max-width: calc(var(--spot-w) * 2.65 + clamp(150px, 12vw, 230px));
+  /* width: 100% because this is a flex item with auto margins, and an auto
+     margin on a flex item shrink-wraps it — which would collapse the 1fr
+     track, and with it the whole fan. */
+  width: 100%;
+  max-width: calc(var(--spot-w) * 2.72 + 150px);
   margin-inline: auto;
   padding-inline: var(--gut);
 }
@@ -2741,100 +2819,86 @@
 .spot__nav {
   display: grid;
   place-items: center;
-  /* Above the fan. The neighbouring cards reach right across both buttons on
-     a narrow screen, which left the carousel with no visible control. */
+  /* Above the fan: on a narrow screen the neighbouring cards reach right
+     across both buttons. */
   position: relative;
   z-index: 6;
-  width: 48px;
-  height: 48px;
-  border: 1px solid rgba(247, 243, 236, 0.24);
+  width: 52px;
+  height: 52px;
+  border: 1px solid var(--gold-line);
   border-radius: 50%;
-  background: rgba(247, 243, 236, 0.07);
-  backdrop-filter: blur(10px);
-  color: rgba(247, 243, 236, 0.84);
+  background: rgba(30, 4, 10, 0.28);
+  backdrop-filter: blur(6px);
+  color: var(--gold-lit);
   transition: color 0.3s var(--ease), border-color 0.3s var(--ease),
     background-color 0.3s var(--ease);
 }
 .spot__nav:hover {
-  /* --ink-base and --bone-base are the two tokens that never invert, so they
-     are the safe pair to name inside a scope that swaps everything else. */
-  color: var(--ink-base);
-  border-color: var(--bone-base);
-  background: var(--bone-base);
+  color: var(--wine);
+  border-color: var(--gold);
+  background: var(--gold);
 }
 
-/* The cards are stacked on one spot and moved out from it, so the middle one
-   can sit above its neighbours whichever way the ring has turned. */
 .spot__track {
   position: relative;
   /* Vertical drags still scroll the page; sideways ones are the carousel's. */
   touch-action: pan-y;
-  height: calc(var(--spot-w) * 1.7778);
-  perspective: calc(var(--spot-w) * 5.4);
-  transform-style: preserve-3d;
+  height: calc(var(--spot-w) * var(--spot-ratio));
 }
 .spot__track:focus-visible {
-  outline: 2px solid var(--brass-lit);
+  outline: 2px solid var(--gold);
   outline-offset: 12px;
   border-radius: 4px;
 }
 
+/* Flat cards, stacked on one spot and moved out from it, so the middle one
+   can sit above its neighbours whichever way the ring has turned. The gold
+   frame is a one-pixel spread shadow rather than a border, so it does not
+   take a pixel off the photograph. */
 .spot__card {
   position: absolute;
   top: 50%;
   left: 50%;
   width: var(--spot-w);
-  aspect-ratio: 9 / 16;
+  aspect-ratio: 5 / 7;
   margin: 0;
-  border-radius: clamp(14px, 1.4vw, 22px);
+  border-radius: clamp(12px, 1.1vw, 16px);
   overflow: hidden;
-  background: var(--tone, #1c1813);
-  /* Deep enough to lift off ink, with a hairline so the card has an edge even
-     where the photograph runs dark to its own border. */
-  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.62);
-  outline: 1px solid rgba(247, 243, 236, 0.09);
-  outline-offset: -1px;
+  background: var(--tone, #2a0610);
+  box-shadow: 0 0 0 1px rgba(214, 172, 98, 0.85), 0 26px 60px rgba(8, 1, 3, 0.6);
   transform: translate(-50%, -50%) translateX(calc(var(--shift, 0) * var(--spot-w)))
-    scale(var(--spot-scale, 1)) rotateY(var(--spot-turn, 0deg));
-  transition: transform 0.62s var(--ease), opacity 0.62s var(--ease);
+    scale(var(--spot-scale, 1));
+  transition: transform 0.62s var(--ease), opacity 0.62s var(--ease), filter 0.62s var(--ease);
   will-change: transform, opacity;
 }
 
 .spot__card.is-center {
   --spot-scale: 1;
-  --spot-turn: 0deg;
   z-index: 5;
   opacity: 1;
+  filter: none;
 }
-.spot__card.is-next {
-  --spot-scale: 0.858;
-  --spot-turn: -10deg;
-  z-index: 4;
-  opacity: 0.9;
-}
+/* The mock's side cards are not see-through; they are in shadow. Dimmed by
+   brightness, then, not opacity — opacity would let the silk show through a
+   photograph. */
+.spot__card.is-next,
 .spot__card.is-prev {
   --spot-scale: 0.858;
-  --spot-turn: 10deg;
   z-index: 4;
-  opacity: 0.9;
+  opacity: 1;
+  filter: brightness(0.9) saturate(0.96);
 }
-.spot__card.is-far-next {
-  --spot-scale: 0.727;
-  --spot-turn: -16deg;
-  z-index: 3;
-  opacity: 0.6;
-}
+.spot__card.is-far-next,
 .spot__card.is-far-prev {
-  --spot-scale: 0.727;
-  --spot-turn: 16deg;
+  --spot-scale: 0.739;
   z-index: 3;
-  opacity: 0.6;
+  opacity: 1;
+  filter: brightness(0.78) saturate(0.92);
 }
 /* Out of sight and out of the way — pointer-events off so a transparent card
    cannot swallow a click meant for the one behind it. */
 .spot__card.is-hidden {
   --spot-scale: 0.5;
-  --spot-turn: 0deg;
   z-index: 1;
   opacity: 0;
   pointer-events: none;
@@ -2848,26 +2912,21 @@
 }
 
 .spot__media {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 30%;
-  display: block;
+  object-position: 50% 28%;
 }
 
-/* The photograph has to hold white type along its bottom edge whatever it is
+/* The photograph has to hold light type along its bottom edge whatever it is
    a photograph of, so the plate sits on a gradient as well as its own blur. */
 .spot__card.is-center .spot__cardbtn::after {
   content: '';
   position: absolute;
   inset: auto 0 0 0;
-  height: 46%;
-  background: linear-gradient(
-    0deg,
-    rgba(8, 6, 5, 0.72) 0%,
-    rgba(8, 6, 5, 0.28) 48%,
-    transparent 100%
-  );
+  height: 42%;
+  background: linear-gradient(0deg, rgba(20, 3, 8, 0.7) 0%, rgba(20, 3, 8, 0.24) 50%, transparent 100%);
   pointer-events: none;
 }
 
@@ -2875,103 +2934,115 @@
 
 .spot__chip {
   position: absolute;
-  left: clamp(10px, 1.1vw, 16px);
-  right: clamp(10px, 1.1vw, 16px);
-  bottom: clamp(10px, 1.1vw, 16px);
+  left: clamp(10px, 1vw, 14px);
+  right: clamp(10px, 1vw, 14px);
+  bottom: clamp(10px, 1vw, 14px);
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.55rem;
-  border-radius: 14px;
-  background: rgba(14, 11, 9, 0.62);
-  backdrop-filter: blur(14px) saturate(1.2);
-  border: 1px solid rgba(247, 243, 236, 0.14);
-  color: var(--bone-base);
+  gap: 0.75rem;
+  padding: 0.62rem 0.85rem;
+  border-radius: 12px;
+  background: rgba(28, 5, 11, 0.62);
+  backdrop-filter: blur(12px) saturate(1.1);
+  border: 1px solid rgba(214, 172, 98, 0.26);
+  color: var(--cream);
   animation: spotChip 0.5s var(--ease) both;
 }
 @keyframes spotChip {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: none; }
 }
-.spot__chipimg {
+.spot__chiplotus {
   flex: none;
-  width: clamp(38px, 3.2vw, 46px);
-  height: clamp(38px, 3.2vw, 46px);
-  border-radius: 9px;
-  object-fit: cover;
+  width: clamp(26px, 2.3vw, 32px);
+  height: auto;
 }
 .spot__chiptext {
   display: grid;
-  gap: 0.14rem;
+  gap: 0.1rem;
   min-width: 0;
 }
 .spot__chipname {
-  font-size: clamp(0.78rem, 0.95vw, 0.92rem);
-  line-height: 1.25;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(0.92rem, 1.15vw, 1.08rem);
+  line-height: 1.2;
   /* One line: a long saree name would otherwise push the plate up the card. */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .spot__chipprice {
-  font-size: clamp(0.8rem, 1vw, 0.96rem);
-  font-weight: 600;
+  font-family: var(--serif);
+  font-size: clamp(0.98rem, 1.2vw, 1.16rem);
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
 
-/* --- controls under the stage --------------------------------------------- */
+/* --- dots ----------------------------------------------------------------- */
 
 .spot__foot {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(0.8rem, 2vw, 1.5rem);
-  margin-top: clamp(0.7rem, 1.8vh, 1.3rem);
+  gap: clamp(0.8rem, 2vw, 1.4rem);
+  margin-top: clamp(1rem, 2.4vh, 1.8rem);
   padding-inline: var(--gut);
 }
+.spot__foot::before,
+.spot__foot::after {
+  content: '';
+  flex: none;
+  width: clamp(40px, 8vw, 110px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-line));
+}
+.spot__foot::after {
+  background: linear-gradient(90deg, var(--gold-line), transparent);
+}
 
-/* Nine pieces is more than a person will click through one at a time, so each
-   one gets a mark that goes straight to it. */
+/* One dot per piece, so each goes straight to its own. 24px of hit area
+   around an 8px mark — WCAG 2.5.8 measures the target, not the ink. */
 .spot__ticks {
   display: flex;
   align-items: center;
-  gap: 5px;
 }
 .spot__tick {
   display: grid;
   place-items: center;
-  /* 24px of hit area around a 2px mark — WCAG 2.5.8 measures the target, not
-     the ink. */
-  width: 26px;
+  width: 24px;
   height: 24px;
 }
 .spot__tick::before {
   content: '';
   display: block;
-  width: 100%;
-  height: 2px;
-  border-radius: 2px;
-  background: rgba(247, 243, 236, 0.26);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-line);
   transition: background-color 0.4s var(--ease), transform 0.4s var(--ease);
 }
 .spot__tick:hover::before {
-  background: rgba(247, 243, 236, 0.55);
+  background: rgba(214, 172, 98, 0.35);
 }
 .spot__tick.is-on::before {
-  background: var(--bone-base);
-  transform: scaleY(2);
+  background: var(--gold);
+  border-color: var(--gold);
+  transform: scale(1.15);
 }
 .spot__tick:focus-visible {
-  outline: 2px solid var(--brass-lit);
-  outline-offset: 2px;
-  border-radius: 3px;
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+  border-radius: 50%;
 }
 
+/* The mock has no counter; the live region stays for screen readers. */
 .spot__count {
-  font-size: var(--fs-micro);
-  letter-spacing: 0.2em;
-  color: rgba(247, 243, 236, 0.56);
-  font-variant-numeric: tabular-nums;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
   white-space: nowrap;
 }
 
@@ -2981,76 +3052,97 @@
   .spot__tick::before {
     transition: none;
   }
-  .spot__chip { animation: none; }
+  .spot__chip {
+    animation: none;
+  }
 }
 
-/* A short window — most laptops are 768px tall — has no height to spare for a
-   masthead above a 9:16 card. At 62vh the card came out at 268px there, barely
-   past the 260px it was before it became the hero. The type steps down, the
-   line stands down, and the picture takes what they free. */
+/* --- short laptops ---------------------------------------------------------- */
+
+/* Most laptops are 768px tall, which has no height to spare for a lotus, a
+   title and a line stacked above the fan. The eyebrow keeps its own row; the
+   title and the buttons share the next; the lotus and the line stand down;
+   the wave flattens. */
 @media (min-width: 621px) and (max-height: 820px) {
   .spot {
-    --spot-w: min(calc(clamp(280px, 100vh - 262px, 1000px) / 1.7778), 34vw, 560px);
+    --spot-w: min(calc(clamp(250px, 100vh - 300px, 900px) / var(--spot-ratio)), 34vw, 560px);
+    --wave-h: clamp(70px, 10vh, 90px);
   }
-  /* Stacked, the buttons would cost a laptop's card another sixty pixels of
-     height. Beside the title they cost nothing: the row is only as tall as a
-     button. Where the window is too narrow for both, the row wraps and the
-     buttons go underneath. */
   .spot__header {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 0.7rem clamp(1.2rem, 2.6vw, 2.4rem);
+    gap: 0.6rem clamp(1.2rem, 2.6vw, 2.4rem);
     margin-bottom: clamp(0.5rem, 1.4vh, 0.9rem);
   }
+  .spot__lotus,
   .spot__line {
     display: none;
   }
   .spot__eyebrow {
     flex-basis: 100%;
-    margin-bottom: -0.25rem;
+    margin-bottom: -0.2rem;
   }
   .spot__title {
-    font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+    font-size: clamp(1.7rem, 3.2vw, 2.4rem);
   }
   .spot__actions {
     margin-top: 0;
   }
-  /* A title and two buttons side by side are far wider than the crown of an
-     arch at the height they sit, so the line cut straight through the row.
-     The lattice and the lit ground carry the look here. */
-  .spot__arch {
+  .spot__orn--peacock {
+    width: max(0px, min(clamp(170px, 15vw, 240px), var(--spot-free)));
+  }
+  .spot__orn--mandala {
+    --w: max(0px, min(clamp(190px, 17vw, 270px), calc(var(--spot-free) / 0.7)));
+  }
+}
+
+/* Below this the fan reaches the edges, and the sprigs and the peacock would
+   sit behind the outer cards as clutter. The mandala stays: it sits above the
+   fan, not beside it. */
+@media (max-width: 1099px) {
+  .spot__orn--floral,
+  .spot__orn--leaf,
+  .spot__orn--peacock {
     display: none;
   }
 }
 
-/* --- narrower ------------------------------------------------------------- */
+/* --- phones ---------------------------------------------------------------- */
 
-/* Below this the far pair is hidden, so the fan no longer has to fit five
-   cards across and the card may take a much larger share of the width. */
+/* The far pair is hidden, so the card may take a much larger share of the
+   width, and the near pair is meant to bleed off the edges. */
 @media (max-width: 620px) {
   .spot {
-    /* 362, not 318: with the subline on two lines a 390x844 phone kept the
-       marks only 7px above the fold. At that size the height term now binds,
-       which gives up about 8px of card width for 15px of clearance. Wider
-       and taller phones are still bound by 72vw and do not change. */
-    --spot-w: min(calc(clamp(240px, 100vh - 362px, 800px) / 1.7778), 72vw, 360px);
-    /* A little more air between the crown and the eyebrow. Near the top of a
-       circle every pixel down widens it by two or three, and measured at
-       390px the eyebrow's corners sat 3px from the line. The crown cannot
-       rise to meet it instead without crossing the logo. */
-    padding-top: calc(var(--header-h) + clamp(1.1rem, 2.6vh, 1.6rem));
+    --spot-w: min(calc(clamp(220px, 100vh - 420px, 700px) / var(--spot-ratio)), 72vw, 340px);
+    --wave-h: clamp(72px, 10vh, 92px);
+    padding-top: calc(var(--header-h) + clamp(0.9rem, 2.2vh, 1.4rem));
+  }
+  .spot__stage {
+    grid-template-columns: 42px minmax(0, 1fr) 42px;
+    gap: 0.3rem;
+    padding-inline: 0.6rem;
+  }
+  .spot__nav {
+    width: 42px;
+    height: 42px;
+  }
+  .spot__card.is-far-next,
+  .spot__card.is-far-prev {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .spot__eyebrow::before,
+  .spot__eyebrow::after {
+    width: clamp(22px, 8vw, 48px);
   }
   /* Two equal halves of one row, so neither button looks like an
      afterthought and the pair sits square under the title. */
-  /* 84% rather than the full measure: at full width the buttons' outer
-     corners landed on the arch line itself. Measured across 360-414px, the
-     crown is wide enough at the height of the buttons for a row this wide. */
   .spot__actions {
     flex-wrap: nowrap;
     gap: 0.6rem;
-    max-width: min(23rem, 84%);
+    max-width: 23rem;
     margin-inline: auto;
     margin-top: 0.9rem;
   }
@@ -3063,68 +3155,41 @@
     min-width: 0;
     padding-inline: 0.8rem;
   }
-  /* Wider than the screen, so only the crown shows, curving away off either
-     edge. Held inside the screen, the crown was too tight for "Handwoven in
-     India" just beneath it: a circle as wide as a phone is only about 160px
-     across at the height the eyebrow sits. A larger radius flattens the
-     crown, and the sides leaving the screen also take the line away from the
-     buttons. .spot clips it, so nothing scrolls. */
-  .spot__arch {
-    width: 116%;
-    top: calc(var(--header-h) - 0.4rem);
-  }
-  .spot__arch::before {
-    inset: 7px 7px 0;
-  }
-  .spot__stage {
-    grid-template-columns: 40px minmax(0, 1fr) 40px;
-    gap: 0.3rem;
-    padding-inline: 0.6rem;
-  }
-  .spot__nav {
-    width: 40px;
-    height: 40px;
-  }
-  /* The turn reads as a smudge at this size, so the neighbours simply sit
-     back rather than rotating. */
-  .spot__card.is-next,
-  .spot__card.is-prev {
-    --spot-turn: 0deg;
-  }
-  .spot__card.is-far-next,
-  .spot__card.is-far-prev {
-    opacity: 0;
-    pointer-events: none;
-  }
-  /* Nine marks plus a counter will not sit on one line at this width. */
-  .spot__foot {
-    flex-direction: column;
-    gap: 0.7rem;
-  }
-}
-
-/* A short landscape window — a phone turned sideways — has no room for a
-   masthead above a 9:16 card, so the copy stands down and the picture stays. */
-@media (max-height: 520px) and (orientation: landscape) {
-  .spot__line { display: none; }
-  .spot__title { font-size: clamp(1.4rem, 3vw, 2rem); }
-}
-
-/* An iPhone SE or smaller: the line and the numeric count stand down so the
-   card keeps a usable size, and the buttons tighten so both still fit on one
-   row. The count stays in the page for screen readers. */
-@media (max-width: 380px) {
-  .spot {
-    --spot-w: min(calc(clamp(240px, 100vh - 286px, 800px) / 1.7778), 72vw, 360px);
-  }
-  .spot__line {
+  /* A phone's masthead fills the width, so the mandala would sit behind the
+     title; the lotuses and the wave carry the look here. */
+  .spot__orn--mandala {
     display: none;
   }
-  /* At its 2rem floor the title is about 200px wide, and on a 320px screen
-     the crown of the arch is only about 204px wide at the height the title
-     sits — the last letters touched the line. */
+  .spot__foot::before,
+  .spot__foot::after {
+    width: clamp(18px, 8vw, 56px);
+  }
+}
+
+/* A phone turned sideways has no room for a masthead above the fan. */
+@media (max-height: 520px) and (orientation: landscape) {
+  .spot__line,
+  .spot__lotus {
+    display: none;
+  }
   .spot__title {
-    font-size: 1.75rem;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+  }
+}
+
+/* An iPhone SE or smaller: the lotus and the line stand down so the card
+   keeps a usable size, and the buttons and rules tighten so each row still
+   fits on one line. */
+@media (max-width: 380px) {
+  .spot {
+    --spot-w: min(calc(clamp(200px, 100vh - 356px, 700px) / var(--spot-ratio)), 72vw, 340px);
+  }
+  .spot__line,
+  .spot__lotus {
+    display: none;
+  }
+  .spot__title {
+    font-size: 1.85rem;
   }
   .spot__eyebrow {
     letter-spacing: 0.12em;
@@ -3134,13 +3199,12 @@
     letter-spacing: 0.04em;
     padding-inline: 0.5rem;
   }
-  .spot__count {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
+  .spot__foot {
+    gap: 0.5rem;
+  }
+  .spot__foot::before,
+  .spot__foot::after {
+    width: 14px;
   }
 }
 
