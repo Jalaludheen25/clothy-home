@@ -41,6 +41,11 @@ const RATIO = 1.25;
 /* How far a neighbour sits from the middle, as a share of a full-size card. */
 const STEP = 0.62;
 
+/* The piece the hero opens on. Moved to the front of the ring rather than
+   set as a starting index, so it also leads the sequence and the first dot is
+   the lit one. If it ever leaves the pool the order is simply left alone. */
+const LEAD = 'suvarna-banarasi-tissue-saree';
+
 function state(offset) {
   if (offset === 0) return 'is-center';
   if (offset === 1) return 'is-next';
@@ -54,13 +59,16 @@ export default function ShopTheLook() {
        enough to turn through without repeating. */
     const pool = [...inCollection('best-sellers'), ...inCollection('new-arrivals')];
     const seen = new Set();
-    return pool
-      .filter((p) => {
-        if (seen.has(p.slug)) return false;
-        seen.add(p.slug);
-        return true;
-      })
-      .slice(0, 9);
+    const ordered = pool.filter((p) => {
+      if (seen.has(p.slug)) return false;
+      seen.add(p.slug);
+      return true;
+    });
+    /* Hoisted before the slice, so the lead piece is in the nine whatever its
+       place in the collections. */
+    const lead = ordered.findIndex((p) => p.slug === LEAD);
+    if (lead > 0) ordered.unshift(...ordered.splice(lead, 1));
+    return ordered.slice(0, 9);
   }, []);
 
   const [active, setActive] = useState(0);
