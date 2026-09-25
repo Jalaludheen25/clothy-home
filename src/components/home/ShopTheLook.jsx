@@ -1,35 +1,33 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PRODUCTS, formatINR, inCollection, toHsl } from '../../data/catalog.js';
-import IMG, { src, srcSet } from '../../data/images.js';
+import { PRODUCTS, formatINR, inCollection } from '../../data/catalog.js';
+import { src, srcSet } from '../../data/images.js';
 import { prefersReducedMotion } from '../../hooks/useMotion.js';
 import { MagneticButton } from '../ui/Primitives.jsx';
-import { FloralSprig, GoldWave, LeafSprig, Lotus, Mandala, Peacock } from './HeroOrnaments.jsx';
 
 /* ==========================================================================
    Shop the Look — the homepage hero
    --------------------------------------------------------------------------
-   Built to a reference mock, then dressed in red velvet: deep crimson and
-   burgundy with a pressed jaal at the edges, gold botanical line art at
-   the edges, a lotus over a ruled eyebrow, a serif title with a gilded
-   italic, a fan of gold-framed cards, and a gold wave with a lotus at its
-   lowest point closing the whole thing off.
+   An editorial split, built to the direction of the references: the words on
+   the left in a column that lines up with the nav above it, the pieces on the
+   right, and the piece in the middle carried across the whole section as a
+   soft-focus backdrop that changes with it.
 
-   The fan is measured off that mock at 1280px and held as ratios, so it
-   survives the card being resized:
+   What the references share, and what this takes from them: a photograph
+   given the whole width; a headline set large and light in a serif, roman
+   with one phrase in italic; a rule and a small tracked label above it; two
+   square calls to action, one filled and one hairline; and nothing else. No
+   ornament — the photograph and the type do the work.
 
-     card        5:7 — shorter than the 9:16 video frame this used to be
-     neighbours  0.858 scale, 0.47 card-widths out, dimmed, not turned
-     far pair    0.739 scale, 0.85 out, dimmed further
-     beyond      0.5 scale, parked at the middle, transparent, out of the
-                 tab order — so a card blooms outward rather than appearing
-                 at the edge
-     plate       a lotus, the name in italic serif, the price — centre card
-                 only
+   The carousel keeps everything it had: arrows, dots, keyboard, swipe, the
+   plate with the piece's name and price, autoplay that holds while pointed
+   at, and a card that opens its own product page. Only the dressing changed.
 
-   The mock shows neither Shop Now nor New Arrivals, and still carries the old
-   copy; both of those are later decisions and stay. The size of the card is
-   the stylesheet's sum, not a number here.
+     card        4:5, the proportion the rest of the shop uses
+     neighbours  0.86 scale, 0.62 card-widths out, dimmed
+     beyond      out of sight and out of the tab order — a deck of three
+                 reads as a deck; five read as a fan, which belonged to the
+                 old design
 
    Each card takes a `video` if one is given and falls back to the
    photograph, so this is a video carousel the moment there are files to put
@@ -38,56 +36,16 @@ import { FloralSprig, GoldWave, LeafSprig, Lotus, Mandala, Peacock } from './Her
 
 /* Height over width of a card, shared by the CSS box and the image crop so
    the CDN is never asked for a taller frame than the card shows. */
-const RATIO = 1.4;
+const RATIO = 1.25;
 
-/* The silk behind everything: a crimson drape from the catalogue's own
-   fabric shots, tinted to the house maroon in CSS. A landscape crop for wide
-   windows and a portrait one for phones, so neither is a thin slice of the
-   other blown up. */
-const SILK = {
-  '--silk-wide': `url("${src(IMG.silkCrimson, 1800, 0.62)}")`,
-  '--silk-tall': `url("${src(IMG.silkCrimson, 900, 1.8)}")`,
-};
-
-/* The light behind the fan still answers to the piece in the middle, but it
-   stays inside the velvet's palette: a dark saree lights it deep crimson, a
-   pale one lights it gold, and everything between runs along that single
-   warm line. Taking the swatch's own hue put violet and teal light on red
-   velvet, which is exactly what a red-and-gold room should never have. */
-function glow(hex) {
-  const [, , l] = toHsl(hex);
-  const t = Math.min(1, Math.max(0, (l - 0.1) / 0.75));
-  const hue = Math.round((352 + 48 * t) % 360);
-  const sat = Math.round(62 + 8 * t);
-  const lit = Math.round(34 + 18 * t);
-  return `hsl(${hue} ${sat}% ${lit}%)`;
-}
-
-/* How far a slot sits from the middle, as a share of a full-size card.
-   Measured off the mock: neighbour centres 0.47 card-widths out, the far pair
-   0.85. Tighter than a turned coverflow needs, because flat cards do not
-   foreshorten — spread these wider and the fan falls apart into a row. */
-const STEP_NEAR = 0.47;
-const STEP_FAR = 0.85;
+/* How far a neighbour sits from the middle, as a share of a full-size card. */
+const STEP = 0.62;
 
 function state(offset) {
   if (offset === 0) return 'is-center';
   if (offset === 1) return 'is-next';
   if (offset === -1) return 'is-prev';
-  if (offset === 2) return 'is-far-next';
-  if (offset === -2) return 'is-far-prev';
   return 'is-hidden';
-}
-
-function shift(offset) {
-  const away = Math.sign(offset);
-  const step = Math.abs(offset);
-  if (step === 0) return 0;
-  if (step === 1) return away * STEP_NEAR;
-  if (step === 2) return away * STEP_FAR;
-  /* Anything further back waits at the middle at half scale, out of sight, so
-     it blooms outward into the far slot rather than appearing at the edge. */
-  return 0;
 }
 
 export default function ShopTheLook() {
@@ -110,18 +68,6 @@ export default function ShopTheLook() {
      complaint about carousels, so pointing at it or tabbing into it holds it
      still. */
   const [held, setHeld] = useState(false);
-  /* The coloured light drifts and the sheen crosses the silk continuously, so
-     both stop while the hero is scrolled out of sight — there is no reason to
-     keep compositing a banner nobody is looking at. */
-  const sectionRef = useRef(null);
-  const [inView, setInView] = useState(true);
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el || typeof IntersectionObserver === 'undefined') return undefined;
-    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
   /* A finger drag across the cards. Held in refs rather than state because
      nothing on screen depends on a gesture in progress, and re-rendering nine
      cards on every pointermove would make the drag stutter. */
@@ -173,208 +119,202 @@ export default function ShopTheLook() {
 
   if (!count) return null;
 
+  const piece = cards[active];
+
   return (
-    <section
-      ref={sectionRef}
-      className={`spot on-ink ${inView ? '' : 'is-offscreen'}`}
-      aria-labelledby="spot-title"
-      style={{ '--spot-glow': glow(cards[active].swatch), ...SILK }}
-    >
-      {/* The ground, back to front: burgundy, the drape's folds, the velvet's
-          crush and pile, a jaal pressed into it at the edges, warm light
-          drifting across, the piece's own light, a sheen, then shade that
-          keeps the type legible. */}
-      <div className="spot__ground" aria-hidden="true" />
-      <div className="spot__silk" aria-hidden="true" />
-      <div className="spot__velvet" aria-hidden="true" />
-      <div className="spot__jaal" aria-hidden="true" />
-      <div className="spot__aura" aria-hidden="true">
-        <span className="spot__hue spot__hue--crimson" />
-        <span className="spot__hue spot__hue--gold" />
-        <span className="spot__hue spot__hue--ember" />
-        <span className="spot__hue spot__hue--wine" />
-      </div>
-      <div className="spot__glow" aria-hidden="true" />
-      <div className="spot__sheen" aria-hidden="true" />
-      <div className="spot__shade" aria-hidden="true" />
-
-      <Mandala className="spot__orn spot__orn--mandala" />
-      <FloralSprig className="spot__orn spot__orn--floral" />
-      <LeafSprig className="spot__orn spot__orn--leaf" />
-      <Peacock className="spot__orn spot__orn--peacock" />
-
-      <div className="spot__wave" aria-hidden="true">
-        <GoldWave className="spot__wavepath" />
-        <Lotus className="spot__wavelotus" />
+    <section className="spot on-ink" aria-labelledby="spot-title">
+      {/* The piece in the middle, thrown across the whole section out of
+          focus. Only the three cards in play are mounted, so turning the
+          carousel never has more than three of these to hold, and the one
+          going out stays long enough to fade under the one coming in. */}
+      <div className="spot__scene" aria-hidden="true">
+        {cards.map((p, i) => {
+          let offset = i - active;
+          if (offset > count / 2) offset -= count;
+          if (offset < -count / 2) offset += count;
+          if (Math.abs(offset) > 1) return null;
+          return (
+            <img
+              key={p.slug}
+              className={`spot__back ${offset === 0 ? 'is-on' : ''}`}
+              src={src(p.images[0], 1200, 0.62)}
+              alt=""
+              loading={offset === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+          );
+        })}
+        <div className="spot__scrim" />
       </div>
 
-      <header className="spot__header">
-        <Lotus className="spot__lotus" />
-        <p className="spot__eyebrow eyebrow">Handwoven in India</p>
-        <h1 className="spot__title" id="spot-title">
-          Silk, <em>worn well</em>
-        </h1>
-        {/* The looms named here are the catalogue's own — the saree category
-            copy says the same — so the hero promises nothing the shop does not. */}
-        <p className="spot__line">
-          From the looms of Kanchipuram, Varanasi and Bhagalpur, finished in Kozhikode.
-        </p>
-        <div className="spot__actions">
-          <MagneticButton to="/shop" variant="bone" size="md">
-            Shop Now
-          </MagneticButton>
-          <MagneticButton to="/collection/new-arrivals" variant="line" size="md">
-            New Arrivals
-          </MagneticButton>
-        </div>
-      </header>
-
-      <div
-        className="spot__stage"
-        onMouseEnter={() => setHeld(true)}
-        onMouseLeave={() => setHeld(false)}
-        onFocusCapture={() => setHeld(true)}
-        onBlurCapture={() => setHeld(false)}
-      >
-        <button
-          type="button"
-          className="spot__nav spot__nav--prev"
-          onClick={() => go(-1)}
-          aria-label="Previous"
-        >
-          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
-            <path d="M10 2 4 8l6 6" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
+      <div className="spot__inner">
+        <header className="spot__copy">
+          <p className="spot__eyebrow eyebrow">
+            <span className="spot__rule" aria-hidden="true" />
+            Handwoven in India
+          </p>
+          <h1 className="spot__title" id="spot-title">
+            Silk, <em>worn well</em>
+          </h1>
+          {/* The looms named here are the catalogue's own — the saree category
+              copy says the same — so the hero promises nothing the shop does not. */}
+          <p className="spot__line">
+            From the looms of Kanchipuram, Varanasi and Bhagalpur, finished in Kozhikode.
+          </p>
+          <div className="spot__actions">
+            <MagneticButton to="/shop" variant="bone" size="md">
+              Shop Now
+            </MagneticButton>
+            <MagneticButton to="/collection/new-arrivals" variant="line" size="md">
+              New Arrivals
+            </MagneticButton>
+          </div>
+        </header>
 
         <div
-          className="spot__track"
-          role="group"
-          aria-label="Shop the look"
-          tabIndex={0}
-          onKeyDown={onKey}
-          onPointerDown={onPointerDown}
-          onPointerUp={onPointerUp}
-          onPointerCancel={() => { drag.current = null; }}
-          /* An <img> and an <a> both start a native drag, and that drag
-             cancels the pointer stream the swipe is riding on. */
-          onDragStart={(e) => e.preventDefault()}
+          className="spot__stage"
+          onMouseEnter={() => setHeld(true)}
+          onMouseLeave={() => setHeld(false)}
+          onFocusCapture={() => setHeld(true)}
+          onBlurCapture={() => setHeld(false)}
         >
-          {cards.map((product, i) => {
-            /* Shortest way round the ring, so the far side wraps rather than
-               travelling the whole length of the list. */
-            let offset = i - active;
-            if (offset > count / 2) offset -= count;
-            if (offset < -count / 2) offset += count;
+          <div
+            className="spot__track"
+            role="group"
+            aria-label="Shop the look"
+            tabIndex={0}
+            onKeyDown={onKey}
+            onPointerDown={onPointerDown}
+            onPointerUp={onPointerUp}
+            onPointerCancel={() => { drag.current = null; }}
+            /* An <img> and an <a> both start a native drag, and that drag
+               cancels the pointer stream the swipe is riding on. */
+            onDragStart={(e) => e.preventDefault()}
+          >
+            {cards.map((product, i) => {
+              /* Shortest way round the ring, so the far side wraps rather than
+                 travelling the whole length of the list. */
+              let offset = i - active;
+              if (offset > count / 2) offset -= count;
+              if (offset < -count / 2) offset += count;
 
-            const cls = state(offset);
-            const hidden = cls === 'is-hidden';
-            const centre = cls === 'is-center';
+              const cls = state(offset);
+              const hidden = cls === 'is-hidden';
+              const centre = cls === 'is-center';
 
-            return (
-              <article
-                className={`spot__card ${cls}`}
-                key={product.slug}
-                style={{ '--shift': shift(offset), '--tone': product.swatch }}
-                aria-hidden={hidden ? 'true' : undefined}
-              >
-                <Link
-                  to={`/product/${product.slug}`}
-                  className="spot__cardbtn"
-                  tabIndex={hidden ? -1 : 0}
-                  onClick={(e) => {
-                    /* The click that follows a drag is the drag, not a
-                       choice of piece. */
-                    if (swiped.current) {
-                      e.preventDefault();
-                      return;
-                    }
-                    /* A card off to the side brings itself to the middle
-                       first — clicking through to a piece you cannot see
-                       properly is a misfire, not a choice. */
-                    if (!centre) {
-                      e.preventDefault();
-                      setActive(i);
-                    }
-                  }}
+              return (
+                <article
+                  className={`spot__card ${cls}`}
+                  key={product.slug}
+                  style={{ '--shift': offset === 0 ? 0 : Math.sign(offset) * STEP }}
+                  aria-hidden={hidden ? 'true' : undefined}
                 >
-                  {product.video ? (
-                    <video
-                      className="spot__media"
-                      draggable={false}
-                      src={product.video}
-                      poster={src(product.images[0], 900, RATIO)}
-                      muted
-                      loop
-                      playsInline
-                      autoPlay={centre}
-                      preload={centre ? 'auto' : 'none'}
-                    />
-                  ) : (
-                    <img
-                      className="spot__media"
-                      draggable={false}
-                      src={src(product.images[0], 640, RATIO)}
-                      /* The card runs from under 200px on a small phone to
-                         560px on a wide desktop, so at 2x the set has to reach
-                         1120. The hint tracks the CSS sum loosely and always
-                         from above — over-fetching costs bytes, under-fetching
-                         costs a soft photograph, and this is the hero. */
-                      srcSet={srcSet(product.images[0], RATIO, [360, 480, 640, 900, 1200, 1500])}
-                      sizes="(max-width: 620px) 72vw, (max-width: 1500px) 34vw, 560px"
-                      alt={product.name}
-                      loading={Math.abs(offset) <= 2 ? 'eager' : 'lazy'}
-                      decoding="async"
-                    />
-                  )}
+                  <Link
+                    to={`/product/${product.slug}`}
+                    className="spot__cardbtn"
+                    tabIndex={hidden ? -1 : 0}
+                    onClick={(e) => {
+                      /* The click that follows a drag is the drag, not a
+                         choice of piece. */
+                      if (swiped.current) {
+                        e.preventDefault();
+                        return;
+                      }
+                      /* A card off to the side brings itself to the middle
+                         first — clicking through to a piece you cannot see
+                         properly is a misfire, not a choice. */
+                      if (!centre) {
+                        e.preventDefault();
+                        setActive(i);
+                      }
+                    }}
+                  >
+                    {product.video ? (
+                      <video
+                        className="spot__media"
+                        draggable={false}
+                        src={product.video}
+                        poster={src(product.images[0], 900, RATIO)}
+                        muted
+                        loop
+                        playsInline
+                        autoPlay={centre}
+                        preload={centre ? 'auto' : 'none'}
+                      />
+                    ) : (
+                      <img
+                        className="spot__media"
+                        draggable={false}
+                        src={src(product.images[0], 640, RATIO)}
+                        /* The card runs from about 230px on a small phone to
+                           420px on a wide desktop, so at 2x the set has to
+                           reach 840. Always hinted from above: over-fetching
+                           costs bytes, under-fetching costs a soft
+                           photograph, and this is the hero. */
+                        srcSet={srcSet(product.images[0], RATIO, [360, 480, 640, 900, 1200])}
+                        sizes="(max-width: 899px) 72vw, 26vw"
+                        alt={product.name}
+                        loading={Math.abs(offset) <= 1 ? 'eager' : 'lazy'}
+                        decoding="async"
+                      />
+                    )}
+                  </Link>
+                </article>
+              );
+            })}
+          </div>
 
-                  {centre ? (
-                    <span className="spot__chip">
-                      <Lotus className="spot__chiplotus" />
-                      <span className="spot__chiptext">
-                        <span className="spot__chipname">{product.name}</span>
-                        <span className="spot__chipprice num">{formatINR(product.price)}</span>
-                      </span>
-                    </span>
-                  ) : null}
-                </Link>
-              </article>
-            );
-          })}
+          {/* The plate sits under the deck rather than on the photograph: the
+              name and the price are information, and at this size they no
+              longer need to borrow the card's corner. */}
+          <div className="spot__plate">
+            <Link className="spot__chip" to={`/product/${piece.slug}`}>
+              <span className="spot__chipname">{piece.name}</span>
+              <span className="spot__chipprice num">{formatINR(piece.price)}</span>
+            </Link>
+
+            <div className="spot__controls">
+              <div className="spot__ticks" role="tablist" aria-label="Choose a piece">
+                {cards.map((product, i) => (
+                  <button
+                    type="button"
+                    key={product.slug}
+                    role="tab"
+                    className={`spot__tick ${i === active ? 'is-on' : ''}`}
+                    aria-selected={i === active}
+                    aria-label={product.name}
+                    onClick={() => setActive(i)}
+                  />
+                ))}
+              </div>
+              <div className="spot__arrows">
+                <button type="button" className="spot__nav spot__nav--prev" onClick={() => go(-1)} aria-label="Previous">
+                  <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+                    <path d="M10 2 4 8l6 6" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                <button type="button" className="spot__nav spot__nav--next" onClick={() => go(1)} aria-label="Next">
+                  <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+                    <path d="M6 2l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            {/* The live region the dots and arrows speak through. */}
+            <p className="spot__count num" aria-live="polite">
+              <span className="sr-only">Showing </span>
+              {active + 1} / {count}
+            </p>
+          </div>
         </div>
-
-        <button
-          type="button"
-          className="spot__nav spot__nav--next"
-          onClick={() => go(1)}
-          aria-label="Next"
-        >
-          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
-            <path d="M6 2l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
       </div>
 
-      <div className="spot__foot">
-        <div className="spot__ticks" role="tablist" aria-label="Choose a piece">
-          {cards.map((product, i) => (
-            <button
-              type="button"
-              key={product.slug}
-              role="tab"
-              className={`spot__tick ${i === active ? 'is-on' : ''}`}
-              aria-selected={i === active}
-              aria-label={product.name}
-              onClick={() => setActive(i)}
-            />
-          ))}
-        </div>
-        {/* The mock has dots only. The count stays for screen readers, which
-            is who the live region was for in the first place. */}
-        <p className="spot__count num" aria-live="polite">
-          <span className="sr-only">Showing </span>
-          {active + 1} / {count}
-        </p>
+      {/* A line that fills, the way the references mark the fold. Decoration
+          only — the page scrolls perfectly well without it. */}
+      <div className="spot__scroll" aria-hidden="true">
+        <span className="spot__scrolllabel">Scroll</span>
+        <span className="spot__scrollline" />
       </div>
     </section>
   );
